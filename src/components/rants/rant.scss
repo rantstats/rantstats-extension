@@ -1,0 +1,62 @@
+.external-chat {
+    margin: 3px;
+    overflow-wrap: break-word;
+
+    display: flex;
+    flex-direction: column;
+
+    &.read {
+        opacity: 0.5;
+    }
+
+    .rant-amount {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        font-weight: bold;
+        padding: 5px;
+
+        .show-hide-checkbox {
+            margin-left: auto;
+            justify-self: flex-end;
+            font-weight: normal;
+        }
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .user-info {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+        padding: 5px;
+
+        .user-image {
+            max-width: 30px;
+
+            img {
+                height: auto;
+                width: 30px;
+                max-height: 30px;
+            }
+        }
+
+        p {
+            font-weight: bold;
+        }
+
+        .timestamp {
+            justify-self: flex-end;
+            margin-left: auto;
+            font-size: 0.75em;
+        }
+    }
+
+    .chat-text {
+        padding: 5px;
+    }
+}

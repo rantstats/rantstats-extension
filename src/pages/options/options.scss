@@ -1,0 +1,78 @@
+@import "../pages";
+
+html.popup {
+    width: 300px;
+    scrollbar-gutter: auto;
+
+    body {
+        width: 100%;
+        min-height: auto;
+
+        h1 {
+            font-size: 1.7em
+        }
+    }
+}
+
+
+#options {
+
+    .options {
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+    }
+
+    .option, .save {
+        font-size: 1em;
+        padding: 5px 15px;
+
+        .description {
+            margin: 0;
+            padding-bottom: 5px;
+        }
+
+        input, select, button {
+            font-size: 1em;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .note {
+            font-size: 0.75em;
+            margin: 0 0 0 15px;
+            padding-top: 5px;
+        }
+    }
+
+    .save {
+        text-align: right;
+    }
+
+    .pages {
+        text-align: center;
+
+        h2 {
+            font-size: 1.5em;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    footer {
+        font-size: 10px;
+
+        .clear-section {
+            font-size: 12px;
+
+            button {
+                font-size: 1em;
+            }
+        }
+    }
+}
+

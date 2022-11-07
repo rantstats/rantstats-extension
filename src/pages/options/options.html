@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html class="rantstats">
+<head>
+    <title>Options | RantStats Extension for Rumble.com</title>
+
+    <!--suppress HtmlUnknownTarget -->
+    <link rel="stylesheet" type="text/css" href="options.css"/>
+</head>
+
+<body id="options">
+
+<h1>RantStats Extension Options</h1>
+
+<div class="options">
+    <div class="option">
+        <p class="description">Change how rants should be ordered</p>
+        <label
+                for="sort-order"
+                title="Change the order Rants"
+        >
+            Sort Order:
+            <select id="sort-order">
+                <option value="0">Oldest to Newest</option>
+                <option value="1" selected>Newest to Oldest</option>
+                <option value="2">Highest to Lowest</option>
+                <option value="3">Lowest to Highest</option>
+            </select>
+        </label>
+    </div>
+
+    <!--
+    <div class="option">
+        <p class="description">Save captured Rants so they can be viewed anytime</p>
+        <label
+                for="cache"
+                title="Caches Rants for streams so they can be viewed anytime"
+        >
+            Cache Rants:
+            <input type="checkbox" id="cache" checked/>
+        </label>
+    </div>
+    -->
+
+    <!--
+    <div class="option">
+        <p class="description">Sync settings and cached data across browsers</p>
+        <label
+                for="sync"
+                title="Sync settings and cached data across browsers"
+        >
+            Sync data:
+            <input type="checkbox" id="sync"/>
+        </label>
+    </div>
+    -->
+
+    <div class="option">
+        <p class="description">How many days to keep saved Rants.</p>
+        <label
+                for="history"
+                title="How long to save cached Rants"
+        >
+            Sync History (days):
+            <input type="number" id="history" min="1" max="90" value="14"/>
+        </label>
+        <p class="note">* Streams past cutoff removed when extension loaded in Rumble.com page or opening Options or Cached Rants.</p>
+        <p class="note" id="option-storage">
+            Using <span id="bytes-use">0</span> bytes
+            <!--Using <span id="bytes-use">0</span> out of <span id="bytes-total">0</span> bytes (<span id="bytes-percentage">100%</span>)-->
+        </p>
+    </div>
+
+    <div class="option">
+        <p class="description">Theme for how content should be displayed</p>
+        <label
+                for="theme"
+                title="Display theme"
+        >
+            Theme:
+            <select id="theme">
+                <option value="0" selected>Follow Rumble.com</option>
+                <option value="1">System</option>
+                <option value="2">Dark</option>
+                <option value="3">Light</option>
+            </select>
+        </label>
+        <p class="note">* If unable to get Rumble setting, falls back to "System"</p>
+    </div>
+
+    <div class="option">
+        <p class="description">Open Rant Stats in a popup instead of sidebar</p>
+        <label
+                for="open-location"
+                title="Opens the Rant Stats data in a popup instead of sidebar"
+        >
+            Open as Popup:
+            <input type="checkbox" id="open-location"/>
+        </label>
+    </div>
+</div>
+
+<div class="save">
+    <p class="description">
+        <span id="save-status"></span>
+        <button id="save">Save</button>
+    </p>
+</div>
+
+<div class="pages">
+    <h2 id="open-rants">View Cached Rants</h2>
+</div>
+
+
+<footer>
+    <div class="row clear-section">
+        <p class="description">
+            <button id="clear">Clear all saved data</button>
+            <span id="clear-status"></span>
+        </p>
+    </div>
+
+    <div class="row">
+        <p><a href="https://rantstats.com" target="_blank">RantStats.com</a></p>
+        <p><a href="https://twitter.com/stevencrader" target="_blank">By Steven Crader</a></p>
+    </div>
+</footer>
+
+<!--suppress HtmlUnknownTarget -->
+<script src="options.js"></script>
+
+</body>
+</html>

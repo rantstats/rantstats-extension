@@ -215,3 +215,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 *.css
+
+/output/

@@ -1,0 +1,157 @@
+@import "../pages";
+@import "../../components/rants/rant.scss";
+
+#cached-rants {
+
+    #selector {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        padding: 10px;
+
+        label {
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+        }
+    }
+
+    #stream-data {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+
+        .main-content {
+            flex-grow: 1;
+
+            h2 {
+                margin: 5px 0;
+
+                a {
+                    color: inherit;
+                    text-decoration: inherit;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            p {
+                margin: 0;
+
+                #stream-creator {
+                    a {
+                        color: inherit;
+                        text-decoration: inherit;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+
+        .refresh {
+            margin-left: auto;
+            justify-self: flex-end;
+            height: 40px;
+            width: 40px;
+
+            svg {
+                height: 100%;
+                width: auto;
+                fill: var(--light-fg);
+
+                &:hover {
+                    rotate: 315deg;
+                    cursor: pointer;
+                }
+            }
+        }
+
+    }
+
+    #rant-list {
+        padding: 10px;
+
+        .external-chat {
+
+            .rant-data {
+                display: flex;
+                flex-direction: row;
+                padding: 5px;
+                gap: 5px;
+
+                .user-image {
+                    flex-grow: 0;
+                    justify-self: center;
+
+                    img {
+                        height: auto;
+                        width: 75px;
+                        max-height: 75px;
+                        border-radius: 50%;
+                    }
+                }
+
+                .rant-details {
+                    flex-grow: 1;
+
+                    .user-info {
+                        font-size: 1.25em;
+
+                        .timestamp {
+                            font-size: 0.8em;
+                        }
+                    }
+
+                    .chat-text {
+                        font-size: 1.1em;
+                    }
+                }
+            }
+        }
+    }
+
+    footer {
+        font-size: 12px;
+
+        .rant-data {
+            p {
+                font-size: 15px;
+            }
+        }
+
+        .link {
+            cursor: pointer;
+
+            &.disabled {
+                cursor: not-allowed;
+            }
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+html.theme-dark {
+    #cached-rants {
+        #stream-data {
+            .refresh {
+                svg {
+                    fill: var(--dark-fg);
+                }
+            }
+        }
+
+        footer {
+            background: var(--dark-accent);
+        }
+    }
+}

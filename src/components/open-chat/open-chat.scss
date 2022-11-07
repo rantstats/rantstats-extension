@@ -1,0 +1,57 @@
+#rs-display-chat-button-div {
+    margin-bottom: 10px;
+
+    #rs-display-chat-button {
+        font-weight: bold;
+        font-size: 1.2em;
+
+        svg {
+            height: 25px;
+            width: 25px;
+            margin-right: 10px;
+            vertical-align: middle;
+            fill: var(--light-fg);
+        }
+
+        &.theme-dark {
+            svg {
+                fill: var(--dark-fg);
+            }
+        }
+    }
+}
+
+#rs-display-chat-button {
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &.disabled {
+        cursor: not-allowed;
+    }
+}
+
+// change style of chat
+#chat-history-list {
+    .chat-history--row {
+        padding: 2px;
+    }
+
+    &.theme-light {
+        .chat-history--row {
+            &:nth-child(odd) {
+                background: var(--light-accent2);
+            }
+        }
+    }
+
+    &.theme-dark {
+        .chat-history--row {
+            &:nth-child(odd) {
+                background: var(--dark-accent2);
+            }
+        }
+    }
+}

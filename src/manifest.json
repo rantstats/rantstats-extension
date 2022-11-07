@@ -1,0 +1,59 @@
+{
+    "manifest_version": 3,
+    "name": "RantStats Extension for Rumble.com",
+    "version": "1.0.0",
+    "description": "Add support for capturing paid Rumble Rants for Rumble.com livestreams.",
+    "icons": {
+        "16": "images/icon-16.png",
+        "32": "images/icon-32.png",
+        "48": "images/icon-48.png",
+        "128": "images/icon-128.png"
+    },
+    "permissions": [
+        "storage",
+        "unlimitedStorage",
+        "tabs"
+    ],
+    "background": {
+        "service_worker": "pages/background/background.js"
+    },
+    "options_page": "pages/options/options.html",
+    "action": {
+        "default_popup": "pages/options/options.html#popup",
+        "default_icon": {
+            "16": "images/icon-16.png",
+            "32": "images/icon-32.png",
+            "48": "images/icon-48.png",
+            "128": "images/icon-128.png"
+        }
+    },
+    "web_accessible_resources": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "resources": [
+                "images/*"
+            ]
+        }
+    ],
+    "content_scripts": [
+        {
+            "css": [
+                "styles.css",
+                "components/open-chat/open-chat.css",
+                "components/rants/rants.css",
+                "components/rants/rant.css",
+                "pages/options/options.css",
+                "pages/rants/rants.css"
+            ],
+            "js": [
+                "pages/content/content.js"
+            ],
+            "matches": [
+                "https://rumble.com/v*",
+                "https://rumble.com/_rantstats*"
+            ]
+        }
+    ]
+}

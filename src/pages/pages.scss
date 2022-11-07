@@ -1,0 +1,79 @@
+@import "../styles";
+
+* {
+    box-sizing: border-box;
+}
+
+
+html.rantstats {
+    scrollbar-gutter: stable;
+    color-scheme: light;
+    background: var(--light-bg);
+
+    body {
+        background: var(--light-accent2);
+
+        width: 95%;
+        max-width: 1000px;
+        margin: auto;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--heading-font);
+        }
+
+        h1, h2, h3, h4, h5, h6,
+        p, span, label, a {
+            color: var(--light-fg);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2em;
+        }
+
+        p {
+            font-size: 1em;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: auto;
+            justify-self: flex-end;
+            position: sticky;
+            bottom: 0;
+            background: var(--light-accent);
+
+            .row {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            p {
+                margin: 5px;
+            }
+        }
+    }
+
+    &.theme-dark {
+        background: var(--dark-bg);
+        color-scheme: dark;
+
+        body {
+            background: var(--dark-accent2);
+
+            footer {
+                background: var(--dark-accent);
+            }
+        }
+
+        h1, h2, h3, h4, h5, h6,
+        p, span, label, a {
+            color: var(--dark-fg);
+        }
+    }
+}
+

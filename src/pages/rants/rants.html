@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html class="rantstats">
+<head>
+    <title>Cached Rants | RantStats Extension for Rumble.com</title>
+
+    <!--suppress HtmlUnknownTarget -->
+    <link rel="stylesheet" type="text/css" href="rants.css"/>
+</head>
+
+<body id="cached-rants">
+
+<header>
+    <h1>Cached Rants</h1>
+</header>
+
+<div id="selector">
+    <label
+            for="stream"
+            title="Stream to view"
+    >
+        View Stream:
+        <br>
+        <select id="stream">
+            <option value="-1">None</option>
+        </select>
+    </label>
+</div>
+
+<header id="stream-data">
+</header>
+
+<main id="rant-list">
+</main>
+
+<footer>
+    <div class="row rant-data">
+        <p id="rant-total" class="link" data-total="0">$0.00</p>
+        <p id="download-csv" class="link disabled">Export to CSV</p>
+        <p id="open-options" class="link">Open Options</p>
+        <p id="delete-stream" class="link disabled" title="Remove this stream from the cache">Delete Stream</p>
+    </div>
+
+    <div class="row">
+        <p><a href="https://rantstats.com" target="_blank">RantStats.com</a></p>
+        <p><a href="https://twitter.com/stevencrader" target="_blank">By Steven Crader</a></p>
+    </div>
+</footer>
+
+
+<!--suppress HtmlUnknownTarget -->
+<script src="rants.js"></script>
+
+</body>
+</html>
