@@ -17,6 +17,7 @@ const sendAction = (
         'data': data,
     } as Message)
             .then()
+            .catch()
 }
 
 /**

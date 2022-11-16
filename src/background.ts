@@ -54,6 +54,7 @@ const handleOpenRantsPage = () => {
         url: 'pages/rants/rants.html'
     })
             .then()
+            .catch()
 }
 
 /**
@@ -84,6 +85,7 @@ const handlePageLoaded = (tabUrl: string) => {
                     }
                 })
             })
+            .catch()
 }
 
 /**
@@ -100,6 +102,7 @@ const handlePageUnloaded = (tabUrl: string) => {
                     _openTabs.delete(tab)
                 })
             })
+            .catch()
 }
 
 /**
@@ -116,6 +119,7 @@ const handleUpdateOptions = (options: Options) => {
             data: {options: options}
         })
                 .then()
+                .catch()
     })
 }
 
@@ -133,5 +137,6 @@ const handleRumbleThemeChanged = (theme: Theme) => {
             data: {theme: theme}
         })
                 .then()
+                .catch()
     })
 }

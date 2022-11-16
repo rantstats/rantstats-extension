@@ -198,7 +198,7 @@ export const renderMessage = async (
     }
 
     const {rantHTML, rantLevel, amount} = getRantHTML(rant, messageId, read)
-    const userImageHTML = getUserImageHtml(userImage, username)
+    const userImageHTML = getUserImageHtml(userImage, username, messageId)
 
     const chatDate = new Date(time)
     const isoDate = chatDate.toISOString()
@@ -248,6 +248,10 @@ export const renderMessage = async (
     chatDiv.innerHTML = html
 
     addChat(chatDiv, messageId)
+
+    const userImageElement = document.getElementById(`img-${messageId}`) as HTMLImageElement
+    if (userImageElement)
+        userImageElement.addEventListener('error', imageErrorHandler)
 
     updateTotal(amount)
 }
@@ -367,22 +371,33 @@ const getMatchingRantLevel = (price_dollars: number): number => {
  *
  * @param userImage path to user image
  * @param username username for user
+ * @param messageId id of message being added
+ * @return image html
  */
-const getUserImageHtml = (userImage: string, username: string): string => {
+const getUserImageHtml = (userImage: string, username: string, messageId: string): string => {
     if (!userImage) {
         return ''
     }
 
-    // noinspection HtmlDeprecatedAttribute
     return `
         <img
+                id="img-${messageId}"
                 src="${userImage}"
                 alt="Profile picture for ${username}"
                 loading="lazy"
                 aria-hidden="true"
-                onerror="this.style.display='none';"
         />
     `
+}
+
+/**
+ * Handle issues loading image src
+ *
+ * @param event error event
+ */
+const imageErrorHandler = (event: Event) => {
+    const target = event.target as HTMLImageElement
+    target.style.display = 'none'
 }
 
 /**
@@ -457,10 +472,10 @@ const toggleRead = (event: Event, messageId: string) => {
 
 document.addEventListener('change', async (event) => {
     const target = event.target as HTMLElement
-    if (target && target.classList.contains(READ_CHECK)) {
-        const messageId = target.id
-        toggleRead(event, messageId)
+    if (target) {
+        if (target.classList.contains(READ_CHECK)) {
+            const messageId = target.id
+            toggleRead(event, messageId)
+        }
     }
 })
-
-

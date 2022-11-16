@@ -404,7 +404,7 @@ export const displayCachedRants = (videoId: string, cachePage: boolean = false) 
 }
 
 const showCacheMessage = (videoId: string, numRants: number) => {
-    if (!activeStream()) {
+    if (!activeStream() && (location.host === 'rumble.com')) {
         const cacheMessageP = document.getElementById(CACHE_MESSAGE_ID) as HTMLParagraphElement
         const cacheMessageCount = document.getElementById(CACHE_MESSAGE_COUNT_ID) as HTMLSpanElement
         cacheMessageCount.textContent = `${numRants}`
