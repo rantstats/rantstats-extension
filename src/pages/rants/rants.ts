@@ -1,5 +1,5 @@
 import {cleanHistory, getAllStreams, getSortOrder, getStream, removeStream} from "../../cache";
-import {setLastSortOrder, updateTotalText} from "../../components/rants/rant";
+import {clearDisplayedMessages, setLastSortOrder, updateTotalText} from "../../components/rants/rant";
 import {displayCachedRants, parseLevels} from "../../components/rants/rants";
 import {registerTab} from "../../events";
 import {handleUpdateOptions} from "../../messages";
@@ -34,6 +34,7 @@ const clearRants = () => {
     csvDownloaderParagraph.classList.add('disabled')
     deleteStreamParagraph.classList.add('disabled')
     updateTotalText(0)
+    clearDisplayedMessages()
 }
 
 /**
