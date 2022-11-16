@@ -1,5 +1,8 @@
 # RantStats Extension for Rumble.com
 
+![Chrome Version](https://img.shields.io/chrome-web-store/v/liahjgfmodjgeakahommamnmbjgicpmh?style=flat-square)
+![Microsoft Edge](https://img.shields.io/badge/dynamic/json?label=microsoft%20edge%20add-on&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fdfhpfnfhllhmfmkcambimnafeklpgkdm&style=flat-square)
+
 **WARNING:** this relies on undocumented features of Rumble. If Rumble changes their site, this may break.
 
 Add support for capturing the paid Rumble Rants for [Rumble.com](https://rumble.com/) live streams.
@@ -14,9 +17,8 @@ Additionally, all cached data can be viewed and managed from the Cached Rants pa
 
 To add to your browser, download the extension from:
 
-TODO: Chrome link
-TODO: Edge link
-TODO: Firefox link
+- [Chrome](https://chrome.google.com/webstore/detail/rantstats-extension-for-r/liahjgfmodjgeakahommamnmbjgicpmh)
+- [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/dfhpfnfhllhmfmkcambimnafeklpgkdm)
 
 **Permissions**
 
