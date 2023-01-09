@@ -1,7 +1,16 @@
+// always show sticky box
+#chat-sticky-rants {
+    display: block !important;
+}
+
 #rs-display-chat-button-div {
     margin-bottom: 10px;
 
     #rs-display-chat-button {
+        margin-left: 1rem;
+        margin-right: 1rem;
+        padding: 0.75rem 0;
+
         font-weight: bold;
         font-size: 1.2em;
 
@@ -36,7 +45,9 @@
 // change style of chat
 #chat-history-list {
     .chat-history--row {
-        padding: 2px;
+        padding: 2px 0.75rem;
+        margin-left: 0;
+        margin-right: 0;
     }
 
     &.theme-light {

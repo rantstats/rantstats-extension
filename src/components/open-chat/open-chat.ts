@@ -35,6 +35,11 @@ export const addChatButton = (onclick: () => void): boolean => {
     listItem.onclick = onclick
     listItem.title = 'Open Rant Stats'
 
+    const pillDivItem = document.createElement('div') as HTMLDivElement
+    pillDivItem.classList.add('chat-history--rant-sticky--pill')
+    pillDivItem.style.background = '#bb0218'
+    listItem.appendChild(pillDivItem)
+
     const imageItem = document.createElement('div') as HTMLDivElement
     imageItem.classList.add('chat--profile-pic')
     imageItem.style.position = 'relative'
@@ -42,13 +47,22 @@ export const addChatButton = (onclick: () => void): boolean => {
     imageItem.style.backgroundColor = '#37c'
     imageItem.style.backgroundImage = `url(${chrome.runtime.getURL("images/dollar.svg")})`
     imageItem.setAttribute('data-small', '')
-    listItem.appendChild(imageItem)
+    pillDivItem.appendChild(imageItem)
 
     const textItem = document.createElement('div') as HTMLDivElement
     textItem.classList.add('chat-history--rant-price')
     textItem.style.position = 'relative'
-    textItem.textContent = 'View Rants'
-    listItem.appendChild(textItem)
+    textItem.textContent = 'Rants'
+    pillDivItem.appendChild(textItem)
+
+    const wellDivItem = document.createElement('div') as HTMLDivElement
+    wellDivItem.classList.add('chat-history--rant-progressbar--well')
+    listItem.appendChild(wellDivItem)
+
+    const progressBarDivItem = document.createElement('div') as HTMLDivElement
+    progressBarDivItem.classList.add('chat-history--rant-progressbar')
+    progressBarDivItem.style.width = '100%'
+    wellDivItem.appendChild(progressBarDivItem)
 
     rantList.insertBefore(listItem, rantList.firstChild)
     return true
