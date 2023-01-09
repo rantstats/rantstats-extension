@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "RantStats Extension for Rumble.com",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "Add support for capturing paid Rumble Rants for Rumble.com livestreams.",
     "icons": {
         "16": "images/icon-16.png",
