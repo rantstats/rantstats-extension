@@ -25,3 +25,4 @@ export const STREAM_DATA = 'stream-data'
 export const STREAM_DATE = 'stream-date'
 export const STREAM_TITLE = 'stream-title'
 export const TOTAL_ID = 'rant-total'
+export const CHAT_POPUP_REGEX = /\/chat\/popup\/(\d+)/

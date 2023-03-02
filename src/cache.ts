@@ -1,3 +1,4 @@
+import {CHAT_POPUP_REGEX} from "./types/consts";
 import {defaultOptions, Options, SortOrder, Theme} from "./types/option-types";
 
 /**
@@ -209,6 +210,10 @@ const getHistoryDays = (): Promise<number> => {
 export const getOpenAsPopup = (): Promise<boolean> => {
     return getOptions({asPopup: defaultOptions.asPopup} as Options)
             .then((options: Options) => {
+                const m = CHAT_POPUP_REGEX.exec(window.location.pathname)
+                if (m != null) {
+                    return true
+                }
                 return options.asPopup
             })
 }
