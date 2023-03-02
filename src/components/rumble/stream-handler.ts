@@ -106,11 +106,16 @@ export const initStreamCache = (videoId: string) => {
         }
     }
 
+    let title = document.title
+    if (title.startsWith('Chat: ')){
+        title = title.substring(6)
+    }
+
     const popup = setupPopup(videoId)
     if (!popup) {
         cacheStream({
             videoId: videoId,
-            title: document.title,
+            title: title,
             creator: creator,
             time: new Date().toISOString(),
             url: `${location.origin}${location.pathname}`,

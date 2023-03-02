@@ -1,9 +1,16 @@
+import {CHAT_POPUP_REGEX} from "../../types/consts";
+
 /**
  * Get video ID from Rumble page HTML
  *
  * @return id of video
  */
 export const getVideoID = (): string => {
+    const m = CHAT_POPUP_REGEX.exec(window.location.pathname)
+    if (m != null){
+        return m[1]
+    }
+
     const foundIds = []
     const idElements = document.querySelectorAll('[data-id]')
     idElements.forEach((element) => {
