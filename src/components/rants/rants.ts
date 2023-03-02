@@ -131,7 +131,7 @@ export const addRantStatsSidebar = async (videoId: string, popup: boolean = fals
                 <h1 id="${SIDEBAR_TITLE_ID}">Rant Stats</h1>
             </header>
             <div class="hidden" id="${ERROR_ID}">
-                <p>Could not load chats, is the live stream over or are you not logged in to Rumble? Any cached Rants shown below.</p>
+                <p>Could not load chats, is the livestream over or are you not logged in to Rumble? Any cached Rants shown below.</p>
             </div>
             <div class="hidden" id="${CACHE_MESSAGE_ID}">
                 <p>Stream is over, dispalying <span id="${CACHE_MESSAGE_COUNT_ID}">-1</span> cached rants.</p>

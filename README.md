@@ -5,7 +5,7 @@
 
 **WARNING:** this relies on undocumented features of Rumble. If Rumble changes their site, this may break.
 
-Add support for capturing the paid Rumble Rants for [Rumble.com](https://rumble.com/) live streams.
+Add support for capturing the paid Rumble Rants for [Rumble.com](https://rumble.com/) livestreams.
 Rants are shown past their normal expiration date in the chat.
 
 Rants can be shown as a sidebar on the stream page or in a separate window. After a stream ends, cached data can be
