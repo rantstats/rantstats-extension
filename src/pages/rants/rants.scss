@@ -90,11 +90,31 @@
                     flex-grow: 0;
                     justify-self: center;
 
-                    img {
-                        height: auto;
+                    img, .no-img {
                         width: 75px;
                         max-height: 75px;
+                        border: 1px solid;
                         border-radius: 50%;
+                    }
+
+                    img {
+                        height: auto;
+                    }
+
+                    .no-img {
+                        height: 75px;
+
+                        background-color: #3377CC;
+
+                        &::after {
+                            display: block;
+                            text-align: center;
+                            content: attr(data-letter);
+                            text-transform: capitalize;
+                            font-weight: bold;
+                            color: white;
+                            font-size: 3rem;
+                        }
                     }
                 }
 

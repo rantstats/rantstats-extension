@@ -5,6 +5,8 @@
     display: flex;
     flex-direction: column;
 
+    border-radius: 0.6rem;
+
     &.read {
         opacity: 0.5;
     }
@@ -16,6 +18,8 @@
 
         font-weight: bold;
         padding: 5px;
+
+        border-radius: 0.6rem 0.6rem 0 0;
 
         .show-hide-checkbox {
             margin-left: auto;
@@ -38,12 +42,31 @@
         .user-image {
             max-width: 30px;
 
-            img {
-                height: auto;
+            img, .no-img {
                 width: 30px;
                 max-height: 30px;
                 border: 1px solid;
                 border-radius: 50%;
+            }
+
+            img {
+                height: auto;
+            }
+
+            .no-img {
+                height: 30px;
+
+                background-color: #3377CC;
+
+                &::after {
+                    display: block;
+                    text-align: center;
+                    content: attr(data-letter);
+                    text-transform: capitalize;
+                    font-weight: bold;
+                    color: white;
+                    font-size: 75%;
+                }
             }
         }
 
