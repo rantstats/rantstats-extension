@@ -367,7 +367,7 @@ const getMatchingRantLevel = (price_dollars: number): number => {
 /**
  * Get HTML data for the user's profile image.
  *
- * If no profile image url, returns empty string
+ * If no profile image url, returns placeholder div
  *
  * @param userImage path to user image
  * @param username username for user
@@ -375,18 +375,25 @@ const getMatchingRantLevel = (price_dollars: number): number => {
  * @return image html
  */
 const getUserImageHtml = (userImage: string, username: string, messageId: string): string => {
-    if (!userImage) {
-        return ''
+    if (userImage) {
+        return `
+            <img
+                    id="img-${messageId}"
+                    src="${userImage}"
+                    alt="Profile picture for ${username}"
+                    loading="lazy"
+                    aria-hidden="true"
+            />
+        `
     }
 
     return `
-        <img
+        <div
+                class="no-img"
                 id="img-${messageId}"
-                src="${userImage}"
-                alt="Profile picture for ${username}"
-                loading="lazy"
                 aria-hidden="true"
-        />
+                data-letter="${username.substring(0,1)}"
+        ></div>
     `
 }
 
