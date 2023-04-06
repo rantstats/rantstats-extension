@@ -1,7 +1,15 @@
-import {CacheBadge, cacheMessage, getAllCachedMessageIds, getBadges, getUser, updateCachedMessage} from "../../cache";
+import {
+    CacheBadge,
+    cacheMessage,
+    getAllCachedMessageIds,
+    getBadge,
+    getBadges,
+    getUser,
+    updateCachedMessage
+} from "../../cache";
 import {RANT_LIST_ID, READ_CHECK, TOTAL_ID} from "../../types/consts";
 import {SortOrder} from "../../types/option-types";
-import {RumbleMessage, RumbleRant, RumbleUser} from "../../types/rumble-types";
+import {RumbleMessage, RumbleNotification, RumbleRant, RumbleUser} from "../../types/rumble-types";
 import {getVideoIdFromDiv} from "../../utils";
 
 /**
@@ -114,11 +122,11 @@ const parseMessage = (
         videoId: string,
         userBadges: Map<string, Array<string>>,
 ) => {
-    const {id, time, user_id, text, rant} = message
+    const {id, time, user_id, text, rant, notification} = message
     const badges = userBadges.get(user.id)
-    // render rants
-    if (rant) {
-        renderMessage(videoId, id, time, user_id, text, rant, user.username, user["image.1"], badges)
+    // render rants and notifications
+    if (rant || notification) {
+        renderMessage(videoId, id, time, user_id, text, rant, notification, user.username, user["image.1"], badges)
                 .then(() => {
                 })
     }
@@ -133,6 +141,7 @@ const parseMessage = (
  * @param userId id of user who made message
  * @param text text of the message
  * @param rant paid Rumble Rant data
+ * @param notification notification associated with Rant
  * @param username Username for user
  * @param userImage Optional path to profile image
  * @param badges badges for user
@@ -147,6 +156,7 @@ export const renderMessage = async (
         userId: string,
         text: string,
         rant: RumbleRant = undefined,
+        notification: RumbleNotification = undefined,
         username: string = undefined,
         userImage: string = undefined,
         badges: Array<string> = undefined,
@@ -183,6 +193,7 @@ export const renderMessage = async (
                     rant: {
                         price_cents: rant.price_cents,
                     },
+                    notification: notification,
                     badges: badges,
                     read: read
                 }
@@ -192,6 +203,10 @@ export const renderMessage = async (
 
     if (rant) {
         await renderRant(messageId, time, text, rant, username, userImage, badges, read, cachePage)
+    }
+    if (notification) {
+        const messageIdNotification = `${messageId}-notification`
+        await renderNotification(messageIdNotification, time, notification, username, userImage, read, cachePage)
     }
 }
 
@@ -265,6 +280,83 @@ const renderRant = async (
         userImageElement.addEventListener('error', imageErrorHandler)
 
     updateTotal(amount)
+}
+
+const renderNotification = async (
+        messageId: string,
+        time: string,
+        notification: RumbleNotification,
+        username: string,
+        userImage: string,
+        read: boolean = false,
+        cachePage: boolean = false
+) => {
+    if (notification.text === undefined || notification.badge === undefined) {
+        return
+    }
+
+    const userImageHTML = getUserImageHtml(userImage, username, messageId)
+
+    const badgeData = await getBadge(notification.badge)
+    let badgeHtml = ''
+    if (badgeData) {
+        badgeHtml = getBadgeImage(notification.badge, badgeData, "notification-badge")
+    }
+
+    const chatDate = new Date(time)
+    const isoDate = chatDate.toISOString()
+
+    const chatDiv = document.createElement('div') as HTMLDivElement
+    chatDiv.classList.add('external-chat')
+    chatDiv.classList.add('notification')
+    if (read) {
+        chatDiv.classList.add('read')
+    }
+    chatDiv.setAttribute('data-chat-id', messageId)
+    chatDiv.setAttribute('data-date', isoDate)
+
+    let html = `
+        <div class="notification-info">
+            <time class="timestamp" datatype="${isoDate}">${chatDate.toLocaleDateString()}
+                ${chatDate.toLocaleTimeString()}
+            </time>
+            <label for="${messageId}" class="show-hide-checkbox">
+                Read:
+                <input type="checkbox" id="${messageId}" class="${READ_CHECK}" ${read ? "checked" : ""}/>
+            </label>
+        </div>
+    `
+    if (cachePage) {
+        html = `
+            ${html}
+            <div class="rant-data">
+                <div class="user-image">${userImageHTML}</div>
+
+                <div class="rant-details">
+                    <div class="user-info">
+                        <p class="notification-text">${username} ${notification.text}</p>
+                        ${badgeHtml}
+                    </div>
+                </div>
+            </div>
+        `
+    } else {
+        html = `
+            ${html}
+            <div class="user-info">
+                <div class="user-image">${userImageHTML}</div>
+                <p class="notification-text">${username} ${notification.text}</p>
+                ${badgeHtml}
+            </div>
+        `
+    }
+    chatDiv.innerHTML = html
+
+    addChat(chatDiv, messageId)
+
+    const userImageElement = document.getElementById(`img-${messageId}`) as HTMLImageElement
+    if (userImageElement)
+        userImageElement.addEventListener('error', imageErrorHandler)
 }
 
 /**

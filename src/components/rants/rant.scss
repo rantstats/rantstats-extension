@@ -11,7 +11,15 @@
         opacity: 0.5;
     }
 
-    .rant-amount {
+    &.notification {
+        background: #BB0218;
+    }
+
+    &.notification * {
+        color: white;
+    }
+
+    .rant-amount, .notification-info {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -24,6 +32,15 @@
         .show-hide-checkbox {
             margin-left: auto;
             justify-self: flex-end;
+            font-weight: normal;
+        }
+    }
+
+    .notification-info {
+        background: #D0021B;
+
+        .timestamp {
+            font-size: 0.7rem;
             font-weight: normal;
         }
     }
@@ -83,6 +100,12 @@
                 width: 1.25rem !important;
                 height: 1.25rem !important;
             }
+        }
+
+        .notification-badge {
+            height: 5rem;
+            width: auto;
+            margin-left: auto;
         }
 
         .timestamp {

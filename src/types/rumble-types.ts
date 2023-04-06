@@ -51,6 +51,20 @@ export type RumbleRant = {
 }
 
 /**
+ * Object containing the Rumble notification information
+ */
+export type RumbleNotification = {
+    /**
+     * Name of badge for notification
+     */
+    badge: string,
+    /**
+     * Text of notification
+     */
+    text: string,
+}
+
+/**
  * Object containing the Rumble chat message
  */
 export type RumbleMessage = {
@@ -78,6 +92,10 @@ export type RumbleMessage = {
      * Optional paid Rant information
      */
     rant?: RumbleRant,
+    /**
+     * Optional notification information (ex: monthly subscriber)
+     */
+    notification?: RumbleNotification,
 }
 
 /**

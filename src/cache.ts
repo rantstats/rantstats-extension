@@ -1,5 +1,6 @@
 import {CHAT_POPUP_REGEX} from "./types/consts";
 import {defaultOptions, Options, SortOrder, Theme} from "./types/option-types";
+import {RumbleNotification} from "./types/rumble-types";
 
 /**
  * Object for storing the Rant price
@@ -39,6 +40,10 @@ export type CachedRant = {
      * Rant data
      */
     rant?: Rant,
+    /**
+     * Notification associated with message
+     */
+    notification?: RumbleNotification
     /**
      * Badges associated with user who sent Rant
      */
