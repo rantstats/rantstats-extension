@@ -5,6 +5,7 @@ import {
     getBadge,
     getBadges,
     getUser,
+    Notification,
     updateCachedMessage
 } from "../../cache";
 import {RANT_LIST_ID, READ_CHECK, TOTAL_ID} from "../../types/consts";
@@ -206,7 +207,7 @@ export const renderMessage = async (
     }
     if (notification) {
         const messageIdNotification = `${messageId}-notification`
-        await renderNotification(messageIdNotification, time, notification, username, userImage, read, cachePage)
+        await renderNotification(messageIdNotification, time, notification, username, userImage, cachePage)
     }
 }
 
@@ -285,10 +286,9 @@ const renderRant = async (
 const renderNotification = async (
         messageId: string,
         time: string,
-        notification: RumbleNotification,
+        notification: Notification,
         username: string,
         userImage: string,
-        read: boolean = false,
         cachePage: boolean = false
 ) => {
     if (notification.text === undefined || notification.badge === undefined) {
@@ -309,7 +309,7 @@ const renderNotification = async (
     const chatDiv = document.createElement('div') as HTMLDivElement
     chatDiv.classList.add('external-chat')
     chatDiv.classList.add('notification')
-    if (read) {
+    if (notification.read) {
         chatDiv.classList.add('read')
     }
     chatDiv.setAttribute('data-chat-id', messageId)
@@ -322,7 +322,7 @@ const renderNotification = async (
             </time>
             <label for="${messageId}" class="show-hide-checkbox">
                 Read:
-                <input type="checkbox" id="${messageId}" class="${READ_CHECK}" ${read ? "checked" : ""}/>
+                <input type="checkbox" id="${messageId}" class="${READ_CHECK}" ${notification.read ? "checked" : ""}/>
             </label>
         </div>
     `
@@ -596,13 +596,26 @@ export const sortChats = () => {
  *
  * @param event click event
  * @param messageId message id to toggle 'read' on
+ * @param notification indicates notification is being toggled
  */
-const toggleRead = (event: Event, messageId: string) => {
+const toggleRead = (event: Event, messageId: string, notification: boolean) => {
     const videoId = getVideoIdFromDiv()
     const checkbox = event.target as HTMLInputElement
 
+    let data: { [key: string]: any } = {
+        read: checkbox.checked,
+    }
+    if (notification) {
+        data = {
+            notification: {
+                read: checkbox.checked,
+            }
+        }
+    }
+
     // update value in cache
-    updateCachedMessage(videoId, messageId, {read: checkbox.checked})
+    const baseMessageId = messageId.replace("-notification", "")
+    updateCachedMessage(videoId, baseMessageId, data)
             .then(() => {
                 const rantDiv = document.querySelector(`[data-chat-id="${messageId}"]`)
                 rantDiv.classList.toggle("read")
@@ -614,7 +627,8 @@ document.addEventListener('change', async (event) => {
     if (target) {
         if (target.classList.contains(READ_CHECK)) {
             const messageId = target.id
-            toggleRead(event, messageId)
+            const notification = target.id.endsWith("-notification")
+            toggleRead(event, messageId, notification)
         }
     }
 })

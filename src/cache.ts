@@ -1,6 +1,5 @@
 import {CHAT_POPUP_REGEX} from "./types/consts";
 import {defaultOptions, Options, SortOrder, Theme} from "./types/option-types";
-import {RumbleNotification} from "./types/rumble-types";
 
 /**
  * Object for storing the Rant price
@@ -10,6 +9,24 @@ export type Rant = {
      * Amount of Rant in US cents
      */
     price_cents: number,
+}
+
+/**
+ * Object for storing notification information
+ */
+export type Notification = {
+    /**
+     * Name of badge for notification
+     */
+    badge: string,
+    /**
+     * Text of notification
+     */
+    text: string,
+    /**
+     * Indicates if notification was marked Read independent of any associated Rant
+     */
+    read?: boolean,
 }
 
 /**
@@ -43,7 +60,7 @@ export type CachedRant = {
     /**
      * Notification associated with message
      */
-    notification?: RumbleNotification
+    notification?: Notification
     /**
      * Badges associated with user who sent Rant
      */
@@ -389,6 +406,25 @@ export const removeStream = (videoId: string): Promise<void> => {
 }
 
 /**
+ * Helper for combining notification info
+ *
+ * @param cachedNotification cached Notification info
+ * @param newNotification new or partial Notification info
+ * @return updated notification
+ */
+const combineNotification = (cachedNotification: Notification, newNotification: Notification): Notification => {
+    if (cachedNotification === undefined) {
+        return newNotification
+    } else {
+        for (const key in newNotification) {
+            cachedNotification[key] = newNotification[key]
+        }
+    }
+
+    return cachedNotification
+}
+
+/**
  * Helper for combining 2 lists of Rants.
  *
  * Only keep Rants with unique {@link CachedRant.id} values.
@@ -409,7 +445,12 @@ const joinRants = (cachedRants: Array<CachedRant>, newRants: Array<CachedRant>):
             combinedRants.push(rant)
         } else {
             for (const key in rant) {
-                existing[key] = rant[key]
+                // special handler for notifications
+                if (key === 'notification') {
+                    existing[key] = combineNotification(existing[key], rant[key])
+                } else {
+                    existing[key] = rant[key]
+                }
             }
 
         }
