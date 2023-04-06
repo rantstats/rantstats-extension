@@ -93,6 +93,14 @@ export type RumbleUser = {
      */
     username: string,
     /**
+     * User's color in chat
+     */
+    color: string
+    /**
+     * Array of badge names associated with user
+     */
+    badges: Array<string>
+    /**
      * Optional path to profile image
      */
     "image.1"?: string
@@ -145,6 +153,42 @@ export type RantsConfig = {
 }
 
 /**
+ * Rumble badge icons object
+ */
+export type RumbleBadgeIcons = {
+    /**
+     * Size of badge icon (multiple with different sizes)
+     */
+    [key: number]: string
+}
+
+/**
+ * Rumble badge labels object
+ */
+export type RumbleBadgeLabel = {
+    /**
+     * Description of badge in English
+     *
+     * Note: likely other values, but have only seen "en" so far
+     */
+    en: string
+}
+
+/**
+ * Rumble badge object
+ */
+export type RumbleBadge = {
+    /**
+     * Badge icon data
+     */
+    icons: RumbleBadgeIcons
+    /**
+     * Badge label data
+     */
+    label: RumbleBadgeLabel
+}
+
+/**
  * Rumble config object
  */
 export type RumbleConfig = {
@@ -152,6 +196,10 @@ export type RumbleConfig = {
      * Rant configuration
      */
     rants: RantsConfig,
+    /**
+     * All possible badges
+     */
+    badges: { [key: string]: RumbleBadge }
 }
 
 /**

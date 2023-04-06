@@ -1,4 +1,4 @@
-import {cacheMessage, getAllCachedMessageIds, getUser, updateCachedMessage} from "../../cache";
+import {CacheBadge, cacheMessage, getAllCachedMessageIds, getBadges, getUser, updateCachedMessage} from "../../cache";
 import {RANT_LIST_ID, READ_CHECK, TOTAL_ID} from "../../types/consts";
 import {SortOrder} from "../../types/option-types";
 import {RumbleMessage, RumbleRant, RumbleUser} from "../../types/rumble-types";
@@ -86,15 +86,17 @@ export const clearDisplayedMessages = () => {
  * @param messages list of received message
  * @param users list of cached users
  * @param videoId id of video
+ * @param userBadges map of user id to badges for user
  */
 export const parseMessages = (
         messages: Array<RumbleMessage>,
         users: Array<RumbleUser>,
-        videoId: string
+        videoId: string,
+        userBadges: Map<string, Array<string>>,
 ) => {
     messages.forEach((message: RumbleMessage) => {
         const user = users.find((u) => u.id === message.user_id)
-        parseMessage(message, user, videoId)
+        parseMessage(message, user, videoId, userBadges)
     })
 }
 
@@ -104,34 +106,22 @@ export const parseMessages = (
  * @param message received message
  * @param user cached user data for user who sent message
  * @param videoId id of video
+ * @param userBadges map of user id to badges for user
  */
 const parseMessage = (
         message: RumbleMessage,
         user: RumbleUser,
-        videoId: string
-) => {
-    // only render rants, skip messages if already shown
-    if (message.rant) {
-        renderRumbleRant(message, user, videoId)
-    }
-}
-
-/**
- * Render the received Rumble Rant
- *
- * @param message received Rumble Rant message
- * @param user cached user data for user who sent Rumble Rant message
- * @param videoId id of video
- */
-const renderRumbleRant = (
-        message: RumbleMessage,
-        user: RumbleUser,
-        videoId: string
+        videoId: string,
+        userBadges: Map<string, Array<string>>,
 ) => {
     const {id, time, user_id, text, rant} = message
-    renderMessage(videoId, id, time, user_id, text, rant, user.username, user["image.1"])
-            .then(() => {
-            })
+    const badges = userBadges.get(user.id)
+    // render rants
+    if (rant) {
+        renderMessage(videoId, id, time, user_id, text, rant, user.username, user["image.1"], badges)
+                .then(() => {
+                })
+    }
 }
 
 /**
@@ -145,6 +135,7 @@ const renderRumbleRant = (
  * @param rant paid Rumble Rant data
  * @param username Username for user
  * @param userImage Optional path to profile image
+ * @param badges badges for user
  * @param cached true: rendering a previously cached message
  * @param read true: message should be marked read
  * @param cachePage true: data being displayed on cache page
@@ -158,6 +149,7 @@ export const renderMessage = async (
         rant: RumbleRant = undefined,
         username: string = undefined,
         userImage: string = undefined,
+        badges: Array<string> = undefined,
         cached: boolean = false,
         read: boolean = false,
         cachePage: boolean = false
@@ -191,14 +183,32 @@ export const renderMessage = async (
                     rant: {
                         price_cents: rant.price_cents,
                     },
+                    badges: badges,
                     read: read
                 }
         )
                 .then()
     }
 
+    if (rant) {
+        await renderRant(messageId, time, text, rant, username, userImage, badges, read, cachePage)
+    }
+}
+
+const renderRant = async (
+        messageId: string,
+        time: string,
+        text: string,
+        rant: RumbleRant,
+        username: string,
+        userImage: string,
+        badges: Array<string> = undefined,
+        read: boolean = false,
+        cachePage: boolean = false
+) => {
     const {rantHTML, rantLevel, amount} = getRantHTML(rant, messageId, read)
     const userImageHTML = getUserImageHtml(userImage, username, messageId)
+    const badgesHTML = await getBadgesHtml(badges)
 
     const chatDate = new Date(time)
     const isoDate = chatDate.toISOString()
@@ -238,6 +248,7 @@ export const renderMessage = async (
             <div class="user-info">
                 <div class="user-image">${userImageHTML}</div>
                 <p class="username">${username}</p>
+                ${badgesHTML}
                 <time class="timestamp" datatype="${isoDate}">${chatDate.toLocaleDateString()}
                     ${chatDate.toLocaleTimeString()}
                 </time>
@@ -392,9 +403,38 @@ const getUserImageHtml = (userImage: string, username: string, messageId: string
                 class="no-img"
                 id="img-${messageId}"
                 aria-hidden="true"
-                data-letter="${username.substring(0,1)}"
+                data-letter="${username.substring(0, 1)}"
         ></div>
     `
+}
+
+/**
+ * Get the HTML representing the badge images
+ *
+ * @param badges array of badge names
+ * @return HTML for user's badges
+ */
+const getBadgesHtml = async (badges: Array<string>): Promise<string> => {
+    if (badges === undefined || badges.length === 0) {
+        return ''
+    }
+
+    return await getBadges()
+            .then((badgeInfoMap) => {
+                let badgesHtml = `<div class="user-badges">`
+                badges.forEach((name) => {
+                    const badgeMap = badgeInfoMap.get(name)
+                    const badgeHtml = getBadgeImage(name, badgeMap, "user-badge")
+                    badgesHtml = `${badgesHtml}${badgeHtml}`
+                })
+
+                badgesHtml += "</div>"
+                return badgesHtml
+            })
+}
+
+const getBadgeImage = (name: string, badgeData: CacheBadge, imgClass: string): string => {
+    return `<img class="${imgClass}" src="https://rumble.com${badgeData.icon}" alt="${badgeData.label}" title="${badgeData.label}">`
 }
 
 /**

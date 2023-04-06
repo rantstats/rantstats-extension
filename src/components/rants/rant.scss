@@ -74,6 +74,17 @@
             font-weight: bold;
         }
 
+        .user-badges {
+            display: flex;
+            flex-direction: row;
+            gap: 2px;
+
+            .user-badge {
+                width: 1.25rem !important;
+                height: 1.25rem !important;
+            }
+        }
+
         .timestamp {
             justify-self: flex-end;
             margin-left: auto;
