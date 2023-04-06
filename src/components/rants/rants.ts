@@ -453,7 +453,7 @@ export const displayCachedRants = (videoId: string, cachePage: boolean = false) 
                 cachedRants.forEach((value) => {
                     renderMessage(
                             videoId, value.id, value.time, value.user_id, value.text,
-                            value.rant as RumbleRant, value.username,
+                            value.rant as RumbleRant, value.notification, value.username,
                             undefined, value.badges, true, value.read,
                             cachePage
                     )
