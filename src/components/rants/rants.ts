@@ -1,9 +1,11 @@
 import {
+    CacheBadge,
     CachedRant,
     getAllCachedMessages,
     getLastWidth,
     getSortOrder,
     getStream,
+    saveBadges,
     setLastWidth,
     updateUser
 } from "../../cache";
@@ -25,6 +27,7 @@ import {
 } from "../../types/consts";
 import {
     RantsConfig,
+    RumbleBadge,
     RumbleConfig,
     RumbleEventInit,
     RumbleEventMessages,
@@ -230,9 +233,9 @@ export const initEventHandler = (eventData: RumbleEventInit, videoId: string) =>
     const data = eventData.data
 
     parseConfig(data.config)
-    parseUsers(data.users)
+    const userBadges = parseUsers(data.users)
     displayCachedRants(videoId)
-    parseMessages(data.messages, data.users, videoId)
+    parseMessages(data.messages, data.users, videoId, userBadges)
 }
 
 /**
@@ -241,12 +244,64 @@ export const initEventHandler = (eventData: RumbleEventInit, videoId: string) =>
  * @param config received config data
  */
 const parseConfig = (config: RumbleConfig) => {
-    const rants = config.rants
+    const {rants, badges} = config
+
+    parseBadgeDefinitions(badges)
+
     if (rants === null) {
         console.log('Invalid Rumble config, no rants', config)
         return
     }
     parseRants(rants)
+}
+
+/**
+ * Parse the badge definitions and store in cache
+ *
+ * @param badges received badge definition data
+ */
+const parseBadgeDefinitions = (badges: { [key: string]: RumbleBadge }) => {
+    const cacheBadges: Array<CacheBadge> = new Array<CacheBadge>()
+
+    if (badges === undefined) {
+        return
+    }
+
+    for (const name in badges) {
+        const values = badges[name]
+        const {icons, label} = values
+
+        // use the icon with the biggest size
+        let iconSize = 0
+        let icon = ""
+        for (const iconKey in icons) {
+            const iconKeyValue = parseInt(iconKey, 10)
+            if (iconKeyValue > iconSize) {
+                icon = icons[iconKey]
+            }
+        }
+        // if no valid icon found, skip
+        if (icon === "") {
+            continue
+        }
+
+        let labelText = label["en"]
+        if (labelText === undefined) {
+            // noinspection LoopStatementThatDoesntLoopJS
+            for (const labelKey in label) {
+                labelText = label[labelKey]
+                break
+            }
+        }
+
+        cacheBadges.push({
+            name: name,
+            icon: icon,
+            label: labelText,
+        })
+    }
+
+    saveBadges(cacheBadges).then()
 }
 
 /**
@@ -279,39 +334,39 @@ export const parseLevels = (levels: Array<RumbleRantLevel>, fallback: boolean = 
     if (fallback || levels.length == 0) {
         setRantLevelValues([1, 2, 5, 10, 20, 50, 100, 200, 300, 400, 500])
         styleLines.push(...[
-            '.external-chat[data-level="1"] { background: #4382cb !important; }',
+            '.external-chat[data-level="1"] { background: #4382CB !important; }',
             '.external-chat[data-level="1"] * {color: white !important; }',
-            '.external-chat[data-level="1"] .rant-amount { background: #4a90e2 !important; }',
-            '.external-chat[data-level="2"] { background: #a6d279 !important; }',
+            '.external-chat[data-level="1"] .rant-amount { background: #4A90E2 !important; }',
+            '.external-chat[data-level="2"] { background: #A6D279 !important; }',
             '.external-chat[data-level="2"] * {color: black !important; }',
-            '.external-chat[data-level="2"] .rant-amount { background: #b8e986 !important; }',
-            '.external-chat[data-level="5"] { background: #dfd019 !important; }',
+            '.external-chat[data-level="2"] .rant-amount { background: #B8E986 !important; }',
+            '.external-chat[data-level="5"] { background: #DFD019 !important; }',
             '.external-chat[data-level="5"] * {color: black !important; }',
-            '.external-chat[data-level="5"] .rant-amount { background: #f8e71c !important; }',
-            '.external-chat[data-level="10"] { background: #dd9520 !important; }',
+            '.external-chat[data-level="5"] .rant-amount { background: #F8E71C !important; }',
+            '.external-chat[data-level="10"] { background: #DD9520 !important; }',
             '.external-chat[data-level="10"] * {color: black !important; }',
-            '.external-chat[data-level="10"] .rant-amount { background: #f5a623 !important; }',
-            '.external-chat[data-level="20"] { background: #aa0eca !important; }',
+            '.external-chat[data-level="10"] .rant-amount { background: #F5A623 !important; }',
+            '.external-chat[data-level="20"] { background: #AA0ECA !important; }',
             '.external-chat[data-level="20"] * {color: white !important; }',
-            '.external-chat[data-level="20"] .rant-amount { background: #bd10e0 !important; }',
-            '.external-chat[data-level="50"] { background: #8211e5 !important; }',
+            '.external-chat[data-level="20"] .rant-amount { background: #BD10E0 !important; }',
+            '.external-chat[data-level="50"] { background: #8211E5 !important; }',
             '.external-chat[data-level="50"] * {color: white !important; }',
-            '.external-chat[data-level="50"] .rant-amount { background: #9013fe !important; }',
-            '.external-chat[data-level="100"] { background: #bb0218 !important; }',
+            '.external-chat[data-level="50"] .rant-amount { background: #9013FE !important; }',
+            '.external-chat[data-level="100"] { background: #BB0218 !important; }',
             '.external-chat[data-level="100"] * {color: white !important; }',
-            '.external-chat[data-level="100"] .rant-amount { background: #d0021b !important; }',
-            '.external-chat[data-level="200"] { background: #bb0218 !important; }',
+            '.external-chat[data-level="100"] .rant-amount { background: #D0021B !important; }',
+            '.external-chat[data-level="200"] { background: #BB0218 !important; }',
             '.external-chat[data-level="200"] * {color: white !important; }',
-            '.external-chat[data-level="200"] .rant-amount { background: #d0021b !important; }',
-            '.external-chat[data-level="300"] { background: #bb0218 !important; }',
+            '.external-chat[data-level="200"] .rant-amount { background: #D0021B !important; }',
+            '.external-chat[data-level="300"] { background: #BB0218 !important; }',
             '.external-chat[data-level="300"] * {color: white !important; }',
-            '.external-chat[data-level="300"] .rant-amount { background: #d0021b !important; }',
-            '.external-chat[data-level="400"] { background: #bb0218 !important; }',
+            '.external-chat[data-level="300"] .rant-amount { background: #D0021B !important; }',
+            '.external-chat[data-level="400"] { background: #BB0218 !important; }',
             '.external-chat[data-level="400"] * {color: white !important; }',
-            '.external-chat[data-level="400"] .rant-amount { background: #d0021b !important; }',
-            '.external-chat[data-level="500"] { background: #bb0218 !important; }',
+            '.external-chat[data-level="400"] .rant-amount { background: #D0021B !important; }',
+            '.external-chat[data-level="500"] { background: #BB0218 !important; }',
             '.external-chat[data-level="500"] * {color: white !important; }',
-            '.external-chat[data-level="500"] .rant-amount { background: #d0021b !important; }',
+            '.external-chat[data-level="500"] .rant-amount { background: #D0021B !important; }',
         ])
     } else {
         let rantLevelValues = []
@@ -345,8 +400,10 @@ export const parseLevels = (levels: Array<RumbleRantLevel>, fallback: boolean = 
  * Parse user data from received message
  *
  * @param users received user data
+ * @return map of user id to badges for user
  */
-const parseUsers = (users: Array<RumbleUser>) => {
+const parseUsers = (users: Array<RumbleUser>): Map<string, Array<string>> => {
+    const badges: Map<string, Array<string>> = new Map<string, Array<string>>()
     users.forEach((user: RumbleUser) => {
         // only save if has image
         if (user["image.1"]) {
@@ -357,7 +414,13 @@ const parseUsers = (users: Array<RumbleUser>) => {
             })
                     .then()
         }
+
+        if (user.badges) {
+            badges.set(user.id, user.badges)
+        }
+
     })
+    return badges
 }
 
 /**
@@ -374,8 +437,8 @@ export const messagesEventHandler = (eventData: RumbleEventMessages, videoId: st
 
     const data = eventData.data
 
-    parseUsers(data.users)
-    parseMessages(data.messages, data.users, videoId)
+    const userBadges = parseUsers(data.users)
+    parseMessages(data.messages, data.users, videoId, userBadges)
 }
 
 /**
@@ -391,7 +454,7 @@ export const displayCachedRants = (videoId: string, cachePage: boolean = false) 
                     renderMessage(
                             videoId, value.id, value.time, value.user_id, value.text,
                             value.rant as RumbleRant, value.username,
-                            undefined, true, value.read,
+                            undefined, value.badges, true, value.read,
                             cachePage
                     )
                             .then()

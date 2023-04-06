@@ -40,6 +40,10 @@ export type CachedRant = {
      */
     rant?: Rant,
     /**
+     * Badges associated with user who sent Rant
+     */
+    badges?: Array<string>,
+    /**
      * Indicates if Rant was marked Read
      */
     read?: boolean,
@@ -95,6 +99,24 @@ export type CacheUser = {
      * URL to user's profile image
      */
     image: string,
+}
+
+/**
+ * Object for storing cache definitions
+ */
+export type CacheBadge = {
+    /**
+     * Name of badge
+     */
+    name: string,
+    /**
+     * Badge icon
+     */
+    icon: string,
+    /**
+     * Tooltip for Badge
+     */
+    label: string,
 }
 
 /**
@@ -556,4 +578,43 @@ export const updateUser = (userId: string, data: { [key: string]: any }): Promis
                 saveUsers(users)
                         .then()
             })
+}
+
+/**
+ * Get badge definitions
+ *
+ * @return map of badge definitions where key is name nad value is the badge definition
+ */
+export const getBadges = (): Promise<Map<string, CacheBadge>> => {
+    return chrome.storage.local.get({badges: [],})
+            .then((data: { badges: Array<CacheBadge> }) => {
+                const badgeMap: Map<string, CacheBadge> = new Map<string, CacheBadge>()
+                data.badges.forEach((badge) => {
+                    badgeMap.set(badge.name, badge)
+                })
+                return badgeMap
+            })
+}
+
+/**
+ * Get saved badge data for the badge name specified
+ *
+ * @param name the badge name
+ * @return saved badge data
+ */
+export const getBadge = (name: string): Promise<CacheBadge> => {
+    return getBadges()
+            .then((badges) => {
+                return badges.get(name)
+            })
+}
+
+/**
+ *  Save badge definitions
+ *
+ * @param badges badge definitions to save
+ */
+export const saveBadges = (badges: Array<CacheBadge>): Promise<void> => {
+    return chrome.storage.local.set({badges: badges})
+            .then()
 }
