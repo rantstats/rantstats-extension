@@ -1,6 +1,6 @@
 import {getTheme} from "./cache";
 import {rumbleThemeChanged} from "./events";
-import {CHAT_BUTTON_ID, RUMBLE_DARK_CSS, SIDEBAR_ID} from "./types/consts";
+import {CHAT_BUTTON_ID, SIDEBAR_ID} from "./types/consts";
 import {Theme} from "./types/option-types";
 
 /**
@@ -78,14 +78,11 @@ export const updateThemeStyle = (themePreference: Theme) => {
 export const getRumbleTheme = (): Theme => {
     let themePreference
     if (location.host === 'rumble.com') {
-        const darkStyle = document.querySelector(`[${RUMBLE_DARK_CSS}]`) as HTMLLinkElement
-        if (darkStyle === null) {
-            // fall back to light mode
-            themePreference = Theme.Light
-        } else if (darkStyle.disabled) {
-            themePreference = Theme.Light
-        } else {
+        const darkStyle = document.documentElement.classList.contains("dark")
+        if (darkStyle) {
             themePreference = Theme.Dark
+        } else {
+            themePreference = Theme.Light
         }
     } else {
         // not on rumble so fall back to system
@@ -138,22 +135,15 @@ export const updateTheme = async () => {
  */
 const headObserverCallback = (mutations: Array<MutationRecord>, observer: MutationObserver) => {
     mutations.forEach((mutation) => {
-        if (mutation.type === 'childList') {
-            mutation.addedNodes.forEach((node: HTMLElement) => {
-                if (node !== undefined && node.attributes !== undefined) {
-                    if (RUMBLE_DARK_CSS in node.attributes) {
-                        updateTheme().then()
-                    }
-                }
-            })
-        } else if (mutation.type === 'attributes') {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
             const target = mutation.target as HTMLElement
-            if (RUMBLE_DARK_CSS in target.attributes) {
-                updateTheme().then()
-            }
+            console.log("Document changed:", target.classList)
+            updateTheme().then()
         }
     })
 }
 // setup observer to watch for changes to Rumble.com <head>. Used to catch theme changes
-const headObserver = new MutationObserver(headObserverCallback)
-headObserver.observe(document.head, {childList: true, attributes: true, subtree: true})
+if (location.host === 'rumble.com') {
+    const headObserver = new MutationObserver(headObserverCallback)
+    headObserver.observe(document.documentElement, {childList: false, attributes: true, subtree: false})
+}
