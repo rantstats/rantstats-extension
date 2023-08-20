@@ -1,6 +1,6 @@
 {
     "name": "rantstats-extension",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "packageManager": "yarn@3.4.1",
     "description": "Add support for capturing paid Rumble Rants for Rumble.com livestreams.",
     "main": "output/pages/content/content.js",

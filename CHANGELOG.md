@@ -1,5 +1,13 @@
 # RantStats Extension for Rumble.com
 
+## 1.4.1
+
+Fix color theme detection
+
+Resolved:
+
+- [Issue #9](https://github.com/rantstats/rantstats-extension/issues/9)
+
 ## 1.4.0
 
 Add support for showing user's badges and channel subscribers
