@@ -11,7 +11,7 @@ html.rantstats {
     background: var(--light-bg);
 
     body {
-        background: var(--light-accent2);
+        background: var(--light-accent);
 
         width: 95%;
         max-width: 1000px;
@@ -44,7 +44,6 @@ html.rantstats {
             justify-self: flex-end;
             position: sticky;
             bottom: 0;
-            background: var(--light-accent);
 
             .row {
                 display: flex;
@@ -64,10 +63,6 @@ html.rantstats {
 
         body {
             background: var(--dark-accent2);
-
-            footer {
-                background: var(--dark-accent);
-            }
         }
 
         h1, h2, h3, h4, h5, h6,
