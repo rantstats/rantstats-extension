@@ -7,7 +7,7 @@ import {CHAT_POPUP_REGEX} from "../../types/consts";
  */
 export const getVideoID = (): string => {
     const m = CHAT_POPUP_REGEX.exec(window.location.pathname)
-    if (m != null){
+    if (m != null) {
         return m[1]
     }
 
@@ -15,7 +15,10 @@ export const getVideoID = (): string => {
     const idElements = document.querySelectorAll('[data-id]')
     idElements.forEach((element) => {
         if (
-                element.classList.contains("rumbles-vote") &&
+                (
+                        element.classList.contains("rumbles-vote") ||
+                        element.classList.contains("rumbles-vote-pill")
+                ) &&
                 element.getAttribute('data-type') === '1'
         ) {
             foundIds.push(element.getAttribute('data-id'))
