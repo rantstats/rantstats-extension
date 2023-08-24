@@ -1,5 +1,13 @@
 # RantStats Extension for Rumble.com
 
+## 1.4.2
+
+Detect new class name used for chat list
+
+Resolved:
+
+- [Issue #11](https://github.com/rantstats/rantstats-extension/issues/11)
+
 ## 1.4.1
 
 Fix color theme detection
