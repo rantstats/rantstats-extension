@@ -1,5 +1,6 @@
 import {cleanHistory, getOptions, getUsage} from "../../cache";
 import {optionsSaved, registerTab, triggerOpenRantsPage} from "../../events";
+import {handleUpdateOptions} from "../../messages";
 import {registerThemeWatcher, updateTheme, updateThemeStyle} from "../../theme";
 import {BYTES_USE_ID} from "../../types/consts";
 import {Message, Messages} from "../../types/messages";
@@ -18,6 +19,10 @@ const bytesUseSpan = document.getElementById(BYTES_USE_ID) as HTMLSpanElement
 chrome.runtime.onMessage.addListener(
         (message: Message, sender, sendResponse) => {
             switch (message.action) {
+                case Messages.OPTIONS_SAVED_TAB:
+                    handleUpdateOptions(message.data.options)
+                    setOptions(message.data.options)
+                    break
                 case Messages.RUMBLE_THEME_CHANGED_TAB:
                     updateThemeStyle(message.data.theme as Theme)
                     break
