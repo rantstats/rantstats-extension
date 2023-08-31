@@ -1,5 +1,13 @@
 # RantStats Extension for Rumble.com
 
+## 1.4.3
+
+- Update message sending in order to handle errors
+    - Change open tabs to map and use tab id as key
+    - If message fails to send to tab, remove tab from cache map
+- Fix button to show cached rants not showing for livestream playback
+- Fix options not receiving updates
+
 ## 1.4.2
 
 Detect new class name used for chat list
