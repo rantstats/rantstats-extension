@@ -3,10 +3,11 @@
     display: block !important;
 }
 
-#rs-display-chat-button-div {
+.media-page-related-media-desktop-sidebar .rs-display-chat-button-div,
+.rs-display-chat-button-div {
     margin-bottom: 10px;
 
-    #rs-display-chat-button {
+    .rs-display-chat-button {
         margin-left: 1rem;
         margin-right: 1rem;
         padding: 0.75rem 0;
@@ -30,7 +31,7 @@
     }
 }
 
-#rs-display-chat-button {
+.rs-display-chat-button {
     cursor: pointer;
 
     &:hover {

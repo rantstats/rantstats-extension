@@ -7,10 +7,10 @@ import {initStreamCache} from "../rumble/stream-handler";
 /**
  * Helper for getting the chat button element
  *
- * @return chat button element
+ * @return chat button elements
  */
-const getChatButton = (): HTMLElement => {
-    return document.getElementById(CHAT_BUTTON_ID) as HTMLElement
+const getChatButtons = (): HTMLCollectionOf<HTMLParagraphElement> => {
+    return document.getElementsByClassName(CHAT_BUTTON_ID) as HTMLCollectionOf<HTMLParagraphElement>
 }
 
 /**
@@ -26,7 +26,7 @@ export const addChatButton = (onclick: () => void): boolean => {
     }
 
     const listItem = document.createElement('li') as HTMLLIElement
-    listItem.id = CHAT_BUTTON_ID
+    listItem.classList.add(CHAT_BUTTON_ID)
     listItem.classList.add('chat-history--rant-sticky')
     listItem.style.position = 'relative'
     listItem.style.overflow = 'hidden'
@@ -69,14 +69,20 @@ export const addChatButton = (onclick: () => void): boolean => {
 }
 
 /**
- * Add the cache button to the page
+ * Add the cache button to the page under specified parent section
  *
+ * @param parentClassName name or root/parent class name
  * @param onclick function to call when cache button clicked
  * @return true: button added
  */
-export const addCacheButton = (onclick: () => void): boolean => {
+const addCacheButtonToNode = (parentClassName: string, onclick: () => void): boolean => {
     // get related videos list
-    const mediaLists = document.getElementsByClassName('mediaList-list')
+    const relatedSidebar = document.getElementsByClassName(parentClassName)
+    if (relatedSidebar.length === 0) {
+        return false
+    }
+
+    const mediaLists = relatedSidebar[0].getElementsByClassName('mediaList-list')
     if (mediaLists.length === 0) {
         return false
     }
@@ -87,12 +93,12 @@ export const addCacheButton = (onclick: () => void): boolean => {
     const relatedList = relatedLists[0]
 
     const chatButtonDiv = document.createElement('div') as HTMLDivElement
-    chatButtonDiv.id = CHAT_BUTTON_DIV_ID
+    chatButtonDiv.classList.add(CHAT_BUTTON_DIV_ID)
     chatButtonDiv.classList.add('container')
     chatButtonDiv.classList.add('content')
 
     const chatButton = document.createElement('p') as HTMLParagraphElement
-    chatButton.id = CHAT_BUTTON_ID
+    chatButton.classList.add(CHAT_BUTTON_ID)
     // chatButton.classList.add('mediaList-item')
     chatButton.classList.add('first-item')
     chatButton.onclick = onclick
@@ -111,9 +117,22 @@ export const addCacheButton = (onclick: () => void): boolean => {
 
     relatedList.parentNode.insertBefore(chatButtonDiv, relatedList)
 
+    return true
+}
+
+/**
+ * Add the cache button to the page
+ *
+ * @param onclick function to call when cache button clicked
+ * @return true: button added
+ */
+export const addCacheButton = (onclick: () => void): boolean => {
+    let success = addCacheButtonToNode('media-page-related-media-desktop-sidebar', onclick)
+    success &&= addCacheButtonToNode('media-page-related-media-mobile', onclick)
+
     updateChatThemeStyle()
 
-    return true
+    return success
 }
 
 /**
@@ -122,17 +141,14 @@ export const addCacheButton = (onclick: () => void): boolean => {
  * @param enabled true: enable button
  */
 export const setChatButtonEnable = (enabled: boolean) => {
-    const chatButton = getChatButton()
-    if (chatButton === null) {
-        return
+    const chatButtons = getChatButtons()
+    for (const chatButton of chatButtons) {
+        if (enabled) {
+            chatButton.classList.remove('disabled')
+        } else {
+            chatButton.classList.add('disabled')
+        }
     }
-
-    if (enabled) {
-        chatButton.classList.remove('disabled')
-    } else {
-        chatButton.classList.add('disabled')
-    }
-
 }
 
 /**
