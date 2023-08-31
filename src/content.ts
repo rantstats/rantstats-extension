@@ -10,12 +10,7 @@ import {Message, Messages} from "./types/messages";
 import {Theme} from "./types/option-types";
 
 chrome.runtime.onMessage.addListener(
-        /**
-         * Register extension messaging listener
-         *
-         * @param message received Message
-         */
-        (message: Message) => {
+        (message: Message, sender, sendResponse) => {
             switch (message.action) {
                 case Messages.OPTIONS_SAVED_TAB:
                     handleUpdateOptions(message.data.options)
@@ -26,6 +21,7 @@ chrome.runtime.onMessage.addListener(
                 default:
                     break
             }
+            sendResponse({done: true})
         }
 )
 

@@ -12,12 +12,17 @@ const sendAction = (
         action: Messages,
         data: { [key: string]: any } = undefined
 ) => {
-    chrome.runtime.sendMessage({
-        'action': action,
-        'data': data,
-    } as Message)
-            .then()
-            .catch()
+    chrome.runtime.sendMessage(
+            {
+                'action': action,
+                'data': data,
+            } as Message,
+            () => {
+                if (chrome.runtime.lastError) {
+                    //console.log("action error", chrome.runtime.lastError)
+                }
+            }
+    )
 }
 
 /**
