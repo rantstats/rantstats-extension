@@ -16,12 +16,7 @@ const bytesUseSpan = document.getElementById(BYTES_USE_ID) as HTMLSpanElement
 // const bytesPercentageSpan = document.getElementById(BYTES_PERCENTAGE_ID) as HTMLSpanElement
 
 chrome.runtime.onMessage.addListener(
-        /**
-         * Register extension messaging listener
-         *
-         * @param message received Message
-         */
-        (message: Message) => {
+        (message: Message, sender, sendResponse) => {
             switch (message.action) {
                 case Messages.RUMBLE_THEME_CHANGED_TAB:
                     updateThemeStyle(message.data.theme as Theme)
@@ -29,6 +24,7 @@ chrome.runtime.onMessage.addListener(
                 default:
                     break
             }
+            sendResponse({done: true})
         }
 )
 

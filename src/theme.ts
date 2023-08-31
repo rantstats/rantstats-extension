@@ -42,8 +42,8 @@ export const updateChatThemeStyle = () => {
         setThemeClass(chatDiv, themePreference)
     }
 
-    const chatButton = document.getElementById(CHAT_BUTTON_ID) as HTMLParagraphElement
-    if (chatButton !== null) {
+    const chatButtons = document.getElementsByClassName(CHAT_BUTTON_ID) as HTMLCollectionOf<HTMLParagraphElement>
+    for (let chatButton of chatButtons) {
         const themePreference = getRumbleTheme()
         setThemeClass(chatButton, themePreference)
     }
@@ -55,13 +55,15 @@ export const updateChatThemeStyle = () => {
  * @param themePreference new theme value
  */
 export const updateThemeStyle = (themePreference: Theme) => {
-    const sidebarDiv = document.getElementById(SIDEBAR_ID) as HTMLDivElement
-
     if (themePreference == Theme.Rumble) {
         themePreference = getRumbleTheme()
     }
 
-    setThemeClass(sidebarDiv, themePreference)
+    const sidebarDiv = document.getElementById(SIDEBAR_ID) as HTMLDivElement
+    if (sidebarDiv) {
+        setThemeClass(sidebarDiv, themePreference)
+    }
+
     updateChatThemeStyle()
 
     const pageHtml = document.documentElement
@@ -136,8 +138,6 @@ export const updateTheme = async () => {
 const headObserverCallback = (mutations: Array<MutationRecord>, observer: MutationObserver) => {
     mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-            const target = mutation.target as HTMLElement
-            console.log("Document changed:", target.classList)
             updateTheme().then()
         }
     })

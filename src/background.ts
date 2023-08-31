@@ -1,15 +1,10 @@
 import {Message, Messages} from "./types/messages";
 import {Options, Theme} from "./types/option-types";
 
-const _openTabs: Set<chrome.tabs.Tab> = new Set<chrome.tabs.Tab>()
+const _openTabs: Map<number, chrome.tabs.Tab> = new Map<number, chrome.tabs.Tab>()
 
 chrome.runtime.onMessage.addListener(
-        /**
-         * Register extension messaging listener
-         *
-         * @param message received Message
-         */
-        (message: Message) => {
+        (message: Message, sender, sendResponse) => {
             switch (message.action) {
                 case Messages.OPEN_OPTIONS:
                     handleOpenOptionsPage()
@@ -32,6 +27,7 @@ chrome.runtime.onMessage.addListener(
                 default:
                     break
             }
+            sendResponse({done: true})
         }
 )
 
@@ -50,21 +46,13 @@ const handleOpenOptionsPage = () => {
  * Opens cached rants viewer page
  */
 const handleOpenRantsPage = () => {
-    chrome.tabs.create({
-        url: 'pages/rants/rants.html'
-    })
-            .then()
-            .catch()
-}
-
-/**
- * Helper for getting the {@link chrome.tabs.Tab} for the specified URL.
- *
- * @param tabUrl the tab URL to get tab of
- * @return List of tabs matching URL
- */
-const getTabsFromUrl = (tabUrl: string): Promise<Array<chrome.tabs.Tab>> => {
-    return chrome.tabs.query({url: tabUrl})
+    chrome.tabs.create(
+            {
+                url: 'pages/rants/rants.html'
+            },
+            () => {
+            }
+    )
 }
 
 /**
@@ -75,17 +63,18 @@ const getTabsFromUrl = (tabUrl: string): Promise<Array<chrome.tabs.Tab>> => {
  * @param tabUrl the URL of the tab that was opened
  */
 const handlePageLoaded = (tabUrl: string) => {
-    getTabsFromUrl(tabUrl)
-            .then((tabs) => {
+    chrome.tabs.query(
+            {url: tabUrl},
+            (tabs) => {
                 tabs.forEach((tab) => {
                     try {
-                        _openTabs.add(tab)
+                        _openTabs.set(tab.id, tab)
                     } catch (e) {
-                        console.log(`error sending to tab: ${tab.url}`)
+                        console.log(`error adding tab: ${tab.url}`)
                     }
                 })
-            })
-            .catch()
+            }
+    )
 }
 
 /**
@@ -96,13 +85,14 @@ const handlePageLoaded = (tabUrl: string) => {
  * @param tabUrl the URL of the tab that is being closed
  */
 const handlePageUnloaded = (tabUrl: string) => {
-    getTabsFromUrl(tabUrl)
-            .then((tabs) => {
+    chrome.tabs.query(
+            {url: tabUrl},
+            (tabs) => {
                 tabs.forEach((tab) => {
-                    _openTabs.delete(tab)
+                    _openTabs.delete(tab.id)
                 })
-            })
-            .catch()
+            }
+    )
 }
 
 /**
@@ -114,12 +104,21 @@ const handlePageUnloaded = (tabUrl: string) => {
  */
 const handleUpdateOptions = (options: Options) => {
     _openTabs.forEach((tab) => {
-        chrome.tabs.sendMessage(tab.id, {
-            action: Messages.OPTIONS_SAVED_TAB,
-            data: {options: options}
-        })
-                .then()
-                .catch()
+        chrome.tabs.sendMessage(
+                tab.id,
+                {
+                    action: Messages.OPTIONS_SAVED_TAB,
+                    data: {options: options}
+                },
+                {},
+                () => {
+                    if (chrome.runtime.lastError) {
+                        // console.log("update options error", chrome.runtime.lastError, "for tab", tab)
+                        // if unable to send message, assume closed, stop tracking
+                        _openTabs.delete(tab.id)
+                    }
+                }
+        )
     })
 }
 
@@ -132,11 +131,20 @@ const handleUpdateOptions = (options: Options) => {
  */
 const handleRumbleThemeChanged = (theme: Theme) => {
     _openTabs.forEach((tab) => {
-        chrome.tabs.sendMessage(tab.id, {
-            action: Messages.RUMBLE_THEME_CHANGED_TAB,
-            data: {theme: theme}
-        })
-                .then()
-                .catch()
+        chrome.tabs.sendMessage(
+                tab.id,
+                {
+                    action: Messages.RUMBLE_THEME_CHANGED_TAB,
+                    data: {theme: theme}
+                },
+                {},
+                () => {
+                    if (chrome.runtime.lastError) {
+                        // console.log("update theme error", chrome.runtime.lastError, "for tab", tab)
+                        // if unable to send message, assume closed, stop tracking
+                        _openTabs.delete(tab.id)
+                    }
+                }
+        )
     })
 }
