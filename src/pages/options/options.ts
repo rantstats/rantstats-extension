@@ -1,4 +1,4 @@
-import {cleanHistory, getOptions, getUsage} from "../../cache";
+import {cleanHistory, getOptions, getUsage, updateOptions} from "../../cache";
 import {optionsSaved, registerTab, triggerOpenRantsPage} from "../../events";
 import {handleUpdateOptions} from "../../messages";
 import {registerThemeWatcher, updateTheme, updateThemeStyle} from "../../theme";
@@ -17,7 +17,7 @@ const bytesUseSpan = document.getElementById(BYTES_USE_ID) as HTMLSpanElement
 // const bytesPercentageSpan = document.getElementById(BYTES_PERCENTAGE_ID) as HTMLSpanElement
 
 chrome.runtime.onMessage.addListener(
-        (message: Message, sender, sendResponse) => {
+        (message: Message, _sender, sendResponse) => {
             switch (message.action) {
                 case Messages.OPTIONS_SAVED_TAB:
                     handleUpdateOptions(message.data.options)
@@ -81,9 +81,7 @@ const saveOptions = () => {
         asPopup: openLocationCheckbox.checked,
     }
 
-    chrome.storage.local.set({
-        options: currentOptions
-    })
+    updateOptions(currentOptions)
             .then(() => {
                 const status = document.getElementById('save-status') as HTMLParagraphElement
                 status.textContent = 'Options saved'
