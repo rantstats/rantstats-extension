@@ -193,7 +193,10 @@ const messageHandler = (event: MessageEvent, videoId: string) => {
                 console.error("Unknown event type", eventData)
         }
     } catch (e) {
-        console.error('Error parsing message:')
-        console.error(e)
+        // @ts-ignore
+        if (DEBUG) {
+            console.error('Error parsing message:')
+            console.error(e)
+        }
     }
 }
