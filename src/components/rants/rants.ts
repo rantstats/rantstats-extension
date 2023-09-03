@@ -227,7 +227,9 @@ export const downloadCSV = (event: Event) => {
 export const initEventHandler = (eventData: RumbleEventInit, videoId: string) => {
     const type = eventData.type
     if (type !== RumbleEventType.init) {
-        console.error(`Invalid event type passed to init event handler: ${type}`)
+        // @ts-ignore
+        if (DEBUG)
+            console.error(`Invalid event type passed to init event handler: ${type}`)
     }
 
     const data = eventData.data
@@ -432,7 +434,9 @@ const parseUsers = (users: Array<RumbleUser>): Map<string, Array<string>> => {
 export const messagesEventHandler = (eventData: RumbleEventMessages, videoId: string) => {
     const type = eventData.type
     if (type !== RumbleEventType.messages) {
-        console.error(`Invalid event type passed to messages event handler: ${type}`)
+        // @ts-ignore
+        if (DEBUG)
+            console.error(`Invalid event type passed to messages event handler: ${type}`)
     }
 
     const data = eventData.data
