@@ -183,6 +183,12 @@ const messageHandler = (event: MessageEvent, videoId: string) => {
             case RumbleEventType.messages:
                 messagesEventHandler(eventData as RumbleEventMessages, videoId)
                 break
+            case RumbleEventType.mute_users:
+                // TODO: restore message in chat (if configured)
+                break
+            case RumbleEventType.delete_non_rant_messages:
+                // TODO: restore message in chat (if configured)
+                break
             default:
                 console.error("Unknown event type", eventData)
         }

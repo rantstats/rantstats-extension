@@ -235,7 +235,7 @@ export type RumbleDataBase = {
 }
 
 /**
- * Object for Rumble 'init' 'data' field
+ * Object for Rumble {@link RumbleEventType.init} 'data' field
  */
 export type RumbleInitData = RumbleDataBase & {
     /**
@@ -249,18 +249,34 @@ export type RumbleInitData = RumbleDataBase & {
 }
 
 /**
- * Object for Rumble 'messages' 'data' field
+ * Object for Rumble {@link RumbleEventType.messages} 'data' field
  */
 export type RumbleMessagesData = RumbleDataBase & {
     // no custom fields
 }
 
 /**
+ * Object for Rumble {@link RumbleEventType.mute_users} 'data' field
+ */
+export type RumbleMuteData = {
+    user_ids: Array<string>,
+}
+
+/**
+ * Object for Rumble {@link RumbleEventType.delete_non_rant_messages} 'data' field
+ */
+export type RumbleDeleteNonRantMessagesData = {
+    message_ids: Array<string>,
+}
+
+/**
  * Type of Rumble message events
  */
 export enum RumbleEventType {
+    delete_non_rant_messages = 'delete_non_rant_messages',
     init = 'init',
     messages = 'messages',
+    mute_users = 'mute_users',
 }
 
 /**
@@ -278,7 +294,7 @@ export type RumbleEventBase = Event & {
 }
 
 /**
- * Object for Rumble message stream 'init' events
+ * Object for Rumble message stream {@link RumbleEventType.init} events
  */
 export type RumbleEventInit = RumbleEventBase & {
     /**
@@ -288,7 +304,7 @@ export type RumbleEventInit = RumbleEventBase & {
 }
 
 /**
- * Object for Rumble message stream 'messages' events
+ * Object for Rumble message stream {@link RumbleEventType.messages} events
  */
 export type RumbleEventMessages = RumbleEventBase & {
     /**
@@ -299,5 +315,25 @@ export type RumbleEventMessages = RumbleEventBase & {
      * Unique request identifier
      */
     request_id: string,
+}
+
+/**
+ * Object for Rumble message stream {@link RumbleEventType.mute_users} events
+ */
+export type RumbleEventMuteUsers = RumbleEventBase & {
+    /**
+     * Received init data
+     */
+    data: RumbleMuteData,
+}
+
+/**
+ * Object for Rumble message stream {@link RumbleEventType.delete_non_rant_messages} events
+ */
+export type RumbleDeleteNonRantMessages = RumbleEventBase & {
+    /**
+     * Received init data
+     */
+    data: RumbleDeleteNonRantMessagesData,
 }
 
