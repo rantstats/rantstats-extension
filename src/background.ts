@@ -4,7 +4,7 @@ import {Options, Theme} from "./types/option-types";
 const _openTabs: Map<number, chrome.tabs.Tab> = new Map<number, chrome.tabs.Tab>()
 
 chrome.runtime.onMessage.addListener(
-        (message: Message, sender, sendResponse) => {
+        (message: Message, _sender, sendResponse) => {
             switch (message.action) {
                 case Messages.OPEN_OPTIONS:
                     handleOpenOptionsPage()

@@ -69,11 +69,11 @@ const setSidebarWidth = (width: number) => {
  */
 const registerResizer = () => {
     const resize_el = getResizer()
-    let m_pos
+    let m_pos: number
 
-    function resize(e) {
+    function resize(e: MouseEvent) {
         m_pos = e.x
-        setSidebarWidth(parseInt(m_pos))
+        setSidebarWidth(m_pos)
     }
 
     resize_el.addEventListener(
@@ -462,11 +462,11 @@ export const displayCachedRants = (videoId: string, cachePage: boolean = false) 
                 return cachedRants.length
             })
             .then((numRants) => {
-                showCacheMessage(videoId, numRants)
+                showCacheMessage(numRants)
             })
 }
 
-const showCacheMessage = (videoId: string, numRants: number) => {
+const showCacheMessage = (numRants: number) => {
     if (!activeStream() && (location.host === 'rumble.com')) {
         const cacheMessageP = document.getElementById(CACHE_MESSAGE_ID) as HTMLParagraphElement
         const cacheMessageCount = document.getElementById(CACHE_MESSAGE_COUNT_ID) as HTMLSpanElement

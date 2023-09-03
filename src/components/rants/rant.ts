@@ -300,7 +300,7 @@ const renderNotification = async (
     const badgeData = await getBadge(notification.badge)
     let badgeHtml = ''
     if (badgeData) {
-        badgeHtml = getBadgeImage(notification.badge, badgeData, "notification-badge")
+        badgeHtml = getBadgeImage(badgeData, "notification-badge")
     }
 
     const chatDate = new Date(time)
@@ -516,7 +516,7 @@ const getBadgesHtml = async (badges: Array<string>): Promise<string> => {
                 let badgesHtml = `<div class="user-badges">`
                 badges.forEach((name) => {
                     const badgeMap = badgeInfoMap.get(name)
-                    const badgeHtml = getBadgeImage(name, badgeMap, "user-badge")
+                    const badgeHtml = getBadgeImage(badgeMap, "user-badge")
                     badgesHtml = `${badgesHtml}${badgeHtml}`
                 })
 
@@ -525,7 +525,7 @@ const getBadgesHtml = async (badges: Array<string>): Promise<string> => {
             })
 }
 
-const getBadgeImage = (name: string, badgeData: CacheBadge, imgClass: string): string => {
+const getBadgeImage = (badgeData: CacheBadge, imgClass: string): string => {
     return `<img class="${imgClass}" src="https://rumble.com${badgeData.icon}" alt="${badgeData.label}" title="${badgeData.label}">`
 }
 

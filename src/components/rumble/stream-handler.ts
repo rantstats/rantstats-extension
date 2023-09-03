@@ -107,7 +107,7 @@ export const initStreamCache = (videoId: string) => {
     }
 
     let title = document.title
-    if (title.startsWith('Chat: ')){
+    if (title.startsWith('Chat: ')) {
         title = title.substring(6)
     }
 
@@ -129,20 +129,20 @@ export const initStreamCache = (videoId: string) => {
 /**
  * Handle stream open event
  *
- * @param event open event
+ * @param _event open event
  * @param videoId id of video
  */
-const openHandler = (event: Event, videoId: string) => {
+const openHandler = (_event: Event, videoId: string) => {
     setupPopup(videoId)
 }
 
 /**
  * Handle stream error event
  *
- * @param event error event
+ * @param _event error event
  * @param videoId id of video
  */
-const errorHandler = (event: Event, videoId: string) => {
+const errorHandler = (_event: Event, videoId: string) => {
     const errorMessageElement = document.getElementById(ERROR_ID) as HTMLDivElement
     errorMessageElement.classList.remove(HIDDEN_CLASS)
     setupForDisplayingCached(videoId)

@@ -67,6 +67,7 @@ export const updateThemeStyle = (themePreference: Theme) => {
     updateChatThemeStyle()
 
     const pageHtml = document.documentElement
+    // noinspection SpellCheckingInspection
     if (pageHtml.classList.contains('rantstats')) {
         setThemeClass(pageHtml, themePreference)
     }
@@ -78,19 +79,17 @@ export const updateThemeStyle = (themePreference: Theme) => {
  * @return Rumble theme value
  */
 export const getRumbleTheme = (): Theme => {
-    let themePreference
     if (location.host === 'rumble.com') {
         const darkStyle = document.documentElement.classList.contains("dark")
         if (darkStyle) {
-            themePreference = Theme.Dark
+            return Theme.Dark
         } else {
-            themePreference = Theme.Light
+            return Theme.Light
         }
     } else {
         // not on rumble so fall back to system
-        themePreference = Theme.System
+        return Theme.System
     }
-    return themePreference
 }
 
 /**
@@ -133,9 +132,8 @@ export const updateTheme = async () => {
  * Used to catch changes to the Rumble theme
  *
  * @param mutations list of mutations
- * @param observer reference to the observer
  */
-const headObserverCallback = (mutations: Array<MutationRecord>, observer: MutationObserver) => {
+const headObserverCallback = (mutations: Array<MutationRecord>) => {
     mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
             updateTheme().then()

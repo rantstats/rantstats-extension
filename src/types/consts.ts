@@ -1,5 +1,5 @@
-export const BYTES_PERCENTAGE_ID = 'bytes-percentage'
-export const BYTES_TOTAL_ID = 'bytes-total'
+// export const BYTES_PERCENTAGE_ID = 'bytes-percentage'
+// export const BYTES_TOTAL_ID = 'bytes-total'
 export const BYTES_USE_ID = 'bytes-use'
 export const CACHE_MESSAGE_ID = 'cache-message'
 export const CACHE_MESSAGE_COUNT_ID = 'cache-message-count'

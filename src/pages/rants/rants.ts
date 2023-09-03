@@ -189,7 +189,7 @@ const deleteStream = () => {
 }
 
 chrome.runtime.onMessage.addListener(
-        (message: Message, sender, sendResponse) => {
+        (message: Message, _sender, sendResponse) => {
             switch (message.action) {
                 case Messages.OPTIONS_SAVED_TAB:
                     handleUpdateOptions(message.data.options)

@@ -10,7 +10,7 @@ import {Message, Messages} from "./types/messages";
 import {Theme} from "./types/option-types";
 
 chrome.runtime.onMessage.addListener(
-        (message: Message, sender, sendResponse) => {
+        (message: Message, _sender, sendResponse) => {
             switch (message.action) {
                 case Messages.OPTIONS_SAVED_TAB:
                     handleUpdateOptions(message.data.options)
@@ -37,6 +37,7 @@ cleanHistory().then()
 const addElements = async () => {
     setLastSortOrder(await getSortOrder())
 
+    // noinspection SpellCheckingInspection
     if (location.pathname.startsWith('/_rantstats')) {
         if (!await replacePageContent()) {
             return

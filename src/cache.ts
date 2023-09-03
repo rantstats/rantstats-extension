@@ -164,19 +164,15 @@ export type Usage = {
  *
  * @return current usage data
  */
-export const getUsage = (): Promise<Usage> => {
+export const getUsage = async (): Promise<Usage> => {
     const total = chrome.storage.local.QUOTA_BYTES
-    return chrome.storage.local.getBytesInUse()
-            .then((bytesInUse) => {
-                const percentage = (bytesInUse / total) * 100
-
-                const usage: Usage = {
-                    inUse: bytesInUse,
-                    total: total,
-                    percentage: percentage,
-                }
-                return usage
-            })
+    const bytesInUse = await chrome.storage.local.getBytesInUse();
+    const percentage = (bytesInUse / total) * 100;
+    return {
+        inUse: bytesInUse,
+        total: total,
+        percentage: percentage,
+    };
 }
 
 /**
@@ -198,16 +194,28 @@ const getAll = (): Promise<{ [key: string]: any }> => {
  * @param defaultValues options to return if no options currently saved
  * @return saved option data
  */
-export const getOptions = (defaultValues: Options = undefined): Promise<Options> => {
+export const getOptions = async (defaultValues: Options = undefined): Promise<Options> => {
     if (defaultValues === undefined) {
         defaultValues = {} as Options
     }
-    return chrome.storage.local.get({
+    let options = await chrome.storage.local.get({
         options: defaultValues
-    })
-            .then((options) => {
-                return options.options as Options
-            })
+    });
+    return options.options as Options
+}
+
+/**
+ * Update the saved options with new values.
+ *
+ * @param newOptions new option values
+ */
+export const updateOptions = async (newOptions: Options): Promise<void> => {
+    const currentOptions = await getOptions()
+    const combinedOptions: Options = {
+        ...currentOptions,
+        ...newOptions
+    }
+    return chrome.storage.local.set({options: combinedOptions})
 }
 
 /**
@@ -215,11 +223,9 @@ export const getOptions = (defaultValues: Options = undefined): Promise<Options>
  *
  * @return sort order option value
  */
-export const getSortOrder = (): Promise<SortOrder> => {
-    return getOptions({sortOrder: defaultOptions.sortOrder} as Options)
-            .then((options: Options) => {
-                return options.sortOrder as SortOrder
-            })
+export const getSortOrder = async (): Promise<SortOrder> => {
+    let options = await getOptions({sortOrder: defaultOptions.sortOrder} as Options);
+    return options.sortOrder as SortOrder
 }
 
 /**
@@ -227,11 +233,9 @@ export const getSortOrder = (): Promise<SortOrder> => {
  *
  * @return theme option value
  */
-export const getTheme = (): Promise<Theme> => {
-    return getOptions({theme: defaultOptions.theme} as Options)
-            .then((options: Options) => {
-                return options.theme as Theme
-            })
+export const getTheme = async (): Promise<Theme> => {
+    let options = await getOptions({theme: defaultOptions.theme} as Options);
+    return options.theme as Theme
 }
 
 /**
@@ -239,11 +243,9 @@ export const getTheme = (): Promise<Theme> => {
  *
  * @return number of days to keep data option value
  */
-const getHistoryDays = (): Promise<number> => {
-    return getOptions({historyDays: defaultOptions.historyDays} as Options)
-            .then((options: Options) => {
-                return options.historyDays
-            })
+const getHistoryDays = async (): Promise<number> => {
+    let options = await getOptions({historyDays: defaultOptions.historyDays} as Options);
+    return options.historyDays
 }
 
 /**
@@ -251,15 +253,13 @@ const getHistoryDays = (): Promise<number> => {
  *
  * @return flag indicating if popup should be used instead of sidebar
  */
-export const getOpenAsPopup = (): Promise<boolean> => {
-    return getOptions({asPopup: defaultOptions.asPopup} as Options)
-            .then((options: Options) => {
-                const m = CHAT_POPUP_REGEX.exec(window.location.pathname)
-                if (m != null) {
-                    return true
-                }
-                return options.asPopup
-            })
+export const getOpenAsPopup = async (): Promise<boolean> => {
+    let options = await getOptions({asPopup: defaultOptions.asPopup} as Options);
+    const m = CHAT_POPUP_REGEX.exec(window.location.pathname)
+    if (m != null) {
+        return true
+    }
+    return options.asPopup
 }
 
 // endregion Option
@@ -269,11 +269,9 @@ export const getOpenAsPopup = (): Promise<boolean> => {
  *
  * @return width of sidebar in pixels
  */
-export const getLastWidth = (): Promise<number> => {
-    return chrome.storage.local.get({width: 400})
-            .then((data: { width: number }) => {
-                return data.width
-            })
+export const getLastWidth = async (): Promise<number> => {
+    let data = await chrome.storage.local.get({width: 400});
+    return data.width
 }
 
 /**
@@ -281,9 +279,8 @@ export const getLastWidth = (): Promise<number> => {
  *
  * @param width width of sidebar in pixels
  */
-export const setLastWidth = (width: number): Promise<void> => {
-    return chrome.storage.local.set({width: width})
-            .then()
+export const setLastWidth = async (width: number): Promise<void> => {
+    return chrome.storage.local.set({width: width});
 }
 
 /**
@@ -296,6 +293,7 @@ export const cleanHistory = async () => {
     const cutOffTime = new Date().getTime() - (historyDays * 24 * 60 * 60 * 1000) // historyDays days ago
     getAllStreams()
             .then((streams) => {
+                // noinspection SpellCheckingInspection
                 const toRemove: Array<any> = ['vundefined']
                 streams.forEach((stream) => {
                     const time = stream.time
@@ -331,12 +329,10 @@ const getStreamKey = (videoId: string): string => {
  * @param videoId id of the video to get
  * @return saved stream data
  */
-export const getStream = (videoId: string): Promise<CachedStream> => {
+export const getStream = async (videoId: string): Promise<CachedStream> => {
     const streamKey = getStreamKey(videoId)
-    return chrome.storage.local.get(streamKey)
-            .then((cachedStream: { [id: string]: CachedStream }) => {
-                return cachedStream[streamKey]
-            })
+    let cachedStream = await chrome.storage.local.get(streamKey);
+    return cachedStream[streamKey]
 }
 
 /**
@@ -344,13 +340,12 @@ export const getStream = (videoId: string): Promise<CachedStream> => {
  *
  * @param streamData stream data to save
  */
-const saveStream = (streamData: CachedStream): Promise<void> => {
+const saveStream = async (streamData: CachedStream): Promise<void> => {
     return chrome.storage.local.set(
             {
                 [getStreamKey(streamData.videoId)]: streamData
             }
-    )
-            .then()
+    );
 }
 
 /**
@@ -363,35 +358,32 @@ const saveStream = (streamData: CachedStream): Promise<void> => {
  * @param videoId id of the video to update
  * @param data data to save. Key options are those in the {@link CachedStream}
  */
-const updateStream = (
+const updateStream = async (
         videoId: string,
         data: { [key: string]: any }
 ): Promise<void> => {
-    return getStream(videoId)
-            .then((cachedStream: CachedStream) => {
-                if (cachedStream === undefined) {
-                    // new stream, just save
-                    cachedStream = data as CachedStream
-                } else {
-                    for (const key in data) {
-                        // special handler for rants
-                        if (key === 'rants') {
-                            cachedStream[key] = joinRants(cachedStream[key], data[key])
-                        } else if (key === 'time') {
-                            // only update time if time doesn't already exist
-                            if (cachedStream[key] === '') {
-                                cachedStream[key] = data[key]
-                            }
-                        } else {
-                            cachedStream[key] = data[key]
-                        }
-                    }
+    let cachedStream = await getStream(videoId);
+    if (cachedStream === undefined) {
+        // new stream, just save
+        cachedStream = data as CachedStream;
+    } else {
+        for (const key_1 in data) {
+            // special handler for rants
+            if (key_1 === 'rants') {
+                cachedStream[key_1] = joinRants(cachedStream[key_1], data[key_1]);
+            } else if (key_1 === 'time') {
+                // only update time if time doesn't already exist
+                if (cachedStream[key_1] === '') {
+                    cachedStream[key_1] = data[key_1];
                 }
-
-                // save data back to storage
-                saveStream(cachedStream)
-                        .then()
-            })
+            } else {
+                cachedStream[key_1] = data[key_1];
+            }
+        }
+    }
+    // save data back to storage
+    saveStream(cachedStream)
+            .then();
 }
 
 /**
@@ -399,10 +391,9 @@ const updateStream = (
  *
  * @param videoId id of the video to remove
  */
-export const removeStream = (videoId: string): Promise<void> => {
+export const removeStream = async (videoId: string): Promise<void> => {
     const streamKey = getStreamKey(videoId)
-    return chrome.storage.local.remove(streamKey)
-            .then()
+    return chrome.storage.local.remove(streamKey);
 }
 
 /**
@@ -464,9 +455,8 @@ const joinRants = (cachedRants: Array<CachedRant>, newRants: Array<CachedRant>):
  *
  * @param cacheData the stream data to save
  */
-export const cacheStream = (cacheData: CachedStream): Promise<void> => {
-    return updateStream(cacheData.videoId, cacheData)
-            .then()
+export const cacheStream = async (cacheData: CachedStream): Promise<void> => {
+    return updateStream(cacheData.videoId, cacheData);
 }
 
 /**
@@ -474,17 +464,15 @@ export const cacheStream = (cacheData: CachedStream): Promise<void> => {
  *
  * @return list of previously saved streams
  */
-export const getAllStreams = (): Promise<Array<CachedStream>> => {
-    return getAll()
-            .then((items: { [key: string]: any }) => {
-                const streams: Array<CachedStream> = []
-                for (const key in items) {
-                    if (/^v\d+$/gm.test(key)) {
-                        streams.push(items[key])
-                    }
-                }
-                return streams
-            })
+export const getAllStreams = async (): Promise<Array<CachedStream>> => {
+    const items = await getAll();
+    const streams: Array<CachedStream> = [];
+    for (const key_1 in items) {
+        if (/^v\d+$/gm.test(key_1)) {
+            streams.push(items[key_1]);
+        }
+    }
+    return streams;
 }
 
 /**
@@ -492,11 +480,9 @@ export const getAllStreams = (): Promise<Array<CachedStream>> => {
  *
  * @return list of video ids
  */
-export const getAllVideoIs = (): Promise<Array<string>> => {
-    return getAllStreams()
-            .then((streams) => {
-                return streams.map((stream) => stream.videoId)
-            })
+export const getAllVideoIs = async (): Promise<Array<string>> => {
+    const streams = await getAllStreams();
+    return streams.map((stream) => stream.videoId);
 }
 
 /**
@@ -505,9 +491,8 @@ export const getAllVideoIs = (): Promise<Array<string>> => {
  * @param videoId id of the video to save Rant to
  * @param cachedRant the Rant data
  */
-export const cacheMessage = (videoId: string, cachedRant: CachedRant): Promise<void> => {
-    return updateStream(videoId, {rants: [cachedRant]})
-            .then()
+export const cacheMessage = async (videoId: string, cachedRant: CachedRant): Promise<void> => {
+    return updateStream(videoId, {rants: [cachedRant]});
 }
 
 /**
@@ -517,7 +502,7 @@ export const cacheMessage = (videoId: string, cachedRant: CachedRant): Promise<v
  * @param messageId id of the Rant to update
  * @param data data to save. Key options are those in the {@link CachedRant}
  */
-export const updateCachedMessage = (
+export const updateCachedMessage = async (
         videoId: string,
         messageId: string,
         data: { [key: string]: any }
@@ -532,8 +517,7 @@ export const updateCachedMessage = (
                     }
                 ]
             }
-    )
-            .then()
+    );
 }
 
 /**
@@ -542,11 +526,9 @@ export const updateCachedMessage = (
  * @param videoId id of the video to get Rants in
  * @return list of Rant ids
  */
-export const getAllCachedMessageIds = (videoId: string): Promise<Array<string>> => {
-    return getAllCachedMessages(videoId)
-            .then((rants: Array<CachedRant>) => {
-                return rants.map((rant) => rant.id)
-            })
+export const getAllCachedMessageIds = async (videoId: string): Promise<Array<string>> => {
+    const rants = await getAllCachedMessages(videoId);
+    return rants.map((rant) => rant.id);
 }
 
 /**
@@ -555,15 +537,13 @@ export const getAllCachedMessageIds = (videoId: string): Promise<Array<string>> 
  * @param videoId id of the video to get Rants in
  * @return list of previously saved Rants
  */
-export const getAllCachedMessages = (videoId: string): Promise<Array<CachedRant>> => {
-    return getStream(videoId)
-            .then((cachedStream: CachedStream) => {
-                if (cachedStream === undefined) {
-                    return []
-                } else {
-                    return cachedStream.rants
-                }
-            })
+export const getAllCachedMessages = async (videoId: string): Promise<Array<CachedRant>> => {
+    const cachedStream = await getStream(videoId);
+    if (cachedStream === undefined) {
+        return [];
+    } else {
+        return cachedStream.rants;
+    }
 }
 
 /**
@@ -571,11 +551,9 @@ export const getAllCachedMessages = (videoId: string): Promise<Array<CachedRant>
  *
  * @return list of user data
  */
-export const getUsers = (): Promise<Array<CacheUser>> => {
-    return chrome.storage.local.get({users: [],})
-            .then((data: { users: Array<CacheUser> }) => {
-                return data.users
-            })
+export const getUsers = async (): Promise<Array<CacheUser>> => {
+    const data = await chrome.storage.local.get({users: [],});
+    return data.users;
 }
 
 /**
@@ -584,11 +562,9 @@ export const getUsers = (): Promise<Array<CacheUser>> => {
  * @param userId id of the user
  * @return saved user data
  */
-export const getUser = (userId: string): Promise<CacheUser> => {
-    return getUsers()
-            .then((users) => {
-                return users.find((user) => user.id === userId)
-            })
+export const getUser = async (userId: string): Promise<CacheUser> => {
+    const users = await getUsers();
+    return users.find((user) => user.id === userId);
 }
 
 /**
@@ -596,9 +572,8 @@ export const getUser = (userId: string): Promise<CacheUser> => {
  *
  * @param users list of user data
  */
-const saveUsers = (users: Array<CacheUser>): Promise<void> => {
-    return chrome.storage.local.set({users: users})
-            .then()
+const saveUsers = async (users: Array<CacheUser>): Promise<void> => {
+    return chrome.storage.local.set({users: users});
 }
 
 /**
@@ -607,23 +582,19 @@ const saveUsers = (users: Array<CacheUser>): Promise<void> => {
  * @param userId id of the user to update
  * @param data data to save. Key options are those in the {@link CacheUser}
  */
-export const updateUser = (userId: string, data: { [key: string]: any }): Promise<void> => {
-    return getUsers()
-            .then((users) => {
-                const matchingUser = users.find((user) => user.id === userId)
-
-                if (matchingUser === undefined) {
-                    users.push(data as CacheUser)
-                } else {
-                    for (const key in matchingUser) {
-                        matchingUser[key] = data[key]
-                    }
-                }
-
-                // save user data back
-                saveUsers(users)
-                        .then()
-            })
+export const updateUser = async (userId: string, data: { [key: string]: any }): Promise<void> => {
+    const users = await getUsers();
+    const matchingUser = users.find((user) => user.id === userId);
+    if (matchingUser === undefined) {
+        users.push(data as CacheUser);
+    } else {
+        for (const key_1 in matchingUser) {
+            matchingUser[key_1] = data[key_1];
+        }
+    }
+    // save user data back
+    saveUsers(users)
+            .then();
 }
 
 /**
@@ -631,15 +602,13 @@ export const updateUser = (userId: string, data: { [key: string]: any }): Promis
  *
  * @return map of badge definitions where key is name nad value is the badge definition
  */
-export const getBadges = (): Promise<Map<string, CacheBadge>> => {
-    return chrome.storage.local.get({badges: [],})
-            .then((data: { badges: Array<CacheBadge> }) => {
-                const badgeMap: Map<string, CacheBadge> = new Map<string, CacheBadge>()
-                data.badges.forEach((badge) => {
-                    badgeMap.set(badge.name, badge)
-                })
-                return badgeMap
-            })
+export const getBadges = async (): Promise<Map<string, CacheBadge>> => {
+    const data = await chrome.storage.local.get({badges: [],});
+    const badgeMap: Map<string, CacheBadge> = new Map<string, CacheBadge>();
+    data.badges.forEach((badge: CacheBadge) => {
+        badgeMap.set(badge.name, badge);
+    });
+    return badgeMap;
 }
 
 /**
@@ -648,11 +617,9 @@ export const getBadges = (): Promise<Map<string, CacheBadge>> => {
  * @param name the badge name
  * @return saved badge data
  */
-export const getBadge = (name: string): Promise<CacheBadge> => {
-    return getBadges()
-            .then((badges) => {
-                return badges.get(name)
-            })
+export const getBadge = async (name: string): Promise<CacheBadge> => {
+    const badges = await getBadges();
+    return badges.get(name);
 }
 
 /**
@@ -660,7 +627,6 @@ export const getBadge = (name: string): Promise<CacheBadge> => {
  *
  * @param badges badge definitions to save
  */
-export const saveBadges = (badges: Array<CacheBadge>): Promise<void> => {
-    return chrome.storage.local.set({badges: badges})
-            .then()
+export const saveBadges = async (badges: Array<CacheBadge>): Promise<void> => {
+    return chrome.storage.local.set({badges: badges});
 }

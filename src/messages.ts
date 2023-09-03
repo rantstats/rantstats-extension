@@ -1,6 +1,6 @@
 import {setLastSortOrder, sortChats} from "./components/rants/rant";
 import {updateThemeStyle} from "./theme";
-import { Messages } from "./types/messages";
+import {Messages} from "./types/messages";
 import {Options, SortOrder, Theme} from "./types/option-types";
 
 /**
