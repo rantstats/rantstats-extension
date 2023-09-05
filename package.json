@@ -1,6 +1,6 @@
 {
     "name": "rantstats-extension",
-    "version": "1.4.3",
+    "version": "1.4.4",
     "packageManager": "yarn@3.4.1",
     "description": "Add support for capturing paid Rumble Rants for Rumble.com livestreams.",
     "main": "output/pages/content/content.js",
@@ -16,7 +16,7 @@
         "lint-fix": "run-p -cln 'lint-fix:*'",
         "lint-fix:prettier": "prettier --write '**/*.{ts,scss,html,md,json,yml,eslintrc,config.js}'",
         "lint-fix:eslint": "yarn lint:eslint --fix",
-        "build-release": "run-p -cln build-release:*",
+        "build-release": "run-p -cln 'build-release:*'",
         "build-release:lint": "yarn lint",
         "build-release:js": "yarn build --mode=production",
         "build-release:sass": "yarn build-sass --output-style compressed"

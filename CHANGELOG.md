@@ -1,5 +1,9 @@
 # RantStats Extension for Rumble.com
 
+## 1.4.4
+
+-   Hide console messages for release build
+
 ## 1.4.3
 
 -   Update message sending in order to handle errors
