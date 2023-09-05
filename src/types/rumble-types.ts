@@ -5,7 +5,7 @@ export type RumbleChat = {
     /**
      * ID of video/chat stream
      */
-    id: string,
+    id: string
 }
 
 /**
@@ -15,7 +15,7 @@ export type RumbleBlockData = {
     /**
      * Test of message block
      */
-    text: string,
+    text: string
 }
 
 /**
@@ -25,11 +25,11 @@ export type RumbleBlock = {
     /**
      * Type of block
      */
-    type: string,
+    type: string
     /**
      * Rumble block data
      */
-    data: RumbleBlockData,
+    data: RumbleBlockData
 }
 
 /**
@@ -39,15 +39,15 @@ export type RumbleRant = {
     /**
      * Duration to display Rant in milliseconds
      */
-    duration: number,
+    duration: number
     /**
      * Date Rant expires
      */
-    expires_on: string,
+    expires_on: string
     /**
      * Price of rant in US cents
      */
-    price_cents: number,
+    price_cents: number
 }
 
 /**
@@ -57,11 +57,11 @@ export type RumbleNotification = {
     /**
      * Name of badge for notification
      */
-    badge: string,
+    badge: string
     /**
      * Text of notification
      */
-    text: string,
+    text: string
 }
 
 /**
@@ -71,31 +71,31 @@ export type RumbleMessage = {
     /**
      * Chat message ID
      */
-    id: string,
+    id: string
     /**
      * Time message was posted
      */
-    time: string,
+    time: string
     /**
      * User ID who made the comment
      */
-    user_id: string,
+    user_id: string
     /**
      * Text of message
      */
-    text: string,
+    text: string
     /**
      * Array of message blocks
      */
-    blocks: Array<RumbleBlock>,
+    blocks: Array<RumbleBlock>
     /**
      * Optional paid Rant information
      */
-    rant?: RumbleRant,
+    rant?: RumbleRant
     /**
      * Optional notification information (ex: monthly subscriber)
      */
-    notification?: RumbleNotification,
+    notification?: RumbleNotification
 }
 
 /**
@@ -105,11 +105,11 @@ export type RumbleUser = {
     /**
      * Rumble user ID
      */
-    id: string,
+    id: string
     /**
      * Username for user
      */
-    username: string,
+    username: string
     /**
      * User's color in chat
      */
@@ -131,15 +131,15 @@ export type RumbleRantLevelColor = {
     /**
      * Font color name
      */
-    fg: string,
+    fg: string
     /**
      * Main background color
      */
-    main: string,
+    main: string
     /**
      * Header background color
      */
-    bg2: string,
+    bg2: string
 }
 
 /**
@@ -149,11 +149,11 @@ export type RumbleRantLevel = {
     /**
      * Minimum amount of Rant in US dollars for this level
      */
-    price_dollars: number,
+    price_dollars: number
     /**
      * How long the Rant should be shown in seconds
      */
-    duration: number,
+    duration: number
     /**
      * Color data for this level
      */
@@ -167,7 +167,7 @@ export type RantsConfig = {
     /**
      * Array of level configuration objects
      */
-    levels: Array<RumbleRantLevel>,
+    levels: Array<RumbleRantLevel>
 }
 
 /**
@@ -213,11 +213,13 @@ export type RumbleConfig = {
     /**
      * Rant configuration
      */
-    rants: RantsConfig,
+    rants: RantsConfig
     /**
      * All possible badges
      */
-    badges: { [key: string]: RumbleBadge }
+    badges: {
+        [key: string]: RumbleBadge
+    }
 }
 
 /**
@@ -245,7 +247,7 @@ export type RumbleInitData = RumbleDataBase & {
     /**
      * The Rumble chat configuration data
      */
-    config: RumbleConfig,
+    config: RumbleConfig
 }
 
 /**
@@ -259,24 +261,24 @@ export type RumbleMessagesData = RumbleDataBase & {
  * Object for Rumble {@link RumbleEventType.mute_users} 'data' field
  */
 export type RumbleMuteData = {
-    user_ids: Array<string>,
+    user_ids: Array<string>
 }
 
 /**
  * Object for Rumble {@link RumbleEventType.delete_non_rant_messages} 'data' field
  */
 export type RumbleDeleteNonRantMessagesData = {
-    message_ids: Array<string>,
+    message_ids: Array<string>
 }
 
 /**
  * Type of Rumble message events
  */
 export enum RumbleEventType {
-    delete_non_rant_messages = 'delete_non_rant_messages',
-    init = 'init',
-    messages = 'messages',
-    mute_users = 'mute_users',
+    delete_non_rant_messages = "delete_non_rant_messages",
+    init = "init",
+    messages = "messages",
+    mute_users = "mute_users",
 }
 
 /**
@@ -286,7 +288,7 @@ export type RumbleEventBase = Event & {
     /**
      * The event type
      */
-    type: RumbleEventType,
+    type: RumbleEventType
     /**
      * Time (in milliseconds) since stream opened
      */
@@ -300,7 +302,7 @@ export type RumbleEventInit = RumbleEventBase & {
     /**
      * Received init data
      */
-    data: RumbleInitData,
+    data: RumbleInitData
 }
 
 /**
@@ -310,11 +312,11 @@ export type RumbleEventMessages = RumbleEventBase & {
     /**
      * Received message data
      */
-    data: RumbleMessagesData,
+    data: RumbleMessagesData
     /**
      * Unique request identifier
      */
-    request_id: string,
+    request_id: string
 }
 
 /**
@@ -324,7 +326,7 @@ export type RumbleEventMuteUsers = RumbleEventBase & {
     /**
      * Received init data
      */
-    data: RumbleMuteData,
+    data: RumbleMuteData
 }
 
 /**
@@ -334,6 +336,5 @@ export type RumbleDeleteNonRantMessages = RumbleEventBase & {
     /**
      * Received init data
      */
-    data: RumbleDeleteNonRantMessagesData,
+    data: RumbleDeleteNonRantMessagesData
 }
-

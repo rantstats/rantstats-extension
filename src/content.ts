@@ -1,29 +1,27 @@
-import {cleanHistory, getAllVideoIs, getSortOrder} from "./cache";
-import {addCacheButton, addChatButton, openRantsButtonHandler} from "./components/open-chat/open-chat";
-import {setLastSortOrder} from "./components/rants/rant";
-import {getVideoID} from "./components/rumble/rumble";
-import {registerTab} from "./events";
-import {handleUpdateOptions} from "./messages";
-import {replacePageContent} from "./rantstatspage";
-import {registerThemeWatcher, updateChatThemeStyle, updateThemeStyle} from "./theme";
-import {Message, Messages} from "./types/messages";
-import {Theme} from "./types/option-types";
+import { cleanHistory, getAllVideoIs, getSortOrder } from "./cache"
+import { addCacheButton, addChatButton, openRantsButtonHandler } from "./components/open-chat/open-chat"
+import { setLastSortOrder } from "./components/rants/rant"
+import { getVideoID } from "./components/rumble/rumble"
+import { registerTab } from "./components/events/events"
+import { handleUpdateOptions } from "./message-options"
+import { replacePageContent } from "./rantstatspage"
+import { registerThemeWatcher, updateChatThemeStyle, updateThemeStyle } from "./theme"
+import { Message, Messages } from "./types/messages"
+import { Options, Theme } from "./types/option-types"
 
-chrome.runtime.onMessage.addListener(
-        (message: Message, _sender, sendResponse) => {
-            switch (message.action) {
-                case Messages.OPTIONS_SAVED_TAB:
-                    handleUpdateOptions(message.data.options)
-                    break
-                case Messages.RUMBLE_THEME_CHANGED_TAB:
-                    updateThemeStyle(message.data.theme as Theme)
-                    break
-                default:
-                    break
-            }
-            sendResponse({done: true})
-        }
-)
+chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) => {
+    switch (message.action) {
+        case Messages.OPTIONS_SAVED_TAB:
+            handleUpdateOptions(message.data.options as Options)
+            break
+        case Messages.RUMBLE_THEME_CHANGED_TAB:
+            updateThemeStyle(message.data.theme as Theme)
+            break
+        default:
+            break
+    }
+    sendResponse({ done: true })
+})
 
 registerThemeWatcher()
 updateChatThemeStyle()
@@ -34,12 +32,13 @@ cleanHistory().then()
 /**
  * Add elements to the page
  */
-const addElements = async () => {
+const addElements = async (): Promise<void> => {
     setLastSortOrder(await getSortOrder())
 
     // noinspection SpellCheckingInspection
-    if (location.pathname.startsWith('/_rantstats')) {
-        if (!await replacePageContent()) {
+    if (window.location.pathname.startsWith("/_rantstats")) {
+        const replaceContent = await replacePageContent()
+        if (!replaceContent) {
             return
         }
     }
@@ -64,9 +63,6 @@ const addElements = async () => {
 }
 
 // add elements to page
-addElements()
-        .then(() => {
-            console.log('Rant Stats Extension loaded')
-        })
-
-registerTab()
+addElements().then(() => {
+    registerTab()
+})

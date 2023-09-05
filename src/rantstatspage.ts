@@ -1,24 +1,25 @@
-import {getAllVideoIs, getStream} from "./cache";
-import {addRantStatsSidebar} from "./components/rants/rants";
+import { getAllVideoIs, getStream } from "./cache"
+import { addRantStatsSidebar } from "./components/rants/rants"
 
 /**
  * Replace page content on Rumble when viewing popup URL
+ * @returns weather in popup page or not and if content should be replaced
  */
 export const replacePageContent = async (): Promise<boolean> => {
-    const mains = document.getElementsByTagName('main') as HTMLCollectionOf<HTMLDivElement>
+    const mains = document.getElementsByTagName("main") as HTMLCollectionOf<HTMLDivElement>
     if (mains.length !== 1) {
         return false
     }
     const main = mains[0]
 
     const params = new URLSearchParams(window.location.search)
-    const videoId = params.get('v')
-    const cache = params.get('cache')
-    const cacheValue = cache === undefined ? false : cache === 'true'
+    const videoId = params.get("v")
+    const cache = params.get("cache")
+    const cacheValue = cache === undefined ? false : cache === "true"
 
     const cachedVideoIds = await getAllVideoIs()
     const validVideoId = cachedVideoIds.includes(videoId)
-    let errorDivHTML = ''
+    let errorDivHTML = ""
     if (!validVideoId) {
         errorDivHTML = `
             <div>
@@ -43,20 +44,20 @@ export const replacePageContent = async (): Promise<boolean> => {
     </main>
     `
 
-    document.title = 'Rant Stats Popout Page'
+    document.title = "Rant Stats Popout Page"
 
     if (!validVideoId) {
         return false
-    } else if (videoId !== null) {
+    }
+    if (videoId !== null) {
         // display rant
-        getStream(videoId)
-                .then((streamData) => {
-                    if (streamData.title) {
-                        document.title = `Rants | ${streamData.title}`
-                    } else {
-                        document.title = 'Rants'
-                    }
-                })
+        getStream(videoId).then((streamData) => {
+            if (streamData.title) {
+                document.title = `Rants | ${streamData.title}`
+            } else {
+                document.title = "Rants"
+            }
+        })
         addRantStatsSidebar(videoId, true, cacheValue).then()
     }
 

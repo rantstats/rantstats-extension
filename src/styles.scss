@@ -3,7 +3,7 @@
     --light-fg: rgb(51, 51, 51);
     --light-accent: rgb(255, 255, 255);
     --light-accent2: rgb(243, 245, 248);
-    --border: #CCCCCC;
+    --border: #cccccc;
 
     --dark-bg: rgb(16, 33, 47);
     --dark-fg: rgb(214, 224, 234);
@@ -20,27 +20,47 @@
         box-sizing: border-box;
     }
 
-    header, footer {
+    header,
+    footer {
         background: var(--light-accent);
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         font-family: var(--heading-font);
     }
 
-    h1, h2, h3, h4, h5, h6,
-    p, span, label {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    span,
+    label {
         color: var(--light-fg);
     }
 
     &.theme-dark {
-
-        header, footer {
+        header,
+        footer {
             background: var(--dark-accent);
         }
 
-        h1, h2, h3, h4, h5, h6,
-        p, span, label {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        span,
+        label {
             color: var(--dark-fg);
         }
     }

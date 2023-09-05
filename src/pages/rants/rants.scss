@@ -2,7 +2,6 @@
 @import "../../components/rants/rant.scss";
 
 #cached-rants {
-
     #selector {
         display: flex;
         flex-direction: row;
@@ -72,14 +71,12 @@
                 }
             }
         }
-
     }
 
     #rant-list {
         padding: 10px;
 
         .external-chat {
-
             .rant-data {
                 display: flex;
                 flex-direction: row;
@@ -90,7 +87,8 @@
                     flex-grow: 0;
                     justify-self: center;
 
-                    img, .no-img {
+                    img,
+                    .no-img {
                         width: 75px;
                         max-height: 75px;
                         border: 1px solid;
@@ -104,7 +102,7 @@
                     .no-img {
                         height: 75px;
 
-                        background-color: #3377CC;
+                        background-color: #3377cc;
 
                         &::after {
                             display: block;

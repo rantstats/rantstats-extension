@@ -1,18 +1,23 @@
-import {getTheme} from "./cache";
-import {rumbleThemeChanged} from "./events";
-import {CHAT_BUTTON_ID, SIDEBAR_ID} from "./types/consts";
-import {Theme} from "./types/option-types";
+import { getTheme } from "./cache"
+import { getChatButtons } from "./components/open-chat/chat-buttons"
+import { rumbleThemeChanged } from "./components/events/event-rumble-theme-changed"
+import { CONSTS } from "./types/consts"
+import { Theme } from "./types/option-types"
 
 /**
- * Register watcher of the operating system color scheme.
- *
- * Will update theme of data to match OS preference.
+ * Helper for getting the desired Theme based on the Rumble theme preference
+ * @returns Rumble theme value
  */
-export const registerThemeWatcher = () => {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-        const newTheme = event.matches ? Theme.Dark : Theme.Light
-        updateThemeStyle(newTheme)
-    })
+export const getRumbleTheme = (): Theme => {
+    if (window.location.host === "rumble.com") {
+        const darkStyle = document.documentElement.classList.contains("dark")
+        if (darkStyle) {
+            return Theme.Dark
+        }
+        return Theme.Light
+    }
+    // not on rumble so fall back to system
+    return Theme.System
 }
 
 /**
@@ -20,11 +25,10 @@ export const registerThemeWatcher = () => {
  *
  * - {@link Theme.Light}: 'theme-light'
  * - {@link Theme.Dark}: 'theme-dark'
- *
  * @param elm HTML element to set class on
  * @param themePreference theme preference
  */
-const setThemeClass = (elm: HTMLElement, themePreference: Theme) => {
+const setThemeClass = (elm: HTMLElement, themePreference: Theme): void => {
     if (elm) {
         const newTheme = `theme-${themePreference === Theme.Light ? "light" : "dark"}`
         elm.classList.remove("theme-dark", "theme-light")
@@ -35,67 +39,60 @@ const setThemeClass = (elm: HTMLElement, themePreference: Theme) => {
 /**
  * Update the theme class on the chat elements
  */
-export const updateChatThemeStyle = () => {
-    const chatDiv = document.getElementById('chat-history-list') as HTMLDivElement
+export const updateChatThemeStyle = (): void => {
+    const chatDiv = document.getElementById("chat-history-list") as HTMLDivElement
     if (chatDiv !== null) {
         const themePreference = getRumbleTheme()
         setThemeClass(chatDiv, themePreference)
     }
 
-    const chatButtons = document.getElementsByClassName(CHAT_BUTTON_ID) as HTMLCollectionOf<HTMLParagraphElement>
-    for (let chatButton of chatButtons) {
+    const chatButtons = getChatButtons()
+    chatButtons.forEach((chatButton) => {
         const themePreference = getRumbleTheme()
         setThemeClass(chatButton, themePreference)
-    }
+    })
 }
 
 /**
  * Update the data to match the theme preference
- *
  * @param themePreference new theme value
  */
-export const updateThemeStyle = (themePreference: Theme) => {
-    if (themePreference == Theme.Rumble) {
-        themePreference = getRumbleTheme()
+export const updateThemeStyle = (themePreference: Theme): void => {
+    let realThemePreference = themePreference
+    if (realThemePreference === Theme.Rumble) {
+        realThemePreference = getRumbleTheme()
     }
 
-    const sidebarDiv = document.getElementById(SIDEBAR_ID) as HTMLDivElement
+    const sidebarDiv = document.getElementById(CONSTS.SIDEBAR_ID) as HTMLDivElement
     if (sidebarDiv) {
-        setThemeClass(sidebarDiv, themePreference)
+        setThemeClass(sidebarDiv, realThemePreference)
     }
 
     updateChatThemeStyle()
 
     const pageHtml = document.documentElement
     // noinspection SpellCheckingInspection
-    if (pageHtml.classList.contains('rantstats')) {
-        setThemeClass(pageHtml, themePreference)
+    if (pageHtml.classList.contains("rantstats")) {
+        setThemeClass(pageHtml, realThemePreference)
     }
 }
 
 /**
- * Helper for getting the desired Theme based on the Rumble theme preference
+ * Register watcher of the operating system color scheme.
  *
- * @return Rumble theme value
+ * Will update theme of data to match OS preference.
  */
-export const getRumbleTheme = (): Theme => {
-    if (location.host === 'rumble.com') {
-        const darkStyle = document.documentElement.classList.contains("dark")
-        if (darkStyle) {
-            return Theme.Dark
-        } else {
-            return Theme.Light
-        }
-    } else {
-        // not on rumble so fall back to system
-        return Theme.System
-    }
+export const registerThemeWatcher = (): void => {
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        const newTheme = event.matches ? Theme.Dark : Theme.Light
+        updateThemeStyle(newTheme)
+    })
 }
 
 /**
  * Update the theme used
  */
-export const updateTheme = async () => {
+export const updateTheme = async (): Promise<void> => {
     let themePreference = Theme.System
     const themeSetting = await getTheme()
     const savedThemeSetting = themeSetting
@@ -109,10 +106,12 @@ export const updateTheme = async () => {
         case Theme.Light:
             themePreference = themeSetting
             break
+        default:
+            break
     }
 
-    if (themePreference == Theme.System) {
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (themePreference === Theme.System) {
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
             themePreference = Theme.Dark
         } else {
             themePreference = Theme.Light
@@ -121,7 +120,7 @@ export const updateTheme = async () => {
 
     updateThemeStyle(themePreference)
 
-    if (savedThemeSetting == Theme.Rumble) {
+    if (savedThemeSetting === Theme.Rumble) {
         rumbleThemeChanged(themePreference)
     }
 }
@@ -130,18 +129,18 @@ export const updateTheme = async () => {
  * Handle changes made to the Rumble.com head.
  *
  * Used to catch changes to the Rumble theme
- *
  * @param mutations list of mutations
  */
-const headObserverCallback = (mutations: Array<MutationRecord>) => {
+const headObserverCallback = (mutations: Array<MutationRecord>): void => {
     mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        if (mutation.type === "attributes" && mutation.attributeName === "class") {
             updateTheme().then()
         }
     })
 }
+
 // setup observer to watch for changes to Rumble.com <head>. Used to catch theme changes
-if (location.host === 'rumble.com') {
+if (window.location.host === "rumble.com") {
     const headObserver = new MutationObserver(headObserverCallback)
-    headObserver.observe(document.documentElement, {childList: false, attributes: true, subtree: false})
+    headObserver.observe(document.documentElement, { childList: false, attributes: true, subtree: false })
 }

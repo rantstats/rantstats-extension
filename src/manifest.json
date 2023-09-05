@@ -9,11 +9,7 @@
         "48": "images/icon-48.png",
         "128": "images/icon-128.png"
     },
-    "permissions": [
-        "storage",
-        "unlimitedStorage",
-        "tabs"
-    ],
+    "permissions": ["storage", "unlimitedStorage", "tabs"],
     "background": {
         "service_worker": "pages/background/background.js"
     },
@@ -29,12 +25,8 @@
     },
     "web_accessible_resources": [
         {
-            "matches": [
-                "<all_urls>"
-            ],
-            "resources": [
-                "images/*"
-            ]
+            "matches": ["<all_urls>"],
+            "resources": ["images/*"]
         }
     ],
     "content_scripts": [
@@ -47,14 +39,8 @@
                 "pages/options/options.css",
                 "pages/rants/rants.css"
             ],
-            "js": [
-                "pages/content/content.js"
-            ],
-            "matches": [
-                "https://rumble.com/v*",
-                "https://rumble.com/chat/popup/*",
-                "https://rumble.com/_rantstats*"
-            ]
+            "js": ["pages/content/content.js"],
+            "matches": ["https://rumble.com/v*", "https://rumble.com/chat/popup/*", "https://rumble.com/_rantstats*"]
         }
     ]
 }

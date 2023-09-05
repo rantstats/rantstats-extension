@@ -12,14 +12,15 @@
     }
 
     &.notification {
-        background: #BB0218;
+        background: #bb0218;
     }
 
     &.notification * {
         color: white;
     }
 
-    .rant-amount, .notification-info {
+    .rant-amount,
+    .notification-info {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -37,7 +38,7 @@
     }
 
     .notification-info {
-        background: #D0021B;
+        background: #d0021b;
 
         .timestamp {
             font-size: 0.7rem;
@@ -59,7 +60,8 @@
         .user-image {
             max-width: 30px;
 
-            img, .no-img {
+            img,
+            .no-img {
                 width: 30px;
                 max-height: 30px;
                 border: 1px solid;
@@ -73,7 +75,7 @@
             .no-img {
                 height: 30px;
 
-                background-color: #3377CC;
+                background-color: #3377cc;
 
                 &::after {
                     display: block;

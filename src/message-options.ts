@@ -1,16 +1,15 @@
-import {setLastSortOrder, sortChats} from "./components/rants/rant";
-import {updateThemeStyle} from "./theme";
-import {Messages} from "./types/messages";
-import {Options, SortOrder, Theme} from "./types/option-types";
+import { setLastSortOrder, sortChats } from "./components/rants/rant"
+import { updateThemeStyle } from "./theme"
+import { Messages } from "./types/messages"
+import { Options, SortOrder, Theme } from "./types/option-types"
 
 /**
  * Handle receiving message {@link Messages.OPTIONS_SAVED_TAB}
  *
  * Resorts Rants and changes Theme to match new values
- *
  * @param options update option values
  */
-export const handleUpdateOptions = (options: Options) => {
+export const handleUpdateOptions = (options: Options): void => {
     if (options === undefined) {
         return
     }

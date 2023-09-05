@@ -4,7 +4,6 @@
     box-sizing: border-box;
 }
 
-
 html.rantstats {
     scrollbar-gutter: stable;
     color-scheme: light;
@@ -20,12 +19,25 @@ html.rantstats {
         display: flex;
         flex-direction: column;
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-family: var(--heading-font);
         }
 
-        h1, h2, h3, h4, h5, h6,
-        p, span, label, a {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        span,
+        label,
+        a {
             color: var(--light-fg);
         }
 
@@ -65,10 +77,17 @@ html.rantstats {
             background: var(--dark-accent2);
         }
 
-        h1, h2, h3, h4, h5, h6,
-        p, span, label, a {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        span,
+        label,
+        a {
             color: var(--dark-fg);
         }
     }
 }
-

@@ -1,6 +1,8 @@
 export type Message = {
-    action: Messages,
-    data?: { [key: string]: any },
+    action: Messages
+    data?: {
+        [key: string]: unknown
+    }
 }
 
 export enum Messages {
