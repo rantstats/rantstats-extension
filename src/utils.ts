@@ -1,16 +1,15 @@
-import {RANT_LIST_ID, SIDEBAR_ID} from "./types/consts";
+import { CONSTS } from "./types/consts"
 
 /**
  * Get the video ID from one of the possible page elements
- *
- * @return video id
+ * @returns video id
  */
 export const getVideoIdFromDiv = (): string => {
-    let videoIdDiv = document.getElementById(SIDEBAR_ID) as HTMLDivElement
+    let videoIdDiv = document.getElementById(CONSTS.SIDEBAR_ID) as HTMLDivElement
     if (videoIdDiv === null) {
-        videoIdDiv = document.getElementById(RANT_LIST_ID) as HTMLDivElement
+        videoIdDiv = document.getElementById(CONSTS.RANT_LIST_ID) as HTMLDivElement
     }
-    let videoId = videoIdDiv.getAttribute('data-video-id')
+    let videoId = videoIdDiv.getAttribute("data-video-id")
     if (videoId === "-1") {
         videoId = null
     }

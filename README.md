@@ -17,21 +17,21 @@ Additionally, all cached data can be viewed and managed from the Cached Rants pa
 
 To add to your browser, download the extension from:
 
-- [Chrome](https://chrome.google.com/webstore/detail/rantstats-extension-for-r/liahjgfmodjgeakahommamnmbjgicpmh)
-- [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/dfhpfnfhllhmfmkcambimnafeklpgkdm)
+-   [Chrome](https://chrome.google.com/webstore/detail/rantstats-extension-for-r/liahjgfmodjgeakahommamnmbjgicpmh)
+-   [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/dfhpfnfhllhmfmkcambimnafeklpgkdm)
 
 **Permissions**
 
 Extensions require the following permissions:
 
-- `storage`: save options and stream data to local browser storage
-- `unlimitedStorage`: removes storage limit (see current usage in options page)
-- `tabs`: used to sync options and other data between pages running extension and to open the Cached Rants page
+-   `storage`: save options and stream data to local browser storage
+-   `unlimitedStorage`: removes storage limit (see current usage in options page)
+-   `tabs`: used to sync options and other data between pages running extension and to open the Cached Rants page
 
 ## Sidebar
 
 Open the sidebar (or popup) by clicking the "View Rants" button in the chat area of a stream that is currently live or
-the "Open Cached Rants" link on a stream archive page. 
+the "Open Cached Rants" link on a stream archive page.
 
 ![Chat Button](images/chat-small.png) ![Cached Button](images/cached-button.png)
 
@@ -41,7 +41,7 @@ Resize the sidebar by clicking and dragging the right border.
 
 **Rant**
 
-Paid Rumble Rants are show using the color scheme matching the dollar amount. 
+Paid Rumble Rants are show using the color scheme matching the dollar amount.
 
 Click the "Read" checkbox to mark the Rant read. Click it again to mark it unread.
 
@@ -75,26 +75,26 @@ The following options are available by clicking on the extension icon or opening
 
 Change the order Rants are displayed. Synced across all opened sidebars/popups and Cached Rants page.
 
-Options: 
+Options:
 
-- `Oldest To Newest`: Sort Rants by the post date from oldest to newest (Default)
-- `Newest To Oldest`: Sort Rants by the post date from newest to oldest
-- `Highest To Lowest`: Sort Rants by the price from high to low
-- `Lowest To Highest`: Sort Rants by the price from low to high
+-   `Oldest To Newest`: Sort Rants by the post date from oldest to newest (Default)
+-   `Newest To Oldest`: Sort Rants by the post date from newest to oldest
+-   `Highest To Lowest`: Sort Rants by the price from high to low
+-   `Lowest To Highest`: Sort Rants by the price from low to high
 
 **Sync History**
 
 How many days cached stream data should be stored. Data is removed when loading a page that includes the extension.
 
-Number of bytes in use displayed on options page. 
+Number of bytes in use displayed on options page.
 
 To manually remove items, open the stream in the Cached Rants page and click "Delete Stream"
 
-Options: 
+Options:
 
-- Minimum 1 day
-- No maximum
-- Default: 30 days
+-   Minimum 1 day
+-   No maximum
+-   Default: 30 days
 
 **Theme**
 
@@ -102,21 +102,21 @@ Specify the color theme to use for the extension sidebar and pages.
 
 Options:
 
-- `Follow Rumble.com`: Follow the theme of Rumble.com (Default)
-- `System`: Follow the system's theme settings regardless of Rumble's settings
-- `Dark`: Always use dark mode regardless of Rumble's settings
-- `Light`: Always use light mode regardless of Rumble's settings
+-   `Follow Rumble.com`: Follow the theme of Rumble.com (Default)
+-   `System`: Follow the system's theme settings regardless of Rumble's settings
+-   `Dark`: Always use dark mode regardless of Rumble's settings
+-   `Light`: Always use light mode regardless of Rumble's settings
 
 **Open as Popup**
 
-Open the Rants viewer for the stream in a popup window instead of as a sidebar. 
+Open the Rants viewer for the stream in a popup window instead of as a sidebar.
 
 Note: the sidebar can always be moved to a popup even if this isn't checked.
 
 Options:
 
-- Unchecked: display as sidebar (Default)
-- Checked: open as popup
+-   Unchecked: display as sidebar (Default)
+-   Checked: open as popup
 
 ### Page Links
 
@@ -124,7 +124,7 @@ Click "View Cached Rants" to open the Cached Rants page
 
 ### Controls
 
-Click the "Clear all saved data" button to remove all stored options and stream data. 
+Click the "Clear all saved data" button to remove all stored options and stream data.
 To only remove a specific stream, open the stream in the Cached Rants page.
 
 ## Cached Rants Page
@@ -135,13 +135,13 @@ All cached streams are shown in the dropdown grouped by the creator. Select the 
 
 **Stream Data**
 
-The title, creator and first date stream data cached is shown below the stream dropdown. 
+The title, creator and first date stream data cached is shown below the stream dropdown.
 
 Click the refresh icon to refresh the displayed data.
 
 **Rant**
 
-Paid Rumble Rants are show using the color scheme matching the dollar amount. 
+Paid Rumble Rants are show using the color scheme matching the dollar amount.
 
 Click the "Read" checkbox to mark the Rant read. Click it again to mark it unread.
 
@@ -182,8 +182,8 @@ See [CHANGELOG](CHANGELOG.md)
 
 If you want to support me:
 
-- [PayPal](https://www.paypal.me/stevencrader)
-- [$craders](https://www.cash.app/$craders)
-- [Venmo](https://venmo.com/code?user_id=467277291978752568&created=1654152122)
-- [Twitter (Rant Stats)](https://twitter.com/stevencrader)
-- [Twitter (Me)](https://twitter.com/rantstats_com)
+-   [PayPal](https://www.paypal.me/stevencrader)
+-   [$craders](https://www.cash.app/$craders)
+-   [Venmo](https://venmo.com/code?user_id=467277291978752568&created=1654152122)
+-   [Twitter (Rant Stats)](https://twitter.com/stevencrader)
+-   [Twitter (Me)](https://twitter.com/rantstats_com)

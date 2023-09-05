@@ -34,7 +34,6 @@
         }
     }
 
-
     #resize {
         background-color: var(--border);
         position: absolute;
@@ -53,10 +52,10 @@
             font-size: 25px;
             padding: 5px;
         }
-
     }
 
-    #load-error, #cache-message {
+    #load-error,
+    #cache-message {
         display: block;
         font-weight: bold;
         padding: 5px;
@@ -106,6 +105,3 @@
         }
     }
 }
-
-
-

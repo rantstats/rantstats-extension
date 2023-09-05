@@ -2,11 +2,11 @@
 
 ## 1.4.3
 
-- Update message sending in order to handle errors
-    - Change open tabs to map and use tab id as key
-    - If message fails to send to tab, remove tab from cache map
-- Fix button to show cached rants not showing for livestream playback
-- Fix options not receiving updates
+-   Update message sending in order to handle errors
+    -   Change open tabs to map and use tab id as key
+    -   If message fails to send to tab, remove tab from cache map
+-   Fix button to show cached rants not showing for livestream playback
+-   Fix options not receiving updates
 
 ## 1.4.2
 
@@ -14,7 +14,7 @@ Detect new class name used for chat list
 
 Resolved:
 
-- [Issue #11](https://github.com/rantstats/rantstats-extension/issues/11)
+-   [Issue #11](https://github.com/rantstats/rantstats-extension/issues/11)
 
 ## 1.4.1
 
@@ -22,24 +22,24 @@ Fix color theme detection
 
 Resolved:
 
-- [Issue #9](https://github.com/rantstats/rantstats-extension/issues/9)
+-   [Issue #9](https://github.com/rantstats/rantstats-extension/issues/9)
 
 ## 1.4.0
 
 Add support for showing user's badges and channel subscribers
 
-- Store possible badges to cache
-- Stores badges active for user during rant in cache
-- Show badges active for user next to the username
-- Stores the "notification" information in cache
-- New entry for "notifications"
-- Show placeholder for users without image
-- Swap colors to match how Rumble uses them
+-   Store possible badges to cache
+-   Stores badges active for user during rant in cache
+-   Show badges active for user next to the username
+-   Stores the "notification" information in cache
+-   New entry for "notifications"
+-   Show placeholder for users without image
+-   Swap colors to match how Rumble uses them
 
 Resolves:
 
-- [Issue #6](https://github.com/rantstats/rantstats-extension/issues/6)
-- [Issue #7](https://github.com/rantstats/rantstats-extension/issues/7)
+-   [Issue #6](https://github.com/rantstats/rantstats-extension/issues/6)
+-   [Issue #7](https://github.com/rantstats/rantstats-extension/issues/7)
 
 ## 1.3.0
 

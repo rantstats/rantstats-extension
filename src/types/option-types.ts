@@ -5,19 +5,19 @@ export enum SortOrder {
     /**
      * Sort Rants by the post date from oldest to newest
      */
-    OldToNew = '0',
+    OldToNew = "0",
     /**
      * Sort Rants by the post date from newest to oldest
      */
-    NewToOld = '1',
+    NewToOld = "1",
     /**
      * Sort Rants by the price from high to low
      */
-    HighToLow = '2',
+    HighToLow = "2",
     /**
      * Sort Rants by the price from low to high
      */
-    LowToHigh = '3'
+    LowToHigh = "3",
 }
 
 /**
@@ -27,19 +27,19 @@ export enum Theme {
     /**
      * Follow the theme of Rumble.com
      */
-    Rumble = '0',
+    Rumble = "0",
     /**
      * Follow the system's theme settings
      */
-    System = '1',
+    System = "1",
     /**
      * Always use dark mode
      */
-    Dark = '2',
+    Dark = "2",
     /**
      * Always use light mode
      */
-    Light = '3'
+    Light = "3",
 }
 
 /**

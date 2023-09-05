@@ -9,21 +9,20 @@ html.popup {
         min-height: auto;
 
         h1 {
-            font-size: 1.7em
+            font-size: 1.7em;
         }
     }
 }
 
-
 #options {
-
     .options {
         display: flex;
         flex-direction: column;
         justify-items: center;
     }
 
-    .option, .save {
+    .option,
+    .save {
         font-size: 1em;
         padding: 5px 15px;
 
@@ -32,7 +31,9 @@ html.popup {
             padding-bottom: 5px;
         }
 
-        input, select, button {
+        input,
+        select,
+        button {
             font-size: 1em;
         }
 
@@ -75,4 +76,3 @@ html.popup {
         }
     }
 }
-

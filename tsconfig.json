@@ -1,17 +1,13 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "outDir": "output",
-        "sourceMap": false,
-        "strict": false,
-        "target": "es6",
-        "skipLibCheck": true,
-        "removeComments": true
+        "declaration": true,
+        "esModuleInterop": true,
+        "target": "es2020",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "outDir": "dist"
     },
-    "compileOnSave": true,
-    "include": [
-        "src"
-    ]
+    "include": ["src"],
+    "lib": ["es2020"]
 }
