@@ -67,6 +67,7 @@
         "jsdoc/require-jsdoc": [
             "error",
             {
+                "contexts": ["TSInterfaceDeclaration", "TSTypeAliasDeclaration", "TSEnumDeclaration"],
                 "require": {
                     "ArrowFunctionExpression": true,
                     "ClassDeclaration": true,

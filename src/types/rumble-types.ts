@@ -65,6 +65,24 @@ export type RumbleNotification = {
 }
 
 /**
+ *
+ */
+export type RumbleChannel = {
+    /**
+     * The ID of the channel
+     */
+    id: string
+    /**
+     * URL slug for accessing the channel's profile. Usually appended to https://rumble.com
+     */
+    link: string
+    /**
+     * Username for channel
+     */
+    username: string
+}
+
+/**
  * Object containing the Rumble chat message
  */
 export type RumbleMessage = {
@@ -117,11 +135,19 @@ export type RumbleUser = {
     /**
      * Array of badge names associated with user
      */
-    badges: Array<string>
+    badges?: Array<string>
     /**
      * Optional path to profile image
      */
     "image.1"?: string
+    /**
+     * Indicates user is a follower of the channel or not
+     */
+    is_follower: boolean
+    /**
+     * URL slug for accessing the user's profile. Usually appended to https://rumble.com
+     */
+    link: string
 }
 
 /**
@@ -158,12 +184,20 @@ export type RumbleRantLevel = {
      * Color data for this level
      */
     colors: RumbleRantLevelColor
+    /**
+     * Array of ids associated with rant level
+     */
+    ids: Array<string>
 }
 
 /**
  * Configuration for Rants
  */
 export type RantsConfig = {
+    /**
+     * Indicates if rants are enabled
+     */
+    enable: boolean
     /**
      * Array of level configuration objects
      */
@@ -207,6 +241,25 @@ export type RumbleBadge = {
 }
 
 /**
+ * Rumble Badges object
+ *
+ * Keys are the badge name
+ */
+export type RumbleBadges = {
+    [key: string]: RumbleBadge
+}
+
+/**
+ * Rumble Subscription properties
+ */
+export type RumbleSubscription = {
+    /**
+     * Is subscriptions enabled
+     */
+    enable: boolean
+}
+
+/**
  * Rumble config object
  */
 export type RumbleConfig = {
@@ -217,15 +270,25 @@ export type RumbleConfig = {
     /**
      * All possible badges
      */
-    badges: {
-        [key: string]: RumbleBadge
-    }
+    badges: RumbleBadges
+    /**
+     * Maximum length of messages
+     */
+    message_length_max: number
+    /**
+     * Subscription data
+     */
+    subscription: RumbleSubscription
 }
 
 /**
  * Base object for Rumble 'data' field
  */
 export type RumbleDataBase = {
+    /**
+     * Array of logged in users' channel data
+     */
+    channels: Array<RumbleChannel>
     /**
      * Array of Rumble message objects
      */
@@ -261,6 +324,9 @@ export type RumbleMessagesData = RumbleDataBase & {
  * Object for Rumble {@link RumbleEventType.mute_users} 'data' field
  */
 export type RumbleMuteData = {
+    /**
+     * List of user ids to mute
+     */
     user_ids: Array<string>
 }
 
@@ -268,6 +334,9 @@ export type RumbleMuteData = {
  * Object for Rumble {@link RumbleEventType.delete_non_rant_messages} 'data' field
  */
 export type RumbleDeleteNonRantMessagesData = {
+    /**
+     * List of message ids to delete
+     */
     message_ids: Array<string>
 }
 

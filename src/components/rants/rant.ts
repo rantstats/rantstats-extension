@@ -542,7 +542,8 @@ export const renderMessage = async (
         }).then()
     }
 
-    if (rant) {
+    // subscription may not have a message text so don't render
+    if (rant && text !== "") {
         await renderRant(messageId, time, text, rant, realUsername, realUserImage, badges, read, cachePage)
     }
     if (notification) {
