@@ -1,3 +1,6 @@
+/**
+ * Define strings constants used throughout extension
+ */
 export enum CONSTS {
     // BYTES_PERCENTAGE_ID = 'bytes-percentage',
     // BYTES_TOTAL_ID = 'bytes-total',
