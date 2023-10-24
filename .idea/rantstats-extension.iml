@@ -7,7 +7,7 @@
       <excludeFolder url="file://$MODULE_DIR$/output" />
       <excludePattern pattern="desktop.ini" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.10" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.11" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
