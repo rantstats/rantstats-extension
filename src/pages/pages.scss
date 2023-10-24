@@ -58,6 +58,7 @@ html.rantstats {
             justify-self: flex-end;
             position: sticky;
             bottom: 0;
+            background: var(--light-accent2);
 
             .row {
                 display: flex;
@@ -77,6 +78,10 @@ html.rantstats {
 
         body {
             background: var(--dark-accent2);
+
+            footer {
+                background: var(--dark-accent2);
+            }
         }
 
         h1,

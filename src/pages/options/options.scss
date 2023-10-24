@@ -18,7 +18,7 @@
                 align-items: unset;
             }
 
-            &:nth-child(odd) {
+            &:nth-child(even) {
                 background: var(--light-accent2);
             }
 
@@ -88,20 +88,25 @@
         }
     }
 
-    .save {
-        text-align: right;
-        margin-right: 10px;
-        //padding: 5px;
-    }
-
     .pages {
         text-align: center;
+        font-size: 1.25em;
+        font-weight: bold;
+        padding: 10px;
+        margin-bottom: 5px;
+        background: var(--light-accent2);
+        border-bottom: 1px inset var(--border);
 
-        h2 {
-            font-size: 1.5em;
+        .nav-link {
+            display: inline;
+            padding: 5px;
+            border-radius: 10px;
+            width: auto;
+            background: var(--light-accent);
 
             &:hover {
                 cursor: pointer;
+                text-decoration: underline;
             }
         }
     }
@@ -115,15 +120,28 @@
             button {
                 font-size: 1em;
             }
+
+            .save {
+                font-size: 15px;
+                margin-left: auto;
+            }
         }
     }
 }
 
 .theme-dark {
     #options {
+        .pages {
+            background: var(--dark-accent);
+
+            .nav-link {
+                background: var(--dark-accent2);
+            }
+        }
+
         .options {
             .option {
-                &:nth-child(odd) {
+                &:nth-child(even) {
                     background: var(--dark-accent);
                 }
             }
