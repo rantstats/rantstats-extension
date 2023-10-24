@@ -138,3 +138,8 @@ chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) =
     }
     sendResponse({ done: true })
 })
+
+// open options page when clicking the icon
+chrome.action.onClicked.addListener(() => {
+    handleOpenOptionsPage()
+})
