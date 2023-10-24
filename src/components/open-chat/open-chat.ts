@@ -45,14 +45,17 @@ export const addChatButton = (onclick: () => void): boolean => {
     textItem.textContent = "Rants"
     pillDivItem.appendChild(textItem)
 
-    const wellDivItem = document.createElement("div") as HTMLDivElement
-    wellDivItem.classList.add("chat-history--rant-progressbar--well")
-    listItem.appendChild(wellDivItem)
-
     const progressBarDivItem = document.createElement("div") as HTMLDivElement
     progressBarDivItem.classList.add("chat-history--rant-progressbar")
-    progressBarDivItem.style.width = "100%"
-    wellDivItem.appendChild(progressBarDivItem)
+    listItem.appendChild(progressBarDivItem)
+
+    const progressBarFillDivItem = document.createElement("div") as HTMLDivElement
+    progressBarFillDivItem.classList.add("chat-history--rant-progressbar--fill")
+    progressBarDivItem.appendChild(progressBarFillDivItem)
+
+    const progressBarBackDivItem = document.createElement("div") as HTMLDivElement
+    progressBarBackDivItem.classList.add("chat-history--rant-progressbar--back")
+    progressBarDivItem.appendChild(progressBarBackDivItem)
 
     rantList.insertBefore(listItem, rantList.firstChild)
     return true
