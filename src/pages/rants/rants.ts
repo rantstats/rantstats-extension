@@ -1,15 +1,18 @@
-import { cleanHistory, getAllStreams, getSortOrder, getStream, removeStream } from "../../cache"
+import { cleanHistory, getAllStreams, getOptions, getStream, removeStream } from "../../cache"
+import { setMutedWords } from "../../components/chat-watcher/muted-words"
+import { registerTab } from "../../components/events/events"
 import { displayCachedRants } from "../../components/rants/cached-rants"
 import { parseLevels } from "../../components/rants/levels"
 import { clearDisplayedMessages, setLastSortOrder, updateTotalText } from "../../components/rants/rant"
-import { registerTab } from "../../components/events/events"
+import { consoleLog } from "../../log"
 import { handleUpdateOptions } from "../../message-options"
-import { registerThemeWatcher, updateTheme, updateThemeStyle } from "../../theme"
+import { registerSystemColorSchemeWatcher, updateTheme, updateThemeStyle } from "../../theme"
 import { CONSTS } from "../../types/consts"
 import { Message, Messages } from "../../types/messages"
-import { Options, Theme } from "../../types/option-types"
+import { Options, SortOrder, Theme } from "../../types/option-types"
 import { getVideoIdFromDiv } from "../../utils"
 
+const DEFAULT_TITLE = "Cached Rants | RantStats Extension for Rumble.com"
 const streamSelect = document.getElementById("stream") as HTMLSelectElement
 const streamDataHeader = document.getElementById(CONSTS.STREAM_DATA) as HTMLDivElement
 const rantListMain = document.getElementById(CONSTS.RANT_LIST_ID) as HTMLDivElement
@@ -30,6 +33,20 @@ const clearRants = (): void => {
 }
 
 /**
+ * Set/clear the video param from the URL
+ * @param videoId Video id to set. If -1 or empty string, removes from url
+ */
+const setVideoParam = (videoId: string): void => {
+    const params = new URLSearchParams(window.location.search)
+    if (videoId === "-1" || videoId === "") {
+        params.delete("video")
+    } else {
+        params.set("video", videoId)
+    }
+    window.location.search = params.toString()
+}
+
+/**
  * Load the data for the specified stream and populate the page
  * @param videoId id of the video to load
  */
@@ -45,10 +62,7 @@ const loadStream = async (videoId: string): Promise<void> => {
         deleteStreamParagraph.classList.remove("disabled")
 
         // load rants for selected
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // eslint-disable-next-line no-console
-        if (DEBUG) console.log("Loading Rants for video", videoId)
+        consoleLog("Loading Rants for video", videoId)
         displayCachedRants(videoId, false, true)
 
         const cachedStream = await getStream(videoId)
@@ -96,20 +110,23 @@ const loadStream = async (videoId: string): Promise<void> => {
             </div>
             ${refreshIcon.outerHTML}
         `
+
+        document.title = `${title} | ${DEFAULT_TITLE}`
     }
 }
 
 /**
  * Populate the list of all cached streams
+ * @returns A void promise
  */
-const populateStreamList = (): void => {
+const populateStreamList = async (): Promise<void> => {
     streamSelect.innerHTML = ""
     const defaultOption = document.createElement("option") as HTMLOptionElement
     defaultOption.value = "-1"
     defaultOption.text = "None"
     streamSelect.appendChild(defaultOption)
 
-    getAllStreams().then((cachedStreams) => {
+    return getAllStreams().then((cachedStreams) => {
         cachedStreams.sort((a, b) => {
             return parseInt(a.videoId, 10) - parseInt(b.videoId, 10)
         })
@@ -117,7 +134,7 @@ const populateStreamList = (): void => {
         const optGroups: Map<string, Array<HTMLOptionElement>> = new Map<string, Array<HTMLOptionElement>>()
 
         cachedStreams.forEach((cachedStream) => {
-            const option = document.createElement("option") as HTMLOptionElement
+            const option = document.createElement("option")
             option.value = cachedStream.videoId
             const time = new Date(cachedStream.time)
             option.text = `${time.toLocaleDateString()} - ${cachedStream.title}`
@@ -149,7 +166,7 @@ const populateStreamList = (): void => {
 const refresh = (): void => {
     const videoId = getVideoIdFromDiv()
     clearRants()
-    populateStreamList()
+    populateStreamList().then()
     if (videoId === null) {
         return
     }
@@ -173,7 +190,8 @@ const deleteStream = (): void => {
         if (doDelete) {
             removeStream(videoId).then(() => {
                 clearRants()
-                populateStreamList()
+                populateStreamList().then()
+                setVideoParam("")
             })
         }
     })
@@ -200,21 +218,37 @@ cleanHistory().then()
  * Initialize the page
  */
 const populateView = async (): Promise<void> => {
-    registerThemeWatcher()
-    updateTheme().then()
-    setLastSortOrder(await getSortOrder())
+    registerSystemColorSchemeWatcher()
+    await updateTheme()
 
-    populateStreamList()
+    getOptions().then((options: Options) => {
+        setLastSortOrder(options.sortOrder as SortOrder)
+        setMutedWords(options.hideMutedWords, options.customMutedWords, options.muteInChat, options.muteInRantStats)
+    })
+
+    await populateStreamList()
 
     parseLevels([], true)
 }
 
-populateView().then()
+populateView().then(async () => {
+    const params = new URLSearchParams(window.location.search)
+    const defaultVideoId = params.get("video")
+    if (defaultVideoId !== undefined && defaultVideoId !== "-1") {
+        const matches = Array.from(streamSelect.options).filter((option) => option.value === defaultVideoId)
+        if (matches.length > 0) {
+            streamSelect.value = defaultVideoId
+            await loadStream(defaultVideoId)
+        }
+    }
+})
 
 document.addEventListener("DOMContentLoaded", () => {
     streamSelect.addEventListener("change", (event) => {
         const target = event.target as HTMLSelectElement
-        loadStream(target.value).then()
+        loadStream(target.value).then(() => {
+            setVideoParam(target.value)
+        })
     })
 })
 document.addEventListener("click", async (event) => {

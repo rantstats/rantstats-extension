@@ -49,20 +49,149 @@
         padding: 2px 0.75rem;
         margin-left: 0;
         margin-right: 0;
+
+        .show-muted-text-button {
+            padding: 5px;
+            margin: 0 5px 0 0;
+            border-radius: 4px;
+            line-height: 0.75em;
+            font-size: 1em;
+            font-style: italic;
+
+            &.hidden {
+                display: none;
+            }
+        }
+
+        &.muted-user {
+            font-style: italic;
+            opacity: 0.5;
+        }
+
+        &.deleted-chat,
+        &.muted-chat {
+            .chat-history--message {
+                font-style: italic;
+                opacity: 0.5;
+
+                &.hidden {
+                    display: none;
+                }
+            }
+
+            .chat-history--rant-text {
+                font-style: italic;
+
+                &.hidden {
+                    display: none;
+                }
+            }
+
+            .chat-history--rant {
+                .show-muted-text-button {
+                    margin: 0 auto 3px auto;
+                    display: block;
+                }
+
+                &[data-level="1"] {
+                    .show-muted-text-button {
+                        background: #4382cb;
+                        color: white;
+                    }
+                }
+                &[data-level="2"] {
+                    .show-muted-text-button {
+                        background: #a6d279;
+                        color: black;
+                    }
+                }
+                &[data-level="5"] {
+                    .show-muted-text-button {
+                        background: #dfd019;
+                        color: black;
+                    }
+                }
+                &[data-level="10"] {
+                    .show-muted-text-button {
+                        background: #dd9520;
+                        color: black;
+                    }
+                }
+                &[data-level="20"] {
+                    .show-muted-text-button {
+                        background: #aa0eca;
+                        color: white;
+                    }
+                }
+                &[data-level="50"] {
+                    .show-muted-text-button {
+                        background: #8211e5;
+                        color: white;
+                    }
+                }
+                &[data-level="100"],
+                &[data-level="200"],
+                &[data-level="300"],
+                &[data-level="400"],
+                &[data-level="500"] {
+                    .show-muted-text-button {
+                        background: #bb0218;
+                        color: white;
+                    }
+                }
+            }
+        }
+
+        .chat-history--notification {
+            padding-left: 14px;
+            margin-left: 0;
+        }
     }
 
     &.theme-light {
         .chat-history--row {
+            .show-muted-text-button {
+                background-color: var(--light-accent2);
+            }
+
+            &.chat-history--subscribed {
+                background-image: linear-gradient(to right, var(--light-subscribed), var(--light-accent));
+            }
+
             &:nth-child(odd) {
-                background: var(--light-accent2);
+                background-color: var(--light-accent2);
+
+                .show-muted-text-button {
+                    background-color: var(--light-accent);
+                }
+
+                &.chat-history--subscribed {
+                    background-image: linear-gradient(to right, var(--light-subscribed), var(--light-accent2));
+                }
             }
         }
     }
 
     &.theme-dark {
         .chat-history--row {
+            .show-muted-text-button {
+                background-color: var(--dark-accent2);
+            }
+
+            &.chat-history--subscribed {
+                background-image: linear-gradient(to right, var(--dark-subscribed), var(--dark-accent));
+            }
+
             &:nth-child(odd) {
-                background: var(--dark-accent2);
+                background-color: var(--dark-accent2);
+
+                .show-muted-text-button {
+                    background-color: var(--dark-accent);
+                }
+
+                &.chat-history--subscribed {
+                    background-image: linear-gradient(to right, var(--dark-subscribed), var(--dark-accent2));
+                }
             }
         }
     }

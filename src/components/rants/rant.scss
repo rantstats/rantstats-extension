@@ -105,7 +105,7 @@
         }
 
         .notification-badge {
-            height: 5rem;
+            height: 3rem;
             width: auto;
             margin-left: auto;
         }
@@ -119,5 +119,28 @@
 
     .chat-text {
         padding: 5px;
+    }
+
+    .show-muted-text-button {
+        padding: 5px;
+        margin: 0 0 5px 0;
+        border-radius: 4px;
+        line-height: 0.75em;
+        font-size: 1em;
+        font-style: italic;
+        width: 32%;
+        text-align: center;
+        align-self: center;
+    }
+
+    &.muted-chat {
+        .chat-text {
+            font-style: italic;
+            opacity: 0.75;
+
+            &.hidden {
+                display: none;
+            }
+        }
     }
 }

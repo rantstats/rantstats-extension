@@ -1,4 +1,5 @@
 import { saveBadges } from "../../cache"
+import { consoleError, consoleLog } from "../../log"
 import { CacheBadge } from "../../types/cache"
 import { RantsConfig, RumbleBadge, RumbleConfig, RumbleEventInit, RumbleEventType } from "../../types/rumble-types"
 
@@ -55,10 +56,7 @@ const parseBadgeDefinitions = (badges: { [key: string]: RumbleBadge }): void => 
 const parseRants = (rants: RantsConfig): void => {
     const { levels } = rants
     if (levels === null) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // eslint-disable-next-line no-console
-        if (DEBUG) console.log("Invalid rants config, no levels", levels)
+        consoleLog("Invalid rants config, no levels", levels)
         return
     }
     parseLevels(levels)
@@ -74,10 +72,7 @@ const parseConfig = (config: RumbleConfig): void => {
     parseBadgeDefinitions(badges)
 
     if (rants === null) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // eslint-disable-next-line no-console
-        if (DEBUG) console.log("Invalid Rumble config, no rants", config)
+        consoleLog("Invalid Rumble config, no rants", config)
         return
     }
     parseRants(rants)
@@ -91,9 +86,7 @@ const parseConfig = (config: RumbleConfig): void => {
 export const initEventHandler = (eventData: RumbleEventInit, videoId: string): void => {
     const { type } = eventData
     if (type !== RumbleEventType.init) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        if (DEBUG) console.error(`Invalid event type passed to init event handler: ${type}`)
+        consoleError(`Invalid event type passed to init event handler: ${type}`)
         return
     }
 

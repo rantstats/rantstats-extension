@@ -12,80 +12,164 @@
 
         <div class="options">
             <div class="option">
-                <p class="description">Change how rants should be ordered</p>
-                <label for="sort-order" title="Change the order Rants">
-                    Sort Order:
+                <div class="option-info">
+                    <label class="name" for="sort-order" title="Change the order Rants">Sort Order</label>
+                    <p class="description">Change how rants should be ordered</p>
+                </div>
+                <div class="selector">
                     <select id="sort-order">
                         <option value="0">Oldest to Newest</option>
                         <option value="1" selected>Newest to Oldest</option>
                         <option value="2">Highest to Lowest</option>
                         <option value="3">Lowest to Highest</option>
                     </select>
-                </label>
+                </div>
             </div>
 
-            <!--
-  <div class="option">
-      <p class="description">Save captured Rants so they can be viewed anytime</p>
-      <label
-              for="cache"
-              title="Caches Rants for streams so they can be viewed anytime"
-      >
-          Cache Rants:
-          <input type="checkbox" id="cache" checked/>
-      </label>
-  </div>
-  -->
-
-            <!--
-  <div class="option">
-      <p class="description">Sync settings and cached data across browsers</p>
-      <label
-              for="sync"
-              title="Sync settings and cached data across browsers"
-      >
-          Sync data:
-          <input type="checkbox" id="sync"/>
-      </label>
-  </div>
-  -->
-
             <div class="option">
-                <p class="description">How many days to keep saved Rants.</p>
-                <label for="history" title="How long to save cached Rants">
-                    Sync History (days):
+                <div class="option-info">
+                    <label class="name" for="history" title="How long to save cached Rants">Sync History (days)</label>
+                    <p class="description">How many days to keep saved Rants.</p>
+                    <p class="note">
+                        Streams past cutoff removed when extension loaded in Rumble.com page or opening Options or
+                        Cached Rants.
+                    </p>
+                    <p class="note" id="option-storage">
+                        Using <span id="bytes-use">0</span> bytes
+                        <!--Using <span id="bytes-use">0</span> out of <span id="bytes-total">0</span> bytes (<span id="bytes-percentage">100%</span>)-->
+                    </p>
+                </div>
+
+                <div class="selector">
                     <input type="number" id="history" min="1" max="90" value="14" />
-                </label>
-                <p class="note">
-                    * Streams past cutoff removed when extension loaded in Rumble.com page or opening Options or Cached
-                    Rants.
-                </p>
-                <p class="note" id="option-storage">
-                    Using <span id="bytes-use">0</span> bytes
-                    <!--Using <span id="bytes-use">0</span> out of <span id="bytes-total">0</span> bytes (<span id="bytes-percentage">100%</span>)-->
-                </p>
+                </div>
             </div>
 
             <div class="option">
-                <p class="description">Theme for how content should be displayed</p>
-                <label for="theme" title="Display theme">
-                    Theme:
+                <div class="option-info">
+                    <label class="name" for="theme" title="Display theme">Theme</label>
+                    <p class="description">Theme for how content should be displayed</p>
+                    <p class="note">If unable to get Rumble setting, falls back to "System"</p>
+                </div>
+
+                <div class="selector">
                     <select id="theme">
                         <option value="0" selected>Follow Rumble.com</option>
                         <option value="1">System</option>
                         <option value="2">Dark</option>
                         <option value="3">Light</option>
                     </select>
-                </label>
-                <p class="note">* If unable to get Rumble setting, falls back to "System"</p>
+                </div>
             </div>
 
             <div class="option">
-                <p class="description">Open Rant Stats in a popup instead of sidebar</p>
-                <label for="open-location" title="Opens the Rant Stats data in a popup instead of sidebar">
-                    Open as Popup:
+                <div class="option-info">
+                    <label class="name" for="show-mute-users" title="Display theme">Show Muted Users</label>
+                    <p class="description">Show muted users in chat</p>
+                </div>
+
+                <div class="selector">
+                    <input type="checkbox" id="show-mute-users" />
+                </div>
+            </div>
+
+            <div class="option">
+                <div class="option-info">
+                    <label class="name" for="show-delete-chats" title="Display theme">Show Deleted Chats</label>
+                    <p class="description">Show deleted messages in chat</p>
+                    <p class="note">Slightly increases the memory used for the chat</p>
+                </div>
+
+                <div class="selector">
+                    <input type="checkbox" id="show-delete-chats" />
+                </div>
+            </div>
+
+            <div class="option has-sub-options">
+                <div class="option-row">
+                    <div class="option-info">
+                        <label class="name" for="hide-muted-words" title="Display theme">Hide Messages</label>
+                        <p class="description">
+                            Enable filtering of chat messages and Rants containing any of the words in the Muted Words
+                            list.
+                        </p>
+                        <p class="description">
+                            Will mute messages in the chat window and Rant Stats sidebar/popout unless disabled below.
+                        </p>
+                        <p class="note">
+                            This only mutes/hides items from displaying. To control words allowed for everyone, edit the
+                            settings in Rumble.
+                        </p>
+                    </div>
+
+                    <div class="selector">
+                        <input type="checkbox" id="hide-muted-words" />
+                    </div>
+                </div>
+
+                <div class="sub-options">
+                    <div class="option">
+                        <div class="option-info">
+                            <label class="name" for="custom-muted-words">Muted Words List</label>
+                            <p class="description">Enter words/phrases to hide from chat and Rumble Rants.</p>
+                            <div class="action">
+                                <p class="description">
+                                    Import default word list from
+                                    <a href="http://www.bannedwordlist.com/" target="_blank"
+                                        >http://www.bannedwordlist.com/</a
+                                    >?
+                                </p>
+                                <button id="import-muted-words">Import Default</button>
+                                <p class="note">Words may be offensive but that is the point :)</p>
+                            </div>
+                        </div>
+
+                        <div class="selector">
+                            <textarea id="custom-muted-words"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <div class="option-info">
+                            <label class="name" for="mute-in-chat" title="Mute in Chat">Mute in Chat</label>
+                            <p class="description">Mute chat messages and Rumble Rants in chat</p>
+                        </div>
+
+                        <div class="selector">
+                            <input type="checkbox" id="mute-in-chat" />
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <div class="option-info">
+                            <label class="name" for="mute-in-rant-stats" title="Mute in Rant Stats"
+                                >Mute in Rant Stats</label
+                            >
+                            <p class="description">Mute Rumble Rants in Rant Stats sidebar/popout</p>
+                        </div>
+
+                        <div class="selector">
+                            <input type="checkbox" id="mute-in-rant-stats" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="option">
+                <div class="option-info">
+                    <label
+                        class="name"
+                        for="open-location"
+                        title="Opens the Rant Stats data in a popup instead of sidebar"
+                    >
+                        Open as Popup</label
+                    >
+                    <p class="description">Open Rant Stats in a popup instead of sidebar</p>
+                </div>
+
+                <div class="selector">
                     <input type="checkbox" id="open-location" />
-                </label>
+                </div>
             </div>
         </div>
 

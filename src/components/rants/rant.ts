@@ -4,6 +4,7 @@ import { CONSTS } from "../../types/consts"
 import { SortOrder } from "../../types/option-types"
 import { RumbleNotification, RumbleRant } from "../../types/rumble-types"
 import { getVideoIdFromDiv } from "../../utils"
+import { addMutedButton } from "../chat-watcher/muted-words"
 
 /**
  * Rant level cutoff values where each value represents the lower value for the level
@@ -380,6 +381,8 @@ const renderRant = async (
         `
     }
     chatDiv.innerHTML = html
+
+    addMutedButton(chatDiv, ".chat-text", text, false)
 
     addChat(chatDiv, messageId)
 

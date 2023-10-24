@@ -127,7 +127,7 @@
                         }
 
                         .notification-badge {
-                            height: 5rem;
+                            height: 4rem;
                             width: auto;
                             margin-left: auto;
                         }
@@ -135,6 +135,13 @@
 
                     .chat-text {
                         font-size: 1.1em;
+                    }
+
+                    .show-muted-text-button {
+                        width: auto;
+                        border-style: none;
+                        cursor: pointer;
+                        margin: 0 0 0 5px;
                     }
                 }
             }
