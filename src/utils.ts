@@ -1,5 +1,7 @@
 import { CONSTS } from "./types/consts"
 
+const PATTERN_VALID_TEXT = /[^a-zA-Z0-9 `~!@#$%^*\-_=+\r\n]/gs
+
 /**
  * Get the video ID from one of the possible page elements
  * @returns video id
@@ -15,4 +17,13 @@ export const getVideoIdFromDiv = (): string => {
     }
 
     return videoId
+}
+
+/**
+ * Remove invalid characters from text
+ * @param text text to clean
+ * @returns cleaned text
+ */
+export const validateText = (text: string): string => {
+    return text.replace(PATTERN_VALID_TEXT, "")
 }

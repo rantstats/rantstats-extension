@@ -6,6 +6,7 @@ import { registerSystemColorSchemeWatcher, updateTheme, updateThemeStyle } from 
 import { CONSTS } from "../../types/consts"
 import { Message, Messages } from "../../types/messages"
 import { defaultOptions, Options, Theme } from "../../types/option-types"
+import { validateText } from "../../utils"
 
 const sortOrderSelect = document.getElementById("sort-order") as HTMLSelectElement
 const historyInput = document.getElementById("history") as HTMLInputElement
@@ -74,6 +75,8 @@ const setDefault = (): void => {
  * Save the option values from the HTML elements to storage
  */
 const saveOptions = (): void => {
+    const customMutedWords = validateText(customMutedWordsTextArea.value).split("\n")
+
     const currentOptions: Options = {
         sortOrder: sortOrderSelect.value,
         historyDays: parseInt(historyInput.value, 10),
@@ -82,10 +85,11 @@ const saveOptions = (): void => {
         showDeletedChats: showDeletedChatsCheckbox.checked,
         showMutedUsers: showMutedUsersCheckbox.checked,
         hideMutedWords: hideMutedWordsCheckbox.checked,
-        customMutedWords: customMutedWordsTextArea.value.split("\n"),
+        customMutedWords,
         muteInChat: muteInChatCheckbox.checked,
         muteInRantStats: muteInRantStatsCheckbox.checked,
     }
+    customMutedWordsTextArea.value = customMutedWords.join("\n")
 
     updateOptions(currentOptions).then(() => {
         const status = document.getElementById("save-status") as HTMLParagraphElement
