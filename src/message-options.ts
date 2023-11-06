@@ -1,5 +1,5 @@
 import { setLastSortOrder, sortChats } from "./components/rants/rant"
-import { updateThemeStyle } from "./theme"
+import { updateAlternateColorsStyle, updateThemeStyle } from "./theme"
 import { Messages } from "./types/messages"
 import { Options, SortOrder, Theme } from "./types/option-types"
 
@@ -17,5 +17,8 @@ export const handleUpdateOptions = (options: Options): void => {
     }
     if (options?.theme !== undefined) {
         updateThemeStyle(options.theme as Theme)
+    }
+    if (options?.alternateColors !== undefined) {
+        updateAlternateColorsStyle(options.alternateColors)
     }
 }

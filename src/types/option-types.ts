@@ -64,6 +64,10 @@ export type Options = {
      * Open Rants in popup instead of sidebar
      */
     asPopup: boolean
+    /**
+     * Alternate colors of messages in chat
+     */
+    alternateColors: boolean
 }
 
 /**
@@ -74,4 +78,5 @@ export const defaultOptions: Options = {
     historyDays: 30,
     theme: Theme.Rumble.toString(),
     asPopup: false,
+    alternateColors: true,
 }

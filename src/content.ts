@@ -8,6 +8,7 @@ import { replacePageContent } from "./rantstatspage"
 import {
     registerRumbleThemeObserver,
     registerSystemColorSchemeWatcher,
+    updateAlternateColorsStyle,
     updateChatThemeStyle,
     updateThemeStyle,
 } from "./theme"
@@ -32,7 +33,9 @@ registerSystemColorSchemeWatcher()
 registerRumbleThemeObserver()
 updateChatThemeStyle()
 
-getOptions().then()
+getOptions().then((options: Options) => {
+    updateAlternateColorsStyle(options?.alternateColors)
+})
 
 // run clean history at the beginning of each load
 cleanHistory().then()
