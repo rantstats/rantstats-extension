@@ -73,6 +73,10 @@ export type Options = {
      */
     showMutedUsers: boolean
     /**
+     * Alternate colors of messages in chat
+     */
+    alternateColors: boolean
+    /**
      * Hide chat messages and Rumble Rants containing the muted text
      */
     hideMutedWords: boolean
@@ -100,6 +104,7 @@ export const defaultOptions: Options = {
     asPopup: false,
     showDeletedChats: false,
     showMutedUsers: false,
+    alternateColors: true,
     hideMutedWords: false,
     customMutedWords: [],
     muteInChat: true,

@@ -15,6 +15,7 @@ const openLocationCheckbox = document.getElementById("open-location") as HTMLInp
 const bytesUseSpan = document.getElementById(CONSTS.BYTES_USE_ID) as HTMLSpanElement
 const showDeletedChatsCheckbox = document.getElementById("show-mute-users") as HTMLInputElement
 const showMutedUsersCheckbox = document.getElementById("show-delete-chats") as HTMLInputElement
+const alternateColorsCheckbox = document.getElementById("alternate-colors") as HTMLInputElement
 const hideMutedWordsCheckbox = document.getElementById("hide-muted-words") as HTMLInputElement
 const customMutedWordsTextArea = document.getElementById("custom-muted-words") as HTMLTextAreaElement
 const importMutedWordsButton = document.getElementById("import-muted-words") as HTMLButtonElement
@@ -55,6 +56,7 @@ const setOptions = (options: Options): void => {
     openLocationCheckbox.checked = options.asPopup
     showDeletedChatsCheckbox.checked = options.showDeletedChats
     showMutedUsersCheckbox.checked = options.showMutedUsers
+    alternateColorsCheckbox.checked = options.alternateColors
     hideMutedWordsCheckbox.checked = options.hideMutedWords
     hideShowSubOptions(hideMutedWordsCheckbox)
     customMutedWordsTextArea.value = options.customMutedWords.join("\n")
@@ -84,6 +86,7 @@ const saveOptions = (): void => {
         asPopup: openLocationCheckbox.checked,
         showDeletedChats: showDeletedChatsCheckbox.checked,
         showMutedUsers: showMutedUsersCheckbox.checked,
+        alternateColors: alternateColorsCheckbox.checked,
         hideMutedWords: hideMutedWordsCheckbox.checked,
         customMutedWords,
         muteInChat: muteInChatCheckbox.checked,

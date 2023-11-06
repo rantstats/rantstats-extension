@@ -1,15 +1,16 @@
 import { cleanHistory, getAllVideoIs, getOptions, getSortOrder } from "./cache"
 import { registerChatMessageObserver, setPreserveMessageData } from "./components/chat-watcher/chat-watcher"
 import { setMutedWords } from "./components/chat-watcher/muted-words"
+import { registerTab } from "./components/events/events"
 import { addCacheButton, addChatButton, openRantsButtonHandler } from "./components/open-chat/open-chat"
 import { setLastSortOrder } from "./components/rants/rant"
 import { getVideoID } from "./components/rumble/rumble"
-import { registerTab } from "./components/events/events"
 import { handleUpdateOptions } from "./message-options"
 import { replacePageContent } from "./rantstatspage"
 import {
     registerRumbleThemeObserver,
     registerSystemColorSchemeWatcher,
+    updateAlternateColorsStyle,
     updateChatThemeStyle,
     updateThemeStyle,
 } from "./theme"
@@ -38,6 +39,7 @@ updateChatThemeStyle()
 getOptions().then((options: Options) => {
     setMutedWords(options.hideMutedWords, options.customMutedWords, options.muteInChat, options.muteInRantStats)
     setPreserveMessageData(options?.showDeletedChats || false)
+    updateAlternateColorsStyle(options?.alternateColors)
 })
 
 // run clean history at the beginning of each load
