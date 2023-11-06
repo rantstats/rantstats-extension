@@ -8,6 +8,7 @@ import { Message, Messages } from "../../types/messages"
 import { defaultOptions, Options, Theme } from "../../types/option-types"
 import { validateText } from "../../utils"
 
+const saveButton = document.getElementById("save") as HTMLButtonElement
 const sortOrderSelect = document.getElementById("sort-order") as HTMLSelectElement
 const historyInput = document.getElementById("history") as HTMLInputElement
 const themeSelect = document.getElementById("theme") as HTMLSelectElement
@@ -21,6 +22,19 @@ const customMutedWordsTextArea = document.getElementById("custom-muted-words") a
 const importMutedWordsButton = document.getElementById("import-muted-words") as HTMLButtonElement
 const muteInChatCheckbox = document.getElementById("mute-in-chat") as HTMLInputElement
 const muteInRantStatsCheckbox = document.getElementById("mute-in-rant-stats") as HTMLInputElement
+
+// temporary options before saving
+let tempOptions: Options = null
+
+/**
+ * Set whether the save button should be active or not
+ * @param enabled enable or disable save button
+ */
+const setSaveButtonState = (enabled: boolean): void => {
+    const title = enabled ? "" : "No changes since last save"
+    saveButton.disabled = !enabled
+    saveButton.title = title
+}
 
 /**
  * Toggle showing or hiding the sub-options section based on the check state
@@ -63,23 +77,17 @@ const setOptions = (options: Options): void => {
     muteInChatCheckbox.checked = options.muteInChat
     muteInRantStatsCheckbox.checked = options.muteInRantStats
 
+    tempOptions = options
+
     updateUsage()
 }
 
 /**
- * Set the options to the default values
+ * Get all current option values
+ * @returns the options
  */
-const setDefault = (): void => {
-    setOptions(defaultOptions)
-}
-
-/**
- * Save the option values from the HTML elements to storage
- */
-const saveOptions = (): void => {
-    const customMutedWords = validateText(customMutedWordsTextArea.value).split("\n")
-
-    const currentOptions: Options = {
+const getCurrentOptions = (): Options => {
+    return {
         sortOrder: sortOrderSelect.value,
         historyDays: parseInt(historyInput.value, 10),
         theme: themeSelect.value,
@@ -88,15 +96,66 @@ const saveOptions = (): void => {
         showMutedUsers: showMutedUsersCheckbox.checked,
         alternateColors: alternateColorsCheckbox.checked,
         hideMutedWords: hideMutedWordsCheckbox.checked,
-        customMutedWords,
+        customMutedWords: validateText(customMutedWordsTextArea.value).split("\n"),
         muteInChat: muteInChatCheckbox.checked,
         muteInRantStats: muteInRantStatsCheckbox.checked,
     }
-    customMutedWordsTextArea.value = customMutedWords.join("\n")
+}
+
+/**
+ * Check if 2 sets of Options match
+ * @param options1 option 1 values
+ * @param options2 option 2 values
+ * @returns options match
+ */
+const doOptionsMatch = (options1: Options, options2: Options): boolean => {
+    let match = true
+    Object.entries(options1).forEach((entry1) => {
+        const key = entry1[0]
+        const value1 = entry1[1]
+        const value2 = options2[key]
+        let valuesMatch = value1 === value2
+        if (key === "customMutedWords") {
+            const value1Array = value1 as Array<string>
+            value1Array.sort()
+            const value2Array = value2 as Array<string>
+            value2Array.sort()
+            valuesMatch = JSON.stringify(value1Array) === JSON.stringify(value2Array)
+        }
+        match = match && valuesMatch
+    })
+    return match
+}
+
+/**
+ * Handle element change event
+ */
+const optionChanged = (): void => {
+    const currentOptions = getCurrentOptions()
+    const optionsMatch = doOptionsMatch(currentOptions, tempOptions)
+    setSaveButtonState(!optionsMatch)
+}
+
+/**
+ * Set the options to the default values
+ */
+const setDefault = (): void => {
+    setOptions(defaultOptions)
+    setSaveButtonState(false)
+}
+
+/**
+ * Save the option values from the HTML elements to storage
+ */
+const saveOptions = (): void => {
+    const currentOptions = getCurrentOptions()
+    customMutedWordsTextArea.value = currentOptions.customMutedWords.join("\n")
 
     updateOptions(currentOptions).then(() => {
         const status = document.getElementById("save-status") as HTMLParagraphElement
+        tempOptions = currentOptions
         status.textContent = "Options saved"
+        setSaveButtonState(false)
         setTimeout(() => {
             status.textContent = ""
         }, 750)
@@ -115,6 +174,9 @@ const loadOptions = (): void => {
 
     // run clean history at the beginning of each load
     cleanHistory().then()
+
+    // disable save button until something changes
+    setSaveButtonState(false)
 
     getOptions(defaultOptions).then((options) => {
         setOptions(options)
@@ -185,7 +247,22 @@ chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) =
 registerTab()
 
 document.addEventListener("DOMContentLoaded", loadOptions)
-document.getElementById("save").addEventListener("click", saveOptions)
+saveButton.addEventListener("click", saveOptions)
+sortOrderSelect.addEventListener("change", optionChanged)
+historyInput.addEventListener("change", optionChanged)
+historyInput.addEventListener("input", optionChanged)
+themeSelect.addEventListener("change", optionChanged)
+openLocationCheckbox.addEventListener("change", optionChanged)
+bytesUseSpan.addEventListener("change", optionChanged)
+showDeletedChatsCheckbox.addEventListener("change", optionChanged)
+showMutedUsersCheckbox.addEventListener("change", optionChanged)
+alternateColorsCheckbox.addEventListener("change", optionChanged)
+hideMutedWordsCheckbox.addEventListener("change", optionChanged)
+customMutedWordsTextArea.addEventListener("change", optionChanged)
+customMutedWordsTextArea.addEventListener("input", optionChanged)
+importMutedWordsButton.addEventListener("change", optionChanged)
+muteInChatCheckbox.addEventListener("change", optionChanged)
+muteInRantStatsCheckbox.addEventListener("change", optionChanged)
 document.getElementById("clear").addEventListener("click", clearOptions)
 document.getElementById("open-rants").addEventListener("click", triggerOpenRantsPage)
 

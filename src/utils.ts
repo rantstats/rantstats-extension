@@ -1,5 +1,10 @@
+import { consoleLog } from "./log"
 import { CONSTS } from "./types/consts"
 
+const PATTERN_LEADING_SPACE = /^[ \r\n]+/gs
+const PATTERN_TRAILING_SPACE = /[ \r\n]+$/gs
+const PATTERN_SPACE = /([\r\n] +| +[\r\n])/gs
+const PATTERN_EMPTY_LINE = /\n{2,}/gs
 const PATTERN_VALID_TEXT = /[^a-zA-Z0-9 `~!@#$%^:*\-_=+\r\n]/gs
 
 /**
@@ -25,5 +30,11 @@ export const getVideoIdFromDiv = (): string => {
  * @returns cleaned text
  */
 export const validateText = (text: string): string => {
-    return text.replace(PATTERN_VALID_TEXT, "")
+    consoleLog("before", text)
+    let tempText = text.replace(PATTERN_SPACE, "\n")
+    tempText = tempText.replace(PATTERN_LEADING_SPACE, "")
+    tempText = tempText.replace(PATTERN_TRAILING_SPACE, "")
+    tempText = tempText.replace(PATTERN_EMPTY_LINE, "\n")
+    consoleLog("after", tempText)
+    return tempText.replace(PATTERN_VALID_TEXT, "")
 }
