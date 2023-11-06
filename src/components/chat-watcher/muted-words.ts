@@ -106,8 +106,9 @@ export const addButtonToggle = (
 
     /**
      * When clicked, hide self and show hidden text
+     * @param ev event
      */
-    showButton.onclick = (): void => {
+    showButton.onclick = (ev): void => {
         if (textNode.classList.contains("hidden")) {
             textNode.classList.remove("hidden")
             showButton.textContent = buttonTextToHide
@@ -115,6 +116,7 @@ export const addButtonToggle = (
             textNode.classList.add("hidden")
             showButton.textContent = buttonTextToShow
         }
+        ev.stopImmediatePropagation()
     }
 }
 

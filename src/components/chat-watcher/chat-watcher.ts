@@ -1,3 +1,4 @@
+import { consoleLog } from "../../log"
 import { checkForMutedWordsChat } from "./muted-words"
 
 let preserveMessageData = true
@@ -61,6 +62,14 @@ const chatObserverCallback = (mutations: Array<MutationRecord>): void => {
     })
 }
 
+const overlayObserverCallback = (mutations: Array<MutationRecord>): void => {
+    mutations.forEach((mutation) => {
+        if (mutation.type === "childList") {
+            mutation.addedNodes.forEach((node: HTMLLIElement) => newChatReceived(node))
+        }
+    })
+}
+
 /**
  * Register observer for catching new chat messages
  */
@@ -69,5 +78,11 @@ export const registerChatMessageObserver = (): void => {
     if (chatList !== null) {
         const headObserver = new MutationObserver(chatObserverCallback)
         headObserver.observe(chatList, { childList: true, attributes: false, subtree: false })
+    }
+
+    const chatOverlay = document.getElementById("chat--rant-overlay")
+    if (chatOverlay !== null) {
+        const overlayObserver = new MutationObserver(overlayObserverCallback)
+        overlayObserver.observe(chatOverlay, { childList: true, attributes: false, subtree: false })
     }
 }
