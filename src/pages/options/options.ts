@@ -11,6 +11,7 @@ const historyInput = document.getElementById("history") as HTMLInputElement
 const themeSelect = document.getElementById("theme") as HTMLSelectElement
 const openLocationCheckbox = document.getElementById("open-location") as HTMLInputElement
 const bytesUseSpan = document.getElementById(CONSTS.BYTES_USE_ID) as HTMLSpanElement
+const alternateColorsCheckbox = document.getElementById("alternate-colors") as HTMLInputElement
 
 /**
  * Toggle showing or hiding the sub-options section based on the check state
@@ -44,6 +45,7 @@ const setOptions = (options: Options): void => {
     historyInput.value = options.historyDays.toString()
     themeSelect.value = options.theme.toString()
     openLocationCheckbox.checked = options.asPopup
+    alternateColorsCheckbox.checked = options.alternateColors
 
     updateUsage()
 }
@@ -64,6 +66,7 @@ const saveOptions = (): void => {
         historyDays: parseInt(historyInput.value, 10),
         theme: themeSelect.value,
         asPopup: openLocationCheckbox.checked,
+        alternateColors: alternateColorsCheckbox.checked,
     }
 
     updateOptions(currentOptions).then(() => {

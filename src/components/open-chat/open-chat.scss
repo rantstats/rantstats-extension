@@ -56,12 +56,16 @@
             &.chat-history--subscribed {
                 background-image: linear-gradient(to right, var(--light-subscribed), var(--light-accent));
             }
+        }
 
-            &:nth-child(odd) {
-                background-color: var(--light-accent2);
+        &.alternate-colors {
+            .chat-history--row {
+                &:nth-child(odd) {
+                    background-color: var(--light-accent2);
 
-                &.chat-history--subscribed {
-                    background-image: linear-gradient(to right, var(--light-subscribed), var(--light-accent2));
+                    &.chat-history--subscribed {
+                        background-image: linear-gradient(to right, var(--light-subscribed), var(--light-accent2));
+                    }
                 }
             }
         }
@@ -72,12 +76,16 @@
             &.chat-history--subscribed {
                 background-image: linear-gradient(to right, var(--dark-subscribed), var(--dark-accent));
             }
+        }
 
-            &:nth-child(odd) {
-                background-color: var(--dark-accent2);
+        &.alternate-colors {
+            .chat-history--row {
+                &:nth-child(odd) {
+                    background-color: var(--dark-accent2);
 
-                &.chat-history--subscribed {
-                    background-image: linear-gradient(to right, var(--dark-subscribed), var(--dark-accent2));
+                    &.chat-history--subscribed {
+                        background-image: linear-gradient(to right, var(--dark-subscribed), var(--dark-accent2));
+                    }
                 }
             }
         }

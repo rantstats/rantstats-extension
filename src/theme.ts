@@ -1,6 +1,6 @@
 import { getTheme } from "./cache"
-import { getChatButtons } from "./components/open-chat/chat-buttons"
 import { rumbleThemeChanged } from "./components/events/event-rumble-theme-changed"
+import { getChatButtons } from "./components/open-chat/chat-buttons"
 import { CONSTS } from "./types/consts"
 import { Theme } from "./types/option-types"
 
@@ -74,6 +74,21 @@ export const updateThemeStyle = (themePreference: Theme): void => {
     // noinspection SpellCheckingInspection
     if (pageHtml.classList.contains("rantstats")) {
         setThemeClass(pageHtml, realThemePreference)
+    }
+}
+
+/**
+ * Update the chat to show or not show alternating colors
+ * @param alternate should colors alternate or not
+ */
+export const updateAlternateColorsStyle = (alternate: boolean): void => {
+    const chatList = document.getElementById("chat-history-list") as HTMLUListElement
+    if (chatList) {
+        if (alternate) {
+            chatList.classList.add("alternate-colors")
+        } else {
+            chatList.classList.remove("alternate-colors")
+        }
     }
 }
 
