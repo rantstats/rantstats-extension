@@ -6,12 +6,26 @@ import { CONSTS } from "../../types/consts"
 import { Message, Messages } from "../../types/messages"
 import { defaultOptions, Options, Theme } from "../../types/option-types"
 
+const saveButton = document.getElementById("save") as HTMLButtonElement
 const sortOrderSelect = document.getElementById("sort-order") as HTMLSelectElement
 const historyInput = document.getElementById("history") as HTMLInputElement
 const themeSelect = document.getElementById("theme") as HTMLSelectElement
 const openLocationCheckbox = document.getElementById("open-location") as HTMLInputElement
 const bytesUseSpan = document.getElementById(CONSTS.BYTES_USE_ID) as HTMLSpanElement
 const alternateColorsCheckbox = document.getElementById("alternate-colors") as HTMLInputElement
+
+// temporary options before saving
+let tempOptions: Options = null
+
+/**
+ * Set whether the save button should be active or not
+ * @param enabled enable or disable save button
+ */
+const setSaveButtonState = (enabled: boolean): void => {
+    const title = enabled ? "" : "No changes since last save"
+    saveButton.disabled = !enabled
+    saveButton.title = title
+}
 
 /**
  * Toggle showing or hiding the sub-options section based on the check state
@@ -47,7 +61,50 @@ const setOptions = (options: Options): void => {
     openLocationCheckbox.checked = options.asPopup
     alternateColorsCheckbox.checked = options.alternateColors
 
+    tempOptions = options
+
     updateUsage()
+}
+
+/**
+ * Get all current option values
+ * @returns the options
+ */
+const getCurrentOptions = (): Options => {
+    return {
+        sortOrder: sortOrderSelect.value,
+        historyDays: parseInt(historyInput.value, 10),
+        theme: themeSelect.value,
+        asPopup: openLocationCheckbox.checked,
+        alternateColors: alternateColorsCheckbox.checked,
+    }
+}
+
+/**
+ * Check if 2 sets of Options match
+ * @param options1 option 1 values
+ * @param options2 option 2 values
+ * @returns options match
+ */
+const doOptionsMatch = (options1: Options, options2: Options): boolean => {
+    let match = true
+    Object.entries(options1).forEach((entry1) => {
+        const key = entry1[0]
+        const value1 = entry1[1]
+        const value2 = options2[key]
+        const valuesMatch = value1 === value2
+        match = match && valuesMatch
+    })
+    return match
+}
+
+/**
+ * Handle element change event
+ */
+const optionChanged = (): void => {
+    const currentOptions = getCurrentOptions()
+    const optionsMatch = doOptionsMatch(currentOptions, tempOptions)
+    setSaveButtonState(!optionsMatch)
 }
 
 /**
@@ -55,23 +112,20 @@ const setOptions = (options: Options): void => {
  */
 const setDefault = (): void => {
     setOptions(defaultOptions)
+    setSaveButtonState(false)
 }
 
 /**
  * Save the option values from the HTML elements to storage
  */
 const saveOptions = (): void => {
-    const currentOptions: Options = {
-        sortOrder: sortOrderSelect.value,
-        historyDays: parseInt(historyInput.value, 10),
-        theme: themeSelect.value,
-        asPopup: openLocationCheckbox.checked,
-        alternateColors: alternateColorsCheckbox.checked,
-    }
+    const currentOptions = getCurrentOptions()
 
     updateOptions(currentOptions).then(() => {
         const status = document.getElementById("save-status") as HTMLParagraphElement
+        tempOptions = currentOptions
         status.textContent = "Options saved"
+        setSaveButtonState(false)
         setTimeout(() => {
             status.textContent = ""
         }, 750)
@@ -90,6 +144,9 @@ const loadOptions = (): void => {
 
     // run clean history at the beginning of each load
     cleanHistory().then()
+
+    // disable save button until something changes
+    setSaveButtonState(false)
 
     getOptions(defaultOptions).then((options) => {
         setOptions(options)
@@ -136,7 +193,14 @@ chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) =
 registerTab()
 
 document.addEventListener("DOMContentLoaded", loadOptions)
-document.getElementById("save").addEventListener("click", saveOptions)
+saveButton.addEventListener("click", saveOptions)
+sortOrderSelect.addEventListener("change", optionChanged)
+historyInput.addEventListener("change", optionChanged)
+historyInput.addEventListener("input", optionChanged)
+themeSelect.addEventListener("change", optionChanged)
+openLocationCheckbox.addEventListener("change", optionChanged)
+bytesUseSpan.addEventListener("change", optionChanged)
+alternateColorsCheckbox.addEventListener("change", optionChanged)
 document.getElementById("clear").addEventListener("click", clearOptions)
 document.getElementById("open-rants").addEventListener("click", triggerOpenRantsPage)
 
