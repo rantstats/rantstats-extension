@@ -10,51 +10,24 @@ import { initStreamCache } from "../rumble/stream-handler"
  * @returns true: button added
  */
 export const addChatButton = (onclick: () => void): boolean => {
-    const rantList = document.getElementById("chat-sticky-rants") as HTMLUListElement
-    if (rantList === null) {
+    const chatHeaderButtons = document.getElementsByClassName(
+        "chat--header-buttons-wrapper",
+    ) as HTMLCollectionOf<HTMLDivElement>
+    if (chatHeaderButtons.length === 0) {
         return false
     }
 
-    const listItem = document.createElement("li") as HTMLLIElement
+    const chatHeaderButton = chatHeaderButtons[0]
+
+    const listItem = document.createElement("button") as HTMLButtonElement
     listItem.classList.add(CONSTS.CHAT_BUTTON_ID)
-    listItem.classList.add("chat-history--rant-sticky")
-    listItem.style.position = "relative"
-    listItem.style.overflow = "hidden"
-    listItem.setAttribute("data-level", "500")
+    listItem.classList.add("chat--header-button")
+    listItem.innerHTML = `<img src="${chrome.runtime.getURL("images/dollar.svg")}" alt="Open Rant Stats"/>`
 
     listItem.onclick = onclick
     listItem.title = "Open Rant Stats"
 
-    const pillDivItem = document.createElement("div") as HTMLDivElement
-    pillDivItem.classList.add("chat-history--rant-sticky--pill")
-    pillDivItem.style.background = "#bb0218"
-    listItem.appendChild(pillDivItem)
-
-    const imageItem = document.createElement("div") as HTMLDivElement
-    imageItem.classList.add("chat--profile-pic")
-    imageItem.style.position = "relative"
-    imageItem.style.marginRight = "0.25rem"
-    imageItem.style.backgroundColor = "#37c"
-    imageItem.style.backgroundImage = `url(${chrome.runtime.getURL("images/dollar.svg")})`
-    imageItem.setAttribute("data-small", "")
-    pillDivItem.appendChild(imageItem)
-
-    const textItem = document.createElement("div") as HTMLDivElement
-    textItem.classList.add("chat-history--rant-price")
-    textItem.style.position = "relative"
-    textItem.textContent = "Rants"
-    pillDivItem.appendChild(textItem)
-
-    const wellDivItem = document.createElement("div") as HTMLDivElement
-    wellDivItem.classList.add("chat-history--rant-progressbar--well")
-    listItem.appendChild(wellDivItem)
-
-    const progressBarDivItem = document.createElement("div") as HTMLDivElement
-    progressBarDivItem.classList.add("chat-history--rant-progressbar")
-    progressBarDivItem.style.width = "100%"
-    wellDivItem.appendChild(progressBarDivItem)
-
-    rantList.insertBefore(listItem, rantList.firstChild)
+    chatHeaderButton.insertBefore(listItem, chatHeaderButton.firstChild)
     return true
 }
 
