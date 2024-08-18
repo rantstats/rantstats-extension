@@ -27,11 +27,11 @@ Extensions require the following permissions:
 -   `storage`: save options and stream data to local browser storage
 -   `unlimitedStorage`: removes storage limit (see current usage in options page)
 -   `tabs`: used to sync options and other data between pages running extension and to open the Cached Rants page
+-   `contextMenus`: adds option to context menu to open Rant Stats sidebar (or popup). Useful when Rumble changes layout and breaks button in page.
 
 ## Sidebar
 
-Open the sidebar (or popup) by clicking the "View Rants" button in the chat area of a stream that is currently live or
-the "Open Cached Rants" link on a stream archive page.
+Open the sidebar (or popup) by clicking the "View Rants" button in the chat area of a stream that is currently live or the "Open Cached Rants" link on a stream archive page. Additionally, there is a context menu "Open Rant Stats" that attempts to open the sidebar (or popup) for the current video.
 
 ![Chat Button](images/chat-small.png) ![Cached Button](images/cached-button.png)
 

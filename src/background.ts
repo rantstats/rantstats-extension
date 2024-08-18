@@ -141,3 +141,47 @@ chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) =
 chrome.action.onClicked.addListener(() => {
     handleOpenOptionsPage()
 })
+
+/**
+ * Handle sending open rants sidebar message to tab
+ * @param url tab url to send message to
+ */
+const handleMenuOpenRants = (url: string): void => {
+    openTabs.forEach((tab) => {
+        if (tab.url === url) {
+            chrome.tabs.sendMessage(
+                tab.id,
+                {
+                    action: Messages.CONTEXT_MENU_OPEN_RANTS,
+                },
+                {},
+                () => {
+                    if (chrome.runtime.lastError) {
+                        // if unable to send message, assume closed, stop tracking
+                        openTabs.delete(tab.id)
+                    }
+                },
+            )
+        }
+    })
+}
+
+/**
+ * Handle all menu item clicks
+ * @param info the clicked menu item
+ */
+async function genericOnClick(info: chrome.contextMenus.OnClickData): Promise<void> {
+    if (info.menuItemId === "menu-open-rants") {
+        handleMenuOpenRants(info.pageUrl)
+    }
+}
+
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.contextMenus.create({
+        title: "Open Rant Stats",
+        id: "menu-open-rants",
+    })
+})
+
+// A generic onclick callback function.
+chrome.contextMenus.onClicked.addListener(genericOnClick)
