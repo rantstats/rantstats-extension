@@ -13,6 +13,7 @@ export enum Messages {
     OPTIONS_SAVED_TAB,
     RUMBLE_THEME_CHANGED,
     RUMBLE_THEME_CHANGED_TAB,
+    CONTEXT_MENU_OPEN_RANTS,
 }
 
 /**

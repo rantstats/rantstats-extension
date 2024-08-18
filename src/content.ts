@@ -3,6 +3,7 @@ import { addCacheButton, addChatButton, openRantsButtonHandler } from "./compone
 import { setLastSortOrder } from "./components/rants/rant"
 import { getVideoID } from "./components/rumble/rumble"
 import { registerTab } from "./components/events/events"
+import { openSidebar } from "./context-menu-handler"
 import { handleUpdateOptions } from "./message-options"
 import { replacePageContent } from "./rantstatspage"
 import {
@@ -22,6 +23,9 @@ chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) =
             break
         case Messages.RUMBLE_THEME_CHANGED_TAB:
             updateThemeStyle(message.data.theme as Theme)
+            break
+        case Messages.CONTEXT_MENU_OPEN_RANTS:
+            openSidebar()
             break
         default:
             break
