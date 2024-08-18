@@ -1,5 +1,18 @@
 # RantStats Extension for Rumble.com
 
+## 1.4.5
+
+-   Open options page when clicking icon instead of popup
+-   Options page design, re-work logging, general cleanup
+-   Add option to disable alternate colors in chat
+-   Only enable save button when option changed
+-   Fix open chat button due to Rumble change
+-   Add context menu to open sidebar when button is missing due to Rumble changes
+
+Resolved:
+
+-   [Issue #16](https://github.com/rantstats/rantstats-extension/issues/16)
+
 ## 1.4.4
 
 -   Hide console messages for release build

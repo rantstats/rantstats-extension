@@ -65,9 +65,11 @@ If open as a sidebar, click the "Open as popup" icon to open the sidebar in a po
 
 ## Options Page
 
-The following options are available by clicking on the extension icon or opening the standalone page.
+The following options are available by clicking on the extension icon to open the Options Page.
 
-![Options](images/options-popup.png)
+After making any change, click the Save button. If no changes have been made, the Save button is disabled.
+
+![Options](images/options-page.png)
 
 ### Options
 
@@ -106,6 +108,10 @@ Options:
 -   `System`: Follow the system's theme settings regardless of Rumble's settings
 -   `Dark`: Always use dark mode regardless of Rumble's settings
 -   `Light`: Always use light mode regardless of Rumble's settings
+
+**Alternate Colors**
+
+Enables alternate colors of chat messages.
 
 **Open as Popup**
 
