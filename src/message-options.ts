@@ -10,15 +10,12 @@ import { Options, SortOrder, Theme } from "./types/option-types"
  * @param options update option values
  */
 export const handleUpdateOptions = (options: Options): void => {
-    if (options === undefined) {
-        return
-    }
     // resort open pages
-    if (options.sortOrder !== undefined) {
+    if (options?.sortOrder !== undefined) {
         setLastSortOrder(options.sortOrder as SortOrder)
         sortChats()
     }
-    if (options.theme !== undefined) {
+    if (options?.theme !== undefined) {
         updateThemeStyle(options.theme as Theme)
     }
 }

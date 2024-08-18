@@ -1,3 +1,4 @@
+import { consoleError } from "../../log"
 import { RumbleEventMessages, RumbleEventType } from "../../types/rumble-types"
 
 import { parseMessages } from "./messages"
@@ -11,9 +12,7 @@ import { parseUsers } from "./users"
 export const messagesEventHandler = (eventData: RumbleEventMessages, videoId: string): void => {
     const { type } = eventData
     if (type !== RumbleEventType.messages) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        if (DEBUG) console.error(`Invalid event type passed to messages event handler: ${type}`)
+        consoleError(`Invalid event type passed to messages event handler: ${type}`)
         return
     }
 

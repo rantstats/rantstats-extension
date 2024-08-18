@@ -82,7 +82,7 @@ export const updateThemeStyle = (themePreference: Theme): void => {
  *
  * Will update theme of data to match OS preference.
  */
-export const registerThemeWatcher = (): void => {
+export const registerSystemColorSchemeWatcher = (): void => {
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
         const newTheme = event.matches ? Theme.Dark : Theme.Light
         updateThemeStyle(newTheme)
@@ -139,8 +139,10 @@ const headObserverCallback = (mutations: Array<MutationRecord>): void => {
     })
 }
 
-// setup observer to watch for changes to Rumble.com <head>. Used to catch theme changes
-if (window.location.host === "rumble.com") {
+/**
+ * Register observer for detecting the Rumble theme
+ */
+export const registerRumbleThemeObserver = (): void => {
     const headObserver = new MutationObserver(headObserverCallback)
     headObserver.observe(document.documentElement, { childList: false, attributes: true, subtree: false })
 }

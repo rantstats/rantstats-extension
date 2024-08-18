@@ -1,55 +1,97 @@
 @import "../pages";
 
-html.popup {
-    width: 300px;
-    scrollbar-gutter: auto;
-
-    body {
-        width: 100%;
-        min-height: auto;
-
-        h1 {
-            font-size: 1.7em;
-        }
-    }
-}
-
 #options {
     .options {
         display: flex;
         flex-direction: column;
-        justify-items: center;
-    }
 
-    .option,
-    .save {
-        font-size: 1em;
-        padding: 5px 15px;
-
-        .description {
-            margin: 0;
-            padding-bottom: 5px;
-        }
-
-        input,
-        select,
-        button {
+        .option {
             font-size: 1em;
-        }
+            padding: 5px 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            border-bottom: 1px inset var(--border);
 
-        label {
-            font-weight: bold;
-        }
+            &.has-sub-options {
+                flex-direction: column;
+                align-items: unset;
+            }
 
-        .note {
-            font-size: 0.75em;
-            margin: 0 0 0 15px;
-            padding-top: 5px;
+            &:nth-child(odd) {
+                background: var(--light-accent2);
+            }
+
+            &:last-child {
+                border: none;
+            }
+
+            .option-row {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .option-info {
+                flex-grow: 1;
+                align-self: flex-start;
+
+                .name {
+                    font-weight: bold;
+                    font-size: 1.25em;
+                }
+
+                .description {
+                    margin-left: 10px;
+                }
+
+                .note {
+                    font-size: 0.9em;
+                    margin-left: 20px;
+                }
+
+                .action {
+                    margin-left: 10px;
+
+                    button {
+                        margin-left: 10px;
+                    }
+                }
+            }
+
+            .selector {
+                margin-left: auto;
+
+                input,
+                select,
+                button {
+                    font-size: 1em;
+                }
+
+                textarea {
+                    height: 150px;
+                    width: 300px;
+                    min-height: 150px;
+                    min-width: 300px;
+                    resize: vertical;
+                }
+            }
+
+            .sub-options {
+                display: none;
+                margin-left: 20px;
+
+                &.visible {
+                    display: block;
+                }
+            }
         }
     }
 
     .save {
         text-align: right;
+        margin-right: 10px;
+        //padding: 5px;
     }
 
     .pages {
@@ -72,6 +114,18 @@ html.popup {
 
             button {
                 font-size: 1em;
+            }
+        }
+    }
+}
+
+.theme-dark {
+    #options {
+        .options {
+            .option {
+                &:nth-child(odd) {
+                    background: var(--dark-accent);
+                }
             }
         }
     }

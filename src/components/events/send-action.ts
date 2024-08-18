@@ -18,7 +18,7 @@ export const sendAction = (
         } as Message,
         () => {
             if (chrome.runtime.lastError) {
-                // console.log("action error", chrome.runtime.lastError)
+                // consoleLog("action error", chrome.runtime.lastError)
             }
         },
     )

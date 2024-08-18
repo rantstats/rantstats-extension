@@ -3,6 +3,89 @@ import { RumbleRantLevel } from "../../types/rumble-types"
 
 import { setRantLevelValues } from "./rant"
 
+const fallbackLevels: Array<RumbleRantLevel> = [
+    {
+        price_dollars: 1,
+        duration: 120,
+        colors: { fg: "white", main: "#4a90e2", bg2: "#4382cb" },
+        ids: ["rant1", "rant1qa", "rant1dev"],
+    },
+    {
+        price_dollars: 2,
+        duration: 180,
+        colors: { fg: "black", main: "#b8e986", bg2: "#a6d279" },
+        ids: ["rant2", "rant2qa", "rant2dev"],
+    },
+    {
+        price_dollars: 5,
+        duration: 300,
+        colors: { fg: "black", main: "#f8e71c", bg2: "#dfd019" },
+        ids: ["rant5", "rant5qa", "rant5dev"],
+    },
+    {
+        price_dollars: 10,
+        duration: 600,
+        colors: { fg: "black", main: "#f5a623", bg2: "#dd9520" },
+        ids: ["rant10", "rant10qa", "rant10dev"],
+    },
+    {
+        price_dollars: 20,
+        duration: 1200,
+        colors: { fg: "white", main: "#bd10e0", bg2: "#aa0eca" },
+        ids: ["rant20", "rant20qa", "rant20dev"],
+    },
+    {
+        price_dollars: 50,
+        duration: 2400,
+        colors: { fg: "white", main: "#9013fe", bg2: "#8211e5" },
+        ids: ["rant50", "rant50qa", "rant50dev"],
+    },
+    {
+        price_dollars: 100,
+        duration: 3600,
+        colors: { fg: "white", main: "#d0021b", bg2: "#bb0218" },
+        ids: ["rant100", "rant100qa", "rant100dev"],
+    },
+    {
+        price_dollars: 200,
+        duration: 7200,
+        colors: { fg: "white", main: "#d0021b", bg2: "#bb0218" },
+        ids: ["rant200", "rant200qa", "rant200dev"],
+    },
+    {
+        price_dollars: 300,
+        duration: 10800,
+        colors: { fg: "white", main: "#d0021b", bg2: "#bb0218" },
+        ids: ["rant300", "rant300qa", "rant300dev"],
+    },
+    {
+        price_dollars: 400,
+        duration: 14400,
+        colors: { fg: "white", main: "#d0021b", bg2: "#bb0218" },
+        ids: ["rant400", "rant400qa", "rant400dev"],
+    },
+    {
+        price_dollars: 500,
+        duration: 18000,
+        colors: { fg: "white", main: "#d0021b", bg2: "#bb0218" },
+        ids: ["rant500", "rant500qa", "rant500dev"],
+    },
+]
+
+/**
+ * Generate CSS style data for Rumble Rants based on the level data received
+ * @param levelInfo The received Rant level data
+ * @returns The CSS style lines
+ */
+const generateStyleLines = (levelInfo: RumbleRantLevel): Array<string> => {
+    const externalChat = `.external-chat[data-level="${levelInfo.price_dollars}"]`
+    return [
+        `${externalChat} { background: ${levelInfo.colors.bg2} !important; }`,
+        `${externalChat} * { color: ${levelInfo.colors.fg} !important; }`,
+        `${externalChat} .rant-amount { background: ${levelInfo.colors.main} !important; }`,
+    ]
+}
+
 /**
  * Parse level data from received message
  * @param levels received level data
@@ -13,70 +96,23 @@ export const parseLevels = (levels: Array<RumbleRantLevel>, fallback: boolean = 
         return
     }
 
-    const styleLines = []
+    const styleLines: Array<string> = []
 
+    let levelList: Array<RumbleRantLevel>
     if (fallback || levels.length === 0) {
-        setRantLevelValues([1, 2, 5, 10, 20, 50, 100, 200, 300, 400, 500])
-        styleLines.push(
-            ...[
-                '.external-chat[data-level="1"] { background: #4382CB !important; }',
-                '.external-chat[data-level="1"] * {color: white !important; }',
-                '.external-chat[data-level="1"] .rant-amount { background: #4A90E2 !important; }',
-                '.external-chat[data-level="2"] { background: #A6D279 !important; }',
-                '.external-chat[data-level="2"] * {color: black !important; }',
-                '.external-chat[data-level="2"] .rant-amount { background: #B8E986 !important; }',
-                '.external-chat[data-level="5"] { background: #DFD019 !important; }',
-                '.external-chat[data-level="5"] * {color: black !important; }',
-                '.external-chat[data-level="5"] .rant-amount { background: #F8E71C !important; }',
-                '.external-chat[data-level="10"] { background: #DD9520 !important; }',
-                '.external-chat[data-level="10"] * {color: black !important; }',
-                '.external-chat[data-level="10"] .rant-amount { background: #F5A623 !important; }',
-                '.external-chat[data-level="20"] { background: #AA0ECA !important; }',
-                '.external-chat[data-level="20"] * {color: white !important; }',
-                '.external-chat[data-level="20"] .rant-amount { background: #BD10E0 !important; }',
-                '.external-chat[data-level="50"] { background: #8211E5 !important; }',
-                '.external-chat[data-level="50"] * {color: white !important; }',
-                '.external-chat[data-level="50"] .rant-amount { background: #9013FE !important; }',
-                '.external-chat[data-level="100"] { background: #BB0218 !important; }',
-                '.external-chat[data-level="100"] * {color: white !important; }',
-                '.external-chat[data-level="100"] .rant-amount { background: #D0021B !important; }',
-                '.external-chat[data-level="200"] { background: #BB0218 !important; }',
-                '.external-chat[data-level="200"] * {color: white !important; }',
-                '.external-chat[data-level="200"] .rant-amount { background: #D0021B !important; }',
-                '.external-chat[data-level="300"] { background: #BB0218 !important; }',
-                '.external-chat[data-level="300"] * {color: white !important; }',
-                '.external-chat[data-level="300"] .rant-amount { background: #D0021B !important; }',
-                '.external-chat[data-level="400"] { background: #BB0218 !important; }',
-                '.external-chat[data-level="400"] * {color: white !important; }',
-                '.external-chat[data-level="400"] .rant-amount { background: #D0021B !important; }',
-                '.external-chat[data-level="500"] { background: #BB0218 !important; }',
-                '.external-chat[data-level="500"] * {color: white !important; }',
-                '.external-chat[data-level="500"] .rant-amount { background: #D0021B !important; }',
-            ],
-        )
+        levelList = fallbackLevels
     } else {
-        const rantLevelValues = []
-        levels.forEach((rantLevel: RumbleRantLevel) => {
-            rantLevelValues.push(rantLevel.price_dollars)
-            const externalChat = `.external-chat[data-level="${rantLevel.price_dollars}"]`
-            styleLines.push(
-                ...[
-                    `${externalChat} {`,
-                    `background: ${rantLevel.colors.bg2} !important;`,
-                    `}`,
-                    `${externalChat} * {`,
-                    `color: ${rantLevel.colors.fg} !important;`,
-                    `}`,
-                    `${externalChat} .rant-amount {`,
-                    `background: ${rantLevel.colors.main} !important;`,
-                    `}`,
-                ],
-            )
-        })
-
-        rantLevelValues.sort()
-        setRantLevelValues(rantLevelValues)
+        levelList = levels
     }
+
+    const rantLevelValues: Array<number> = []
+    levelList.forEach((rantLevel) => {
+        rantLevelValues.push(rantLevel.price_dollars)
+        styleLines.push(...generateStyleLines(rantLevel))
+    })
+
+    rantLevelValues.sort()
+    setRantLevelValues(rantLevelValues)
 
     const levelStyle = document.createElement("style") as HTMLStyleElement
     levelStyle.id = CONSTS.LEVEL_STYLE_ID

@@ -1,4 +1,5 @@
 import { getLastWidth, getSortOrder, getStream, setLastWidth } from "../../cache"
+import { consoleLog } from "../../log"
 import { triggerOpenOptionsPage } from "../events/events"
 import { updateTheme } from "../../theme"
 import { CONSTS } from "../../types/consts"
@@ -78,10 +79,7 @@ export const addRantStatsSidebar = async (
     popup: boolean = false,
     cache: boolean = false,
 ): Promise<void> => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line no-console
-    if (DEBUG) console.log(`open rant stats sidebar for video ${videoId}`)
+    consoleLog(`open rant stats sidebar for video ${videoId}`)
 
     const existingSidebar = document.getElementById(CONSTS.SIDEBAR_ID)
     if (existingSidebar !== null && !popup) {
@@ -107,7 +105,7 @@ export const addRantStatsSidebar = async (
                 <h1 id="${CONSTS.SIDEBAR_TITLE_ID}">Rant Stats</h1>
             </header>
             <div class="hidden" id="${CONSTS.ERROR_ID}">
-                <p>Could not load chats, is the livestream over or are you not logged in to Rumble? Any cached Rants shown below.</p>
+                <p>Could not load chats, is the livestream over? Any cached Rants shown below.</p>
             </div>
             <div class="hidden" id="${CONSTS.CACHE_MESSAGE_ID}">
                 <p>Stream is over, dispalying <span id="${CONSTS.CACHE_MESSAGE_COUNT_ID}">-1</span> cached rants.</p>

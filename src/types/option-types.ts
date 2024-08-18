@@ -51,8 +51,6 @@ export type Options = {
      * Saved as string but should be cast to {@link SortOrder}
      */
     sortOrder: string // SortOrder
-    // cache: boolean
-    // sync: boolean
     /**
      * The number of days to keep stream in cache
      */
@@ -73,8 +71,6 @@ export type Options = {
  */
 export const defaultOptions: Options = {
     sortOrder: SortOrder.NewToOld.toString(),
-    // cache: true,
-    // sync: false,
     historyDays: 30,
     theme: Theme.Rumble.toString(),
     asPopup: false,
