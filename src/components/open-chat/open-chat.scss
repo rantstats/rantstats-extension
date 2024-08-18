@@ -31,8 +31,15 @@
     }
 }
 
+// override due to new button in row
+.media-page-chat-aside-chat .chat--header h1,
+.media-page-chat-theater-wrapper .chat--header h1 {
+    margin-left: 30% !important;
+}
+
 .rs-display-chat-button {
     cursor: pointer;
+    background: #d0021b !important;
 
     &:hover {
         text-decoration: underline;
