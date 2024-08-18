@@ -1,4 +1,5 @@
 import { cacheStream } from "../../cache"
+import { consoleError } from "../../log"
 import { CONSTS } from "../../types/consts"
 import { RumbleEventBase, RumbleEventInit, RumbleEventMessages, RumbleEventType } from "../../types/rumble-types"
 import { setupPopup } from "../popup/popup"
@@ -63,22 +64,16 @@ export const messageHandler = (event: MessageEvent, videoId: string): void => {
                 messagesEventHandler(eventData as RumbleEventMessages, videoId)
                 break
             case RumbleEventType.mute_users:
-                // TODO: restore message in chat (if configured)
+                // ignored
                 break
             case RumbleEventType.delete_non_rant_messages:
-                // TODO: restore message in chat (if configured)
+                // ignored
                 break
             default:
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                if (DEBUG) console.error("Unknown event type", eventData)
+                consoleError("Unknown event type", eventData)
         }
     } catch (e) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        if (DEBUG) {
-            console.error("Error parsing message:")
-            console.error(e)
-        }
+        consoleError("Error parsing message:")
+        consoleError(e)
     }
 }

@@ -1,3 +1,4 @@
+import { consoleLog } from "./log"
 import { Message, Messages } from "./types/messages"
 import { Options, Theme } from "./types/option-types"
 
@@ -38,10 +39,7 @@ const handlePageLoaded = (tabUrl: string): void => {
             try {
                 openTabs.set(tab.id, tab)
             } catch (e) {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                // eslint-disable-next-line no-console
-                if (DEBUG) console.log(`error adding tab: ${tab.url}`)
+                consoleLog(`error adding tab: ${tab.url}`)
             }
         })
     })
@@ -78,7 +76,7 @@ const handleUpdateOptions = (options: Options): void => {
             {},
             () => {
                 if (chrome.runtime.lastError) {
-                    // console.log("update options error", chrome.runtime.lastError, "for tab", tab)
+                    // consoleLog("update options error", chrome.runtime.lastError, "for tab", tab)
                     // if unable to send message, assume closed, stop tracking
                     openTabs.delete(tab.id)
                 }
@@ -104,7 +102,7 @@ const handleRumbleThemeChanged = (theme: Theme): void => {
             {},
             () => {
                 if (chrome.runtime.lastError) {
-                    // console.log("update theme error", chrome.runtime.lastError, "for tab", tab)
+                    // consoleLog("update theme error", chrome.runtime.lastError, "for tab", tab)
                     // if unable to send message, assume closed, stop tracking
                     openTabs.delete(tab.id)
                 }

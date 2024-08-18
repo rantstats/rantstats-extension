@@ -53,10 +53,6 @@ module.exports = (env, argv) => {
                         from: "src/pages/rants/rants.html",
                         to: "pages/rants",
                     },
-                    {
-                        from: "src/components/chat-watcher/muteWords.txt",
-                        to: "components/chat-watcher/",
-                    },
                 ],
             }),
         ],

@@ -2,8 +2,6 @@
  * Define strings constants used throughout extension
  */
 export enum CONSTS {
-    // BYTES_PERCENTAGE_ID = 'bytes-percentage',
-    // BYTES_TOTAL_ID = 'bytes-total',
     BYTES_USE_ID = "bytes-use",
     CACHE_MESSAGE_COUNT_ID = "cache-message-count",
     CACHE_MESSAGE_ID = "cache-message",

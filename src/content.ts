@@ -1,11 +1,16 @@
-import { cleanHistory, getAllVideoIs, getSortOrder } from "./cache"
+import { cleanHistory, getAllVideoIs, getOptions, getSortOrder } from "./cache"
 import { addCacheButton, addChatButton, openRantsButtonHandler } from "./components/open-chat/open-chat"
 import { setLastSortOrder } from "./components/rants/rant"
 import { getVideoID } from "./components/rumble/rumble"
 import { registerTab } from "./components/events/events"
 import { handleUpdateOptions } from "./message-options"
 import { replacePageContent } from "./rantstatspage"
-import { registerThemeWatcher, updateChatThemeStyle, updateThemeStyle } from "./theme"
+import {
+    registerRumbleThemeObserver,
+    registerSystemColorSchemeWatcher,
+    updateChatThemeStyle,
+    updateThemeStyle,
+} from "./theme"
 import { Message, Messages } from "./types/messages"
 import { Options, Theme } from "./types/option-types"
 
@@ -23,8 +28,11 @@ chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) =
     sendResponse({ done: true })
 })
 
-registerThemeWatcher()
+registerSystemColorSchemeWatcher()
+registerRumbleThemeObserver()
 updateChatThemeStyle()
+
+getOptions().then()
 
 // run clean history at the beginning of each load
 cleanHistory().then()

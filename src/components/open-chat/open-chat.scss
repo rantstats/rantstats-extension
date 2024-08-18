@@ -53,16 +53,32 @@
 
     &.theme-light {
         .chat-history--row {
+            &.chat-history--subscribed {
+                background-image: linear-gradient(to right, var(--light-subscribed), var(--light-accent));
+            }
+
             &:nth-child(odd) {
-                background: var(--light-accent2);
+                background-color: var(--light-accent2);
+
+                &.chat-history--subscribed {
+                    background-image: linear-gradient(to right, var(--light-subscribed), var(--light-accent2));
+                }
             }
         }
     }
 
     &.theme-dark {
         .chat-history--row {
+            &.chat-history--subscribed {
+                background-image: linear-gradient(to right, var(--dark-subscribed), var(--dark-accent));
+            }
+
             &:nth-child(odd) {
-                background: var(--dark-accent2);
+                background-color: var(--dark-accent2);
+
+                &.chat-history--subscribed {
+                    background-image: linear-gradient(to right, var(--dark-subscribed), var(--dark-accent2));
+                }
             }
         }
     }
