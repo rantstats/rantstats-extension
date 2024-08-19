@@ -1,5 +1,9 @@
 # RantStats Extension for Rumble.com
 
+## 1.4.6
+
+-   Fix context menu showing up on all pages instead of only Rumble video pages
+
 ## 1.4.5
 
 -   Open options page when clicking icon instead of popup

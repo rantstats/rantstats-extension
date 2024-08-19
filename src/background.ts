@@ -180,6 +180,7 @@ chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         title: "Open Rant Stats",
         id: "menu-open-rants",
+        documentUrlPatterns: ["https://rumble.com/v*"],
     })
 })
 
