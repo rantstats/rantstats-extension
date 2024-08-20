@@ -35,6 +35,7 @@
                 "components/open-chat/open-chat.css",
                 "components/rants/rants.css",
                 "components/rants/rant.css",
+                "pages/about/about.css",
                 "pages/options/options.css",
                 "pages/rants/rants.css"
             ],

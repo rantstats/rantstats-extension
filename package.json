@@ -7,7 +7,7 @@
     "scripts": {
         "build": "run-p -cln 'build:*'",
         "build:webpack": "webpack --mode=development",
-        "build:sass": "sass src/styles.scss:output/styles.css src/pages/rants/rants.scss:output/pages/rants/rants.css src/pages/pages.scss:output/pages/pages.css src/pages/options/options.scss:output/pages/options/options.css src/components/rants/rants.scss:output/components/rants/rants.css src/components/rants/rant.scss:output/components/rants/rant.css src/components/open-chat/open-chat.scss:output/components/open-chat/open-chat.css",
+        "build:sass": "sass src/styles.scss:output/styles.css src/pages/rants/rants.scss:output/pages/rants/rants.css src/pages/pages.scss:output/pages/pages.css src/pages/options/options.scss:output/pages/options/options.css src/pages/about/about.scss:output/pages/about/about.css src/components/rants/rants.scss:output/components/rants/rants.css src/components/rants/rant.scss:output/components/rants/rant.css src/components/open-chat/open-chat.scss:output/components/open-chat/open-chat.css",
         "watch": "run-p -cln 'watch:*'",
         "watch:webpack:": "yarn build:webpack --watch",
         "watch:sass": "yarn build:sass --watch",
@@ -21,7 +21,7 @@
         "build-release": "run-p -cln 'build-release:*'",
         "build-release:lint": "yarn lint",
         "build-release:js": "yarn build --mode=production",
-        "build-release:sass": "sass --style=compressed src/styles.scss output/styles.css"
+        "build-release:sass": "sass --style=compressed src/styles.scss:output/styles.css src/pages/rants/rants.scss:output/pages/rants/rants.css src/pages/pages.scss:output/pages/pages.css src/pages/options/options.scss:output/pages/options/options.css src/pages/about/about.scss:output/pages/about/about.css src/components/rants/rants.scss:output/components/rants/rants.css src/components/rants/rant.scss:output/components/rants/rant.css src/components/open-chat/open-chat.scss:output/components/open-chat/open-chat.css"
     },
     "repository": {
         "type": "git",

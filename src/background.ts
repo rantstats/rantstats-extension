@@ -28,6 +28,20 @@ const handleOpenRantsPage = (): void => {
 }
 
 /**
+ * Handle receiving message {@link Messages.OPEN_ABOUT}
+ *
+ * Opens about page
+ */
+const handleOpenAboutPage = (): void => {
+    chrome.tabs.create(
+        {
+            url: "pages/about/about.html",
+        },
+        () => {},
+    )
+}
+
+/**
  * Handle receiving message {@link Messages.PAGE_LOADED}
  *
  * Registers tab open at URL
@@ -121,6 +135,9 @@ chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) =
             break
         case Messages.OPEN_RANTS:
             handleOpenRantsPage()
+            break
+        case Messages.OPEN_ABOUT:
+            handleOpenAboutPage()
             break
         case Messages.PAGE_LOADED:
             handlePageLoaded(message.data.tab as string)

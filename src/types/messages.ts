@@ -8,6 +8,7 @@ export enum Messages {
     OPEN_OPTIONS,
     OPTIONS_SAVED,
     OPEN_RANTS,
+    OPEN_ABOUT,
     PAGE_LOADED,
     PAGE_UNLOADED,
     OPTIONS_SAVED_TAB,

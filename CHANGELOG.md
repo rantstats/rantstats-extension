@@ -3,6 +3,7 @@
 ## 1.4.6
 
 -   Fix context menu showing up on all pages instead of only Rumble video pages
+-   Add About page
 
 ## 1.4.5
 

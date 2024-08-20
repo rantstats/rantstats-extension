@@ -1,5 +1,5 @@
 import { cleanHistory, getOptions, getUsage, updateOptions } from "../../cache"
-import { optionsSaved, registerTab, triggerOpenRantsPage } from "../../components/events/events"
+import { optionsSaved, registerTab, triggerOpenAboutPage, triggerOpenRantsPage } from "../../components/events/events"
 import { handleUpdateOptions } from "../../message-options"
 import { registerSystemColorSchemeWatcher, updateTheme, updateThemeStyle } from "../../theme"
 import { CONSTS } from "../../types/consts"
@@ -203,6 +203,7 @@ bytesUseSpan.addEventListener("change", optionChanged)
 alternateColorsCheckbox.addEventListener("change", optionChanged)
 document.getElementById("clear").addEventListener("click", clearOptions)
 document.getElementById("open-rants").addEventListener("click", triggerOpenRantsPage)
+document.getElementById("open-about").addEventListener("click", triggerOpenAboutPage)
 
 document.querySelectorAll(".has-sub-options").forEach((optionDiv: HTMLDivElement) => {
     optionDiv.querySelectorAll(".option-row .selector input").forEach((checkbox) => {
