@@ -1,5 +1,5 @@
 import { cleanHistory, getAllStreams, getOptions, getStream, removeStream } from "../../cache"
-import { registerTab } from "../../components/events/events"
+import { registerTab, triggerOpenAboutPage } from "../../components/events/events"
 import { displayCachedRants } from "../../components/rants/cached-rants"
 import { parseLevels } from "../../components/rants/levels"
 import { clearDisplayedMessages, setLastSortOrder, updateTotalText } from "../../components/rants/rant"
@@ -262,3 +262,5 @@ document.addEventListener("click", async (event) => {
 })
 
 registerTab()
+
+document.getElementById("open-about").addEventListener("click", triggerOpenAboutPage)

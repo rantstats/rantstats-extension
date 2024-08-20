@@ -12,6 +12,7 @@ module.exports = (env, argv) => {
             background: "./src/background.ts",
             options: "./src/pages/options/options.ts",
             rants: "./src/pages/rants/rants.ts",
+            about: "./src/pages/about/about.ts",
         },
         output: {
             path: path.resolve(__dirname, "./output"),
@@ -52,6 +53,10 @@ module.exports = (env, argv) => {
                     {
                         from: "src/pages/rants/rants.html",
                         to: "pages/rants",
+                    },
+                    {
+                        from: "src/pages/about/about.html",
+                        to: "pages/about",
                     },
                 ],
             }),

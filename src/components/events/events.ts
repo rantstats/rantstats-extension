@@ -19,6 +19,13 @@ export const triggerOpenRantsPage = (): void => {
 }
 
 /**
+ * Send Message to open about page
+ */
+export const triggerOpenAboutPage = (): void => {
+    sendAction(Messages.OPEN_ABOUT)
+}
+
+/**
  * Send Message with updated Options
  * @param options updated option values
  */
