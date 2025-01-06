@@ -39,6 +39,7 @@ export const displayCachedRants = (videoId: string, activeStream: boolean, cache
                     value.text,
                     value.rant as RumbleRant,
                     value.notification,
+                    value.giftPurchaseNotification,
                     value.username,
                     undefined,
                     value.badges,

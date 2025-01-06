@@ -1,8 +1,8 @@
 import { cacheMessage, getAllCachedMessageIds, getBadge, getBadges, getUser, updateCachedMessage } from "../../cache"
-import { CacheBadge, Notification } from "../../types/cache"
+import { CacheBadge, GiftPurchaseNotification, Notification } from "../../types/cache"
 import { CONSTS } from "../../types/consts"
 import { SortOrder } from "../../types/option-types"
-import { RumbleNotification, RumbleRant } from "../../types/rumble-types"
+import { RumbleGiftPurchaseNotification, RumbleNotification, RumbleRant } from "../../types/rumble-types"
 import { getVideoIdFromDiv } from "../../utils"
 
 /**
@@ -303,7 +303,8 @@ const addChat = (chatDiv: HTMLDivElement, messageId: string): void => {
     chatList.appendChild(chatDiv)
     displayedMessages.push(messageId)
 
-    sortChats() // TODO: for speed, may want to not call sort everytime and instead just insert in the right location
+    // TODO: for speed, may want to not call sort everytime and instead just insert in the right location
+    sortChats()
 }
 
 /**
@@ -477,6 +478,99 @@ const renderNotification = async (
 }
 
 /**
+ * Render a gift notification
+ * @param messageId id of the message
+ * @param time Time message was posted
+ * @param giftPurchaseNotification gift purchase notification
+ * @param username Username for user
+ * @param userImage Optional path to profile image
+ * @param cachePage true: data being displayed on cache page
+ * @returns A void promise
+ */
+const renderGiftNotification = async (
+    messageId: string,
+    time: string,
+    giftPurchaseNotification: GiftPurchaseNotification,
+    username: string,
+    userImage: string,
+    cachePage: boolean = false,
+): Promise<void> => {
+    if (giftPurchaseNotification === undefined) {
+        return
+    }
+
+    const userImageHTML = getUserImageHtml(userImage, username, messageId)
+
+    const chatDate = new Date(time)
+    const isoDate = chatDate.toISOString()
+
+    const chatDiv = document.createElement("div") as HTMLDivElement
+    chatDiv.classList.add("external-chat")
+    chatDiv.classList.add("gift-notification")
+    if (giftPurchaseNotification.read) {
+        chatDiv.classList.add("read")
+    }
+    chatDiv.setAttribute("data-chat-id", messageId)
+    chatDiv.setAttribute("data-date", isoDate)
+    chatDiv.setAttribute("data-username", username)
+
+    const text = `gifted ${giftPurchaseNotification.total_gifts} subscriptions!`
+
+    let html = `
+        <div class="gift-notification-info">
+            <time class="timestamp" datatype="${isoDate}">${chatDate.toLocaleDateString()}
+                ${chatDate.toLocaleTimeString()}
+            </time>
+            <label for="${messageId}" class="show-hide-checkbox">
+                Read:
+                <input type="checkbox" id="${messageId}" class="${CONSTS.READ_CHECK}" ${
+                    giftPurchaseNotification.read ? "checked" : ""
+                }/>
+            </label>
+        </div>
+    `
+
+    let giftReceiversHTML = `<ul class="gift-receivers" id="gift-list-${messageId}">`
+    if (giftPurchaseNotification.gift_receivers) {
+        giftPurchaseNotification.gift_receivers.forEach((receiver) => {
+            giftReceiversHTML = `${giftReceiversHTML}<li>${receiver}</li>`
+        })
+    }
+    giftReceiversHTML = `${giftReceiversHTML}</ul>`
+
+    if (cachePage) {
+        html = `
+            ${html}
+            <div class="rant-data">
+                <div class="user-image">${userImageHTML}</div>
+
+                <div class="rant-details">
+                    <div class="user-info">
+                        <p class="notification-text">${username} ${text}</p>
+                        ${giftReceiversHTML}
+                    </div>
+                </div>
+            </div>
+        `
+    } else {
+        html = `
+            ${html}
+            <div class="user-info">
+                <div class="user-image">${userImageHTML}</div>
+                <p class="notification-text">${username} ${text}</p>
+                ${giftReceiversHTML}
+            </div>
+        `
+    }
+    chatDiv.innerHTML = html
+
+    addChat(chatDiv, messageId)
+
+    const userImageElement = document.getElementById(`img-${messageId}`) as HTMLImageElement
+    if (userImageElement) userImageElement.addEventListener("error", imageErrorHandler)
+}
+
+/**
  * Render Rumble Rant
  * @param videoId id of video
  * @param messageId id of the message
@@ -485,6 +579,7 @@ const renderNotification = async (
  * @param text text of the message
  * @param rant paid Rumble Rant data
  * @param notification notification associated with Rant
+ * @param giftPurchaseNotification notification of gift purchase
  * @param username Username for user
  * @param userImage Optional path to profile image
  * @param badges badges for user
@@ -500,6 +595,7 @@ export const renderMessage = async (
     text: string,
     rant: RumbleRant = undefined,
     notification: RumbleNotification = undefined,
+    giftPurchaseNotification: RumbleGiftPurchaseNotification = undefined,
     username: string = undefined,
     userImage: string = undefined,
     badges: Array<string> = undefined,
@@ -537,20 +633,90 @@ export const renderMessage = async (
                 price_cents: rant?.price_cents,
             },
             notification,
+            giftPurchaseNotification,
             badges,
             read,
         }).then()
     }
 
-    // subscription may not have a message text so don't render
-    if (rant && text !== "") {
+    const messageIdNotification = `${messageId}-notification`
+
+    if (isGiftReceiver(text)) {
+        addGiftReceiver(messageId, time, text, realUsername)
+    } else if (rant && text !== "") {
+        // subscription may not have a message text so don't render
         await renderRant(messageId, time, text, rant, realUsername, realUserImage, badges, read, cachePage)
-    }
-    if (notification) {
-        const messageIdNotification = `${messageId}-notification`
+    } else if (notification) {
         await renderNotification(messageIdNotification, time, notification, realUsername, realUserImage, cachePage)
+    } else if (giftPurchaseNotification) {
+        await renderGiftNotification(
+            messageIdNotification,
+            time,
+            giftPurchaseNotification,
+            realUsername,
+            realUserImage,
+            cachePage,
+        )
     }
 }
+
+const GIFTED_REGEX = /Was gifted a membership by (?<giver_name>.+?) /
+
+export const isGiftReceiver = (text: string): boolean => {
+    return GIFTED_REGEX.exec(text) !== null
+}
+
+export const addGiftReceiver = (messageId: string, time: string, text: string, username: string): void => {
+    if (text === undefined || text === "") {
+        return
+    }
+
+    // extract gift giver username
+    const match = GIFTED_REGEX.exec(text)
+    if (match === null) {
+        return
+    }
+    const giftGiverUsername = match["giver_name"]
+    console.log(`Looking for giver ${giftGiverUsername}`)
+
+    const chatDate = new Date(time)
+    // const isoDate = chatDate.toISOString()
+
+    // get all gifts from giver
+    const giverGifts = document.querySelectorAll<HTMLDivElement>(
+        `.gift-notification[data-username="${giftGiverUsername}"]`,
+    )
+    // select one with date closest to this one
+    let matchingGift: HTMLDivElement
+    let lastDelta: number = -1
+    for (let i = 0; i < giverGifts.length; ++i) {
+        const giftGift = giverGifts[i]
+        const giftISODate = giftGift.getAttribute("data-date")
+        const giftDate = new Date(Date.parse(giftISODate))
+
+        const delta = Math.abs(chatDate.getTime() - giftDate.getTime())
+
+        if (lastDelta === -1) {
+            matchingGift = giftGift
+        } else {
+            if (delta < lastDelta) {
+                matchingGift = giftGift
+            }
+        }
+        lastDelta = delta
+    }
+
+    if (matchingGift === undefined) {
+        console.log(`Unable to find matching gift giver ${giftGiverUsername}`, text)
+        return
+    }
+
+    // find list
+    const giftMessageId = matchingGift.getAttribute("data-chat-id")
+    const giftList = document.querySelector<HTMLUListElement>(`gift-list-${giftMessageId}`)
+    giftList.append(`<li data-chat-id="${messageId}">${username}</li>`)
+}
+
 /**
  * Toggle the 'read' state of the Rumble Rant
  * @param event click event
