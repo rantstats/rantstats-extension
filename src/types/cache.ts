@@ -26,6 +26,33 @@ export type Notification = {
     read?: boolean
 }
 
+export type GiftPurchaseNotification = {
+    /**
+     * Type of gift
+     */
+    gift_type: string
+    /**
+     * Number of gifts sent
+     */
+    total_gifts: number
+    /**
+     * Id of the creator the gift is for (the streamer)
+     */
+    creator_user_id: number
+    /**
+     * Channel for the gift
+     */
+    creator_channel_id?: string
+    /**
+     * Indicates if notification was marked Read independent of any associated Rant
+     */
+    read?: boolean
+    /**
+     * List of names of users receiving gift
+     */
+    gift_receivers?: string[]
+}
+
 /**
  * Object for storing and managing a received Rumble Rant
  */
@@ -58,6 +85,7 @@ export type CachedRant = {
      * Notification associated with message
      */
     notification?: Notification
+    giftPurchaseNotification?: GiftPurchaseNotification
     /**
      * Badges associated with user who sent Rant
      */
