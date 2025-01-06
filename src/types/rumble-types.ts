@@ -64,6 +64,25 @@ export type RumbleNotification = {
     text: string
 }
 
+export type RumbleGiftPurchaseNotification = {
+    /**
+     * Type of gift
+     */
+    gift_type: string
+    /**
+     * Number of gifts sent
+     */
+    total_gifts: number
+    /**
+     * Id of the creator the gift is for (the streamer)
+     */
+    creator_user_id: number
+    /**
+     * Channel for the gift
+     */
+    creator_channel_id?: string
+}
+
 /**
  *
  */
@@ -80,6 +99,10 @@ export type RumbleChannel = {
      * Username for channel
      */
     username: string
+    /**
+     * Optional path to channel image
+     */
+    "image.1"?: string
 }
 
 /**
@@ -100,12 +123,18 @@ export type RumbleMessage = {
     user_id: string
     /**
      * Text of message
+     *
+     * Gifted subscription has empty text
      */
     text: string
     /**
      * Array of message blocks
      */
     blocks: Array<RumbleBlock>
+    /**
+     * Channel chat is from
+     */
+    channel_id: number
     /**
      * Optional paid Rant information
      */
@@ -114,6 +143,7 @@ export type RumbleMessage = {
      * Optional notification information (ex: monthly subscriber)
      */
     notification?: RumbleNotification
+    gift_purchase_notification?: RumbleGiftPurchaseNotification
 }
 
 /**
@@ -259,6 +289,26 @@ export type RumbleSubscription = {
     enable: boolean
 }
 
+export type RumbleGift = {
+    /**
+     * Id of gift level
+     */
+    id: string
+    /**
+     * Amount of gift in cents (NOTE: doesn't align with what the user pays)
+     */
+    amount_cents: number
+    /**
+     * Number of subscriptions that will be gifted
+     */
+    total_gifts: number
+}
+
+export type RumbleGifts = {
+    type: string
+    products: RumbleGift[]
+}
+
 /**
  * Rumble config object
  */
@@ -279,6 +329,10 @@ export type RumbleConfig = {
      * Subscription data
      */
     subscription: RumbleSubscription
+    /**
+     * Gift information
+     */
+    gifts: RumbleGifts
 }
 
 /**
@@ -311,6 +365,14 @@ export type RumbleInitData = RumbleDataBase & {
      * The Rumble chat configuration data
      */
     config: RumbleConfig
+    /**
+     * Unsure what this is or the correct type. Just know it can be null
+     */
+    ad_read?: boolean
+    /**
+     * Indicates user is a moderator of the channel?
+     */
+    can_moderate: boolean
 }
 
 /**
