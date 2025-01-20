@@ -1,8 +1,9 @@
 import { cleanHistory, getAllStreams, getOptions, getStream, removeStream } from "../../cache"
-import { registerTab, triggerOpenAboutPage } from "../../components/events/events"
+import { registerTab, triggerOpenAboutPage, triggerOpenOptionsPage } from "../../components/events/events"
 import { displayCachedRants } from "../../components/rants/cached-rants"
 import { parseLevels } from "../../components/rants/levels"
 import { clearDisplayedMessages, setLastSortOrder, updateTotalText } from "../../components/rants/rant"
+import { downloadCSV } from "../../components/rants/rants"
 import { consoleLog } from "../../log"
 import { handleUpdateOptions } from "../../message-options"
 import { registerSystemColorSchemeWatcher, updateTheme, updateThemeStyle } from "../../theme"
@@ -253,7 +254,11 @@ document.addEventListener("click", async (event) => {
     const target = event.target as HTMLElement
     const disabled = target.classList.contains("disabled")
     if (target) {
-        if (target.id === CONSTS.REFRESH_ICON) {
+        if (target.id === CONSTS.DOWNLOAD_CSV_ID && !disabled) {
+            downloadCSV(event)
+        } else if (target.id === CONSTS.OPEN_OPTIONS_ID) {
+            triggerOpenOptionsPage()
+        } else if (target.id === CONSTS.REFRESH_ICON) {
             refresh()
         } else if (target.id === CONSTS.DELETE_STREAM_ID && !disabled) {
             deleteStream()
