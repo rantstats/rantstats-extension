@@ -15,12 +15,17 @@
         background: #bb0218;
     }
 
+    &.gift-notification {
+        background: #bb0218;
+    }
+
     &.notification * {
         color: white;
     }
 
     .rant-amount,
-    .notification-info {
+    .notification-info,
+    .gift-notification-info {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -37,7 +42,8 @@
         }
     }
 
-    .notification-info {
+    .notification-info,
+    .gift-notification-info {
         background: #d0021b;
 
         .timestamp {
@@ -114,6 +120,22 @@
             justify-self: flex-end;
             margin-left: auto;
             font-size: 0.75em;
+        }
+    }
+
+    &.gift-notification {
+        .user-info {
+            flex-direction: column;
+            align-items: start;
+
+            ol {
+                margin: 0;
+                padding-left: 40px;
+
+                li {
+                    list-style: auto;
+                }
+            }
         }
     }
 

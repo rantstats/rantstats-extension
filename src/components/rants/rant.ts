@@ -514,7 +514,8 @@ const renderGiftNotification = async (
     chatDiv.setAttribute("data-date", isoDate)
     chatDiv.setAttribute("data-username", username)
 
-    const text = `gifted ${giftPurchaseNotification.total_gifts} subscriptions!`
+    const total = giftPurchaseNotification.total_gifts
+    const text = `gifted ${total} subscription${total > 1 ? "s" : ""}!`
 
     let html = `
         <div class="gift-notification-info">
@@ -530,13 +531,13 @@ const renderGiftNotification = async (
         </div>
     `
 
-    let giftReceiversHTML = `<ul class="gift-receivers" id="gift-list-${messageId}">`
+    let giftReceiversHTML = `<ol class="gift-receivers" id="gift-list-${messageId}">`
     if (giftPurchaseNotification.gift_receivers) {
         giftPurchaseNotification.gift_receivers.forEach((receiver) => {
             giftReceiversHTML = `${giftReceiversHTML}<li>${receiver}</li>`
         })
     }
-    giftReceiversHTML = `${giftReceiversHTML}</ul>`
+    giftReceiversHTML = `${giftReceiversHTML}</ol>`
 
     if (cachePage) {
         html = `
@@ -646,9 +647,8 @@ export const renderMessage = async (
     } else if (rant && text !== "") {
         // subscription may not have a message text so don't render
         await renderRant(messageId, time, text, rant, realUsername, realUserImage, badges, read, cachePage)
-    } else if (notification) {
-        await renderNotification(messageIdNotification, time, notification, realUsername, realUserImage, cachePage)
     } else if (giftPurchaseNotification) {
+        console.log("gift purchase")
         await renderGiftNotification(
             messageIdNotification,
             time,
@@ -657,6 +657,8 @@ export const renderMessage = async (
             realUserImage,
             cachePage,
         )
+    } else if (notification) {
+        await renderNotification(messageIdNotification, time, notification, realUsername, realUserImage, cachePage)
     }
 }
 
@@ -676,7 +678,7 @@ export const addGiftReceiver = (messageId: string, time: string, text: string, u
     if (match === null) {
         return
     }
-    const giftGiverUsername = match["giver_name"]
+    const giftGiverUsername = match.groups.giver_name
     console.log(`Looking for giver ${giftGiverUsername}`)
 
     const chatDate = new Date(time)
@@ -713,8 +715,12 @@ export const addGiftReceiver = (messageId: string, time: string, text: string, u
 
     // find list
     const giftMessageId = matchingGift.getAttribute("data-chat-id")
-    const giftList = document.querySelector<HTMLUListElement>(`gift-list-${giftMessageId}`)
-    giftList.append(`<li data-chat-id="${messageId}">${username}</li>`)
+    const giftList = document.querySelector<HTMLUListElement>(`#gift-list-${giftMessageId}`)
+    console.log("giftList", giftList)
+    const receiverLI = document.createElement("li")
+    receiverLI.setAttribute("data-chat-id", messageId)
+    receiverLI.textContent = username
+    giftList.appendChild(receiverLI)
 }
 
 /**
