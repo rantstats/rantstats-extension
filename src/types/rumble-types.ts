@@ -68,7 +68,7 @@ export type RumbleGiftPurchaseNotification = {
     /**
      * Type of gift
      */
-    gift_type: string
+    gift_type: "rumble"
     /**
      * Number of gifts sent
      */
@@ -105,6 +105,16 @@ export type RumbleChannel = {
     "image.1"?: string
 }
 
+type RaidNotification = {
+    start_ts: number
+}
+
+type WalletTransaction = {
+    amount_cents?: number
+    crypto_amount: string
+    crypto_currency: string
+}
+
 /**
  * Object containing the Rumble chat message
  */
@@ -131,10 +141,11 @@ export type RumbleMessage = {
      * Array of message blocks
      */
     blocks: Array<RumbleBlock>
+    type?: "regular" | "rant" // raid doesn't have
     /**
      * Channel chat is from
      */
-    channel_id: number
+    channel_id?: number
     /**
      * Optional paid Rant information
      */
@@ -144,6 +155,8 @@ export type RumbleMessage = {
      */
     notification?: RumbleNotification
     gift_purchase_notification?: RumbleGiftPurchaseNotification
+    raid_notification?: RaidNotification
+    wallet_transaction?: WalletTransaction
 }
 
 /**
@@ -232,6 +245,7 @@ export type RantsConfig = {
      * Array of level configuration objects
      */
     levels: Array<RumbleRantLevel>
+    wallet_enabled: boolean
 }
 
 /**
@@ -253,7 +267,7 @@ export type RumbleBadgeLabel = {
      *
      * Note: likely other values, but have only seen "en" so far
      */
-    en: string
+    [language: string]: string
 }
 
 /**
@@ -332,7 +346,7 @@ export type RumbleConfig = {
     /**
      * Gift information
      */
-    gifts: RumbleGifts
+    gifts?: RumbleGifts
 }
 
 /**
@@ -351,6 +365,21 @@ export type RumbleDataBase = {
      * Array of Rumble user objects
      */
     users: Array<RumbleUser>
+}
+
+type PinnedMessageData = {
+    id: string
+    time: string
+    user_id: string
+    text: string
+    blocks: Array<RumbleBlock>
+    type: "regular"
+}
+
+type SubscriberOnlyChatData = {
+    on: boolean
+    can_enable: boolean
+    can_write: boolean
 }
 
 /**
@@ -373,6 +402,8 @@ export type RumbleInitData = RumbleDataBase & {
      * Indicates user is a moderator of the channel?
      */
     can_moderate: boolean
+    pinned_message?: PinnedMessageData
+    subscribers_only_chat?: SubscriberOnlyChatData
 }
 
 /**
