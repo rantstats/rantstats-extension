@@ -69,6 +69,9 @@ export const messageHandler = (event: MessageEvent, videoId: string): void => {
             case RumbleEventType.delete_non_rant_messages:
                 // ignored
                 break
+            case RumbleEventType.pin_message:
+                // ignored
+                break
             default:
                 consoleError("Unknown event type", eventData)
         }

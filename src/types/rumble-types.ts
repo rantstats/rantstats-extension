@@ -105,11 +105,11 @@ export type RumbleChannel = {
     "image.1"?: string
 }
 
-type RaidNotification = {
+export type RumbleRaidNotification = {
     start_ts: number
 }
 
-type WalletTransaction = {
+export type RumbleWalletTransaction = {
     amount_cents?: number
     crypto_amount: string
     crypto_currency: string
@@ -155,8 +155,8 @@ export type RumbleMessage = {
      */
     notification?: RumbleNotification
     gift_purchase_notification?: RumbleGiftPurchaseNotification
-    raid_notification?: RaidNotification
-    wallet_transaction?: WalletTransaction
+    raid_notification?: RumbleRaidNotification
+    wallet_transaction?: RumbleWalletTransaction
 }
 
 /**
@@ -367,7 +367,7 @@ export type RumbleDataBase = {
     users: Array<RumbleUser>
 }
 
-type PinnedMessageData = {
+export type RumblePinnedMessageData = {
     id: string
     time: string
     user_id: string
@@ -376,7 +376,7 @@ type PinnedMessageData = {
     type: "regular"
 }
 
-type SubscriberOnlyChatData = {
+export type RumbleSubscriberOnlyChatData = {
     on: boolean
     can_enable: boolean
     can_write: boolean
@@ -402,8 +402,8 @@ export type RumbleInitData = RumbleDataBase & {
      * Indicates user is a moderator of the channel?
      */
     can_moderate: boolean
-    pinned_message?: PinnedMessageData
-    subscribers_only_chat?: SubscriberOnlyChatData
+    pinned_message?: RumblePinnedMessageData
+    subscribers_only_chat?: RumbleSubscriberOnlyChatData
 }
 
 /**
@@ -441,6 +441,7 @@ export enum RumbleEventType {
     init = "init",
     messages = "messages",
     mute_users = "mute_users",
+    pin_message = "pin_message",
 }
 
 /**

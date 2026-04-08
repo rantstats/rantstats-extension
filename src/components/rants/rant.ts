@@ -2,7 +2,12 @@ import { cacheMessage, getAllCachedMessageIds, getBadge, getBadges, getUser, upd
 import { CacheBadge, GiftPurchaseNotification, Notification } from "../../types/cache"
 import { CONSTS } from "../../types/consts"
 import { SortOrder } from "../../types/option-types"
-import { RumbleGiftPurchaseNotification, RumbleNotification, RumbleRant } from "../../types/rumble-types"
+import {
+    RumbleGiftPurchaseNotification,
+    RumbleNotification,
+    RumbleRaidNotification,
+    RumbleRant,
+} from "../../types/rumble-types"
 import { getVideoIdFromDiv } from "../../utils"
 
 /**
@@ -390,6 +395,70 @@ const renderRant = async (
     updateTotal(amount)
 }
 
+const renderRaidNotification = async (
+    messageId: string,
+    time: string,
+    text: string,
+    username: string,
+    userImage: string,
+    badges: Array<string> = undefined,
+    read: boolean = false,
+    cachePage: boolean = false,
+): Promise<void> => {
+    const userImageHTML = getUserImageHtml(userImage, username, messageId)
+    const badgesHTML = await getBadgesHtml(badges)
+
+    const chatDate = new Date(time)
+    const isoDate = chatDate.toISOString()
+
+    const chatDiv = document.createElement("div") as HTMLDivElement
+    chatDiv.classList.add("external-chat")
+    if (read) {
+        chatDiv.classList.add("read")
+    }
+    // chatDiv.setAttribute("data-level", rantLevel)
+    chatDiv.setAttribute("data-chat-id", messageId)
+    chatDiv.setAttribute("data-date", isoDate)
+
+    let html: string
+    if (cachePage) {
+        html = `
+            <div class="rant-data">
+                <div class="user-image">${userImageHTML}</div>
+        
+                <div class="rant-details">
+                    <div class="user-info">
+                        <p class="username">${username}</p>
+                        <time class="timestamp" datatype="${isoDate}">${chatDate.toLocaleDateString()}
+                            ${chatDate.toLocaleTimeString()}
+                        </time>
+                    </div>
+
+                    <p class="chat-text">${text}</p>
+                </div>
+            </div>
+        `
+    } else {
+        html = `
+            <div class="user-info">
+                <div class="user-image">${userImageHTML}</div>
+                <p class="username">${username}</p>
+                ${badgesHTML}
+                <time class="timestamp" datatype="${isoDate}">${chatDate.toLocaleDateString()}
+                    ${chatDate.toLocaleTimeString()}
+                </time>
+            </div>
+            <p class="chat-text">${text}</p>
+        `
+    }
+    chatDiv.innerHTML = html
+
+    addChat(chatDiv, messageId)
+
+    const userImageElement = document.getElementById(`img-${messageId}`) as HTMLImageElement
+    if (userImageElement) userImageElement.addEventListener("error", imageErrorHandler)
+}
+
 /**
  * Render a notification
  * @param messageId id of the message
@@ -581,6 +650,7 @@ const renderGiftNotification = async (
  * @param rant paid Rumble Rant data
  * @param notification notification associated with Rant
  * @param giftPurchaseNotification notification of gift purchase
+ * @param raid_notification notification of incoming raid
  * @param username Username for user
  * @param userImage Optional path to profile image
  * @param badges badges for user
@@ -597,6 +667,7 @@ export const renderMessage = async (
     rant: RumbleRant = undefined,
     notification: RumbleNotification = undefined,
     giftPurchaseNotification: RumbleGiftPurchaseNotification = undefined,
+    raid_notification: RumbleRaidNotification = undefined,
     username: string = undefined,
     userImage: string = undefined,
     badges: Array<string> = undefined,
@@ -635,6 +706,7 @@ export const renderMessage = async (
             },
             notification,
             giftPurchaseNotification,
+            raid_notification,
             badges,
             read,
         }).then()
@@ -642,13 +714,34 @@ export const renderMessage = async (
 
     const messageIdNotification = `${messageId}-notification`
 
+    // console.log(
+    //     "rendering message",
+    //     messageId,
+    //     "time",
+    //     time,
+    //     "text",
+    //     text,
+    //     "rant",
+    //     rant,
+    //     "notification",
+    //     notification,
+    //     "gift purchase notification",
+    //     giftPurchaseNotification,
+    //     "username",
+    //     realUsername,
+    //     "cache",
+    //     cached,
+    // )
+
     if (isGiftReceiver(text)) {
+        // console.log("gift receiver")
         addGiftReceiver(messageId, time, text, realUsername)
     } else if (rant && text !== "") {
         // subscription may not have a message text so don't render
+        // console.log("rant")
         await renderRant(messageId, time, text, rant, realUsername, realUserImage, badges, read, cachePage)
     } else if (giftPurchaseNotification) {
-        console.log("gift purchase")
+        // console.log("gift purchase")
         await renderGiftNotification(
             messageIdNotification,
             time,
@@ -658,7 +751,10 @@ export const renderMessage = async (
             cachePage,
         )
     } else if (notification) {
+        // console.log("notification")
         await renderNotification(messageIdNotification, time, notification, realUsername, realUserImage, cachePage)
+    } else if (raid_notification) {
+        await renderRaidNotification(messageId, time, text, realUsername, realUserImage, badges, read, cachePage)
     }
 }
 
