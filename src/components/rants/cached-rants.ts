@@ -1,7 +1,7 @@
 import { getAllCachedMessages } from "../../cache"
 import { CachedRant } from "../../types/cache"
 import { CONSTS } from "../../types/consts"
-import { RumbleRant } from "../../types/rumble-types"
+import { RumbleGiftPurchaseNotification, RumbleRant } from "../../types/rumble-types"
 import { setupPopup } from "../popup/popup"
 
 import { parseLevels } from "./levels"
@@ -31,6 +31,7 @@ export const displayCachedRants = (videoId: string, activeStream: boolean, cache
     getAllCachedMessages(videoId)
         .then((cachedRants: Array<CachedRant>) => {
             cachedRants.forEach((value) => {
+                // console.log("cached rant", value)
                 renderMessage(
                     videoId,
                     value.id,
@@ -39,7 +40,8 @@ export const displayCachedRants = (videoId: string, activeStream: boolean, cache
                     value.text,
                     value.rant as RumbleRant,
                     value.notification,
-                    value.giftPurchaseNotification,
+                    value.giftPurchaseNotification as RumbleGiftPurchaseNotification,
+                    value.raid_notification,
                     value.username,
                     undefined,
                     value.badges,

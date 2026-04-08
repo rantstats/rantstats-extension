@@ -53,6 +53,10 @@ export type GiftPurchaseNotification = {
     gift_receivers?: string[]
 }
 
+export type RaidNotification = {
+    start_ts: number
+}
+
 /**
  * Object for storing and managing a received Rumble Rant
  */
@@ -86,6 +90,7 @@ export type CachedRant = {
      */
     notification?: Notification
     giftPurchaseNotification?: GiftPurchaseNotification
+    raid_notification?: RaidNotification
     /**
      * Badges associated with user who sent Rant
      */

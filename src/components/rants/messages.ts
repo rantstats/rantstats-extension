@@ -16,10 +16,20 @@ const parseMessage = (
     userBadges: Map<string, Array<string>>,
 ): void => {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { id, time, user_id, text, rant, notification, gift_purchase_notification } = message
+    const {
+        id,
+        time,
+        user_id,
+        text,
+        rant,
+        notification,
+        gift_purchase_notification,
+        raid_notification,
+        wallet_transaction,
+    } = message
     const badges = userBadges.get(user.id)
     // render rants and notifications
-    if (rant || notification || gift_purchase_notification || isGiftReceiver(text)) {
+    if (rant || notification || raid_notification || gift_purchase_notification || isGiftReceiver(text)) {
         renderMessage(
             videoId,
             id,
@@ -29,6 +39,7 @@ const parseMessage = (
             rant,
             notification,
             gift_purchase_notification,
+            raid_notification,
             user.username,
             user["image.1"],
             badges,

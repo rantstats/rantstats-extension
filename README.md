@@ -17,17 +17,17 @@ Additionally, all cached data can be viewed and managed from the Cached Rants pa
 
 To add to your browser, download the extension from:
 
--   [Chrome](https://chrome.google.com/webstore/detail/rantstats-extension-for-r/liahjgfmodjgeakahommamnmbjgicpmh)
--   [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/dfhpfnfhllhmfmkcambimnafeklpgkdm)
+- [Chrome](https://chrome.google.com/webstore/detail/rantstats-extension-for-r/liahjgfmodjgeakahommamnmbjgicpmh)
+- [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/dfhpfnfhllhmfmkcambimnafeklpgkdm)
 
 **Permissions**
 
 Extensions require the following permissions:
 
--   `storage`: save options and stream data to local browser storage
--   `unlimitedStorage`: removes storage limit (see current usage in options page)
--   `tabs`: used to sync options and other data between pages running extension and to open the Cached Rants page
--   `contextMenus`: adds option to context menu to open Rant Stats sidebar (or popup). Useful when Rumble changes layout and breaks button in page.
+- `storage`: save options and stream data to local browser storage
+- `unlimitedStorage`: removes storage limit (see current usage in options page)
+- `tabs`: used to sync options and other data between pages running extension and to open the Cached Rants page
+- `contextMenus`: adds option to context menu to open Rant Stats sidebar (or popup). Useful when Rumble changes layout and breaks button in page.
 
 ## Sidebar
 
@@ -79,10 +79,10 @@ Change the order Rants are displayed. Synced across all opened sidebars/popups a
 
 Options:
 
--   `Oldest To Newest`: Sort Rants by the post date from oldest to newest (Default)
--   `Newest To Oldest`: Sort Rants by the post date from newest to oldest
--   `Highest To Lowest`: Sort Rants by the price from high to low
--   `Lowest To Highest`: Sort Rants by the price from low to high
+- `Oldest To Newest`: Sort Rants by the post date from oldest to newest (Default)
+- `Newest To Oldest`: Sort Rants by the post date from newest to oldest
+- `Highest To Lowest`: Sort Rants by the price from high to low
+- `Lowest To Highest`: Sort Rants by the price from low to high
 
 **Sync History**
 
@@ -94,9 +94,9 @@ To manually remove items, open the stream in the Cached Rants page and click "De
 
 Options:
 
--   Minimum 1 day
--   No maximum
--   Default: 30 days
+- Minimum 1 day
+- No maximum
+- Default: 30 days
 
 **Theme**
 
@@ -104,10 +104,10 @@ Specify the color theme to use for the extension sidebar and pages.
 
 Options:
 
--   `Follow Rumble.com`: Follow the theme of Rumble.com (Default)
--   `System`: Follow the system's theme settings regardless of Rumble's settings
--   `Dark`: Always use dark mode regardless of Rumble's settings
--   `Light`: Always use light mode regardless of Rumble's settings
+- `Follow Rumble.com`: Follow the theme of Rumble.com (Default)
+- `System`: Follow the system's theme settings regardless of Rumble's settings
+- `Dark`: Always use dark mode regardless of Rumble's settings
+- `Light`: Always use light mode regardless of Rumble's settings
 
 **Alternate Colors**
 
@@ -121,8 +121,8 @@ Note: the sidebar can always be moved to a popup even if this isn't checked.
 
 Options:
 
--   Unchecked: display as sidebar (Default)
--   Checked: open as popup
+- Unchecked: display as sidebar (Default)
+- Checked: open as popup
 
 ### Page Links
 
@@ -188,8 +188,8 @@ See [CHANGELOG](CHANGELOG.md)
 
 If you want to support me:
 
--   [PayPal](https://www.paypal.me/stevencrader)
--   [$craders](https://www.cash.app/$craders)
--   [Venmo](https://venmo.com/code?user_id=467277291978752568&created=1654152122)
--   [X (Rant Stats)](https://x.com/stevencrader)
--   [X (Me)](https://x.com/rantstats_com)
+- [PayPal](https://www.paypal.me/stevencrader)
+- [$craders](https://www.cash.app/$craders)
+- [Venmo](https://venmo.com/code?user_id=467277291978752568&created=1654152122)
+- [X (Rant Stats)](https://x.com/stevencrader)
+- [X (Me)](https://x.com/rantstats_com)
