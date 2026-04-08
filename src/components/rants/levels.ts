@@ -111,7 +111,7 @@ export const parseLevels = (levels: Array<RumbleRantLevel>, fallback: boolean = 
         styleLines.push(...generateStyleLines(rantLevel))
     })
 
-    rantLevelValues.sort()
+    rantLevelValues.sort((a, b) => a - b)
     setRantLevelValues(rantLevelValues)
 
     const levelStyle = document.createElement("style") as HTMLStyleElement

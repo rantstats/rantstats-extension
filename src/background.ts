@@ -52,7 +52,7 @@ const handlePageLoaded = (tabUrl: string): void => {
         tabs.forEach((tab) => {
             try {
                 openTabs.set(tab.id, tab)
-            } catch (e) {
+            } catch {
                 consoleLog(`error adding tab: ${tab.url}`)
             }
         })

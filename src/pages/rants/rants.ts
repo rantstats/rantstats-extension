@@ -147,7 +147,7 @@ const populateStreamList = async (): Promise<void> => {
         })
 
         const creators: Array<string> = Array.from(optGroups.keys())
-        creators.sort()
+        creators.sort((a, b) => a.localeCompare(b))
         creators.forEach((creator) => {
             const options = optGroups.get(creator)
             const optionGroup = document.createElement("optgroup") as HTMLOptGroupElement
@@ -185,7 +185,6 @@ const deleteStream = (): void => {
     }
 
     getStream(videoId).then((streamData) => {
-        // eslint-disable-next-line no-alert
         const doDelete = window.confirm(`Are you sure you want to delete '${streamData.title}'?`)
         if (doDelete) {
             removeStream(videoId).then(() => {
