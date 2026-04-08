@@ -434,7 +434,7 @@ const renderRaidNotification = async (
                         </time>
                     </div>
 
-                    <p class="chat-text">${text}</p>
+                    <p class="chat-text">${username} ${text}</p>
                 </div>
             </div>
         `
@@ -448,7 +448,7 @@ const renderRaidNotification = async (
                     ${chatDate.toLocaleTimeString()}
                 </time>
             </div>
-            <p class="chat-text">${text}</p>
+            <p class="chat-text">${username} ${text}</p>
         `
     }
     chatDiv.innerHTML = html
