@@ -64,6 +64,9 @@ export type RumbleNotification = {
     text: string
 }
 
+/**
+ *
+ */
 export type RumbleGiftPurchaseNotification = {
     /**
      * Type of gift
@@ -105,10 +108,16 @@ export type RumbleChannel = {
     "image.1"?: string
 }
 
+/**
+ *
+ */
 export type RumbleRaidNotification = {
     start_ts: number
 }
 
+/**
+ *
+ */
 export type RumbleWalletTransaction = {
     amount_cents?: number
     crypto_amount: string
@@ -303,6 +312,9 @@ export type RumbleSubscription = {
     enable: boolean
 }
 
+/**
+ *
+ */
 export type RumbleGift = {
     /**
      * Id of gift level
@@ -318,6 +330,9 @@ export type RumbleGift = {
     total_gifts: number
 }
 
+/**
+ *
+ */
 export type RumbleGifts = {
     type: string
     products: RumbleGift[]
@@ -367,6 +382,9 @@ export type RumbleDataBase = {
     users: Array<RumbleUser>
 }
 
+/**
+ *
+ */
 export type RumblePinnedMessageData = {
     id: string
     time: string
@@ -376,6 +394,9 @@ export type RumblePinnedMessageData = {
     type: "regular"
 }
 
+/**
+ *
+ */
 export type RumbleSubscriberOnlyChatData = {
     on: boolean
     can_enable: boolean
@@ -404,13 +425,6 @@ export type RumbleInitData = RumbleDataBase & {
     can_moderate: boolean
     pinned_message?: RumblePinnedMessageData
     subscribers_only_chat?: RumbleSubscriberOnlyChatData
-}
-
-/**
- * Object for Rumble {@link RumbleEventType.messages} 'data' field
- */
-export type RumbleMessagesData = RumbleDataBase & {
-    // no custom fields
 }
 
 /**
@@ -475,7 +489,7 @@ export type RumbleEventMessages = RumbleEventBase & {
     /**
      * Received message data
      */
-    data: RumbleMessagesData
+    data: RumbleDataBase
     /**
      * Unique request identifier
      */

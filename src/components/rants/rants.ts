@@ -1,13 +1,13 @@
-import { getLastWidth, getSortOrder, getStream, setLastWidth } from "../../cache"
+import { getLastWidth, getSortOrder, setLastWidth } from "../../cache"
 import { consoleLog } from "../../log"
 import { triggerOpenOptionsPage } from "../events/events"
 import { updateTheme } from "../../theme"
 import { CONSTS } from "../../types/consts"
 import { getVideoIdFromDiv } from "../../utils"
-import { setChatButtonEnable } from "../open-chat/chat-buttons"
+import { disableChatButtons, enableChatButtons } from "../open-chat/chat-buttons"
 import { startStream, stopStream } from "../rumble/stream"
-import { downloadCSV } from "./download"
 
+import { downloadCSV } from "./download"
 import { clearDisplayedMessages } from "./rant"
 import { setupForDisplayingCached } from "./cached-rants"
 
@@ -84,7 +84,6 @@ export const addRantStatsSidebar = async (
 
     const existingSidebar = document.getElementById(CONSTS.SIDEBAR_ID)
     if (existingSidebar !== null && !popup) {
-        // eslint-disable-next-line no-alert
         window.alert(`An existing sidebar is detected. Refresh the page and try again if it is not visible.`)
         return
     }
@@ -131,7 +130,7 @@ export const addRantStatsSidebar = async (
     registerResizer()
 
     // disable button to open Rant Stats
-    setChatButtonEnable(false)
+    disableChatButtons()
 
     // start capturing chats
     if (cache) {
@@ -160,7 +159,7 @@ export const popoutSidebar = (cache: boolean = false): void => {
     openRantPopout(videoId, cache)
     stopStream()
     document.getElementById(CONSTS.SIDEBAR_ID).remove()
-    setChatButtonEnable(true)
+    enableChatButtons()
     clearDisplayedMessages()
 }
 

@@ -395,6 +395,17 @@ const renderRant = async (
     updateTotal(amount)
 }
 
+/**
+ *
+ * @param messageId
+ * @param time
+ * @param text
+ * @param username
+ * @param userImage
+ * @param badges
+ * @param read
+ * @param cachePage
+ */
 const renderRaidNotification = async (
     messageId: string,
     time: string,
@@ -760,10 +771,21 @@ export const renderMessage = async (
 
 const GIFTED_REGEX = /Was gifted a membership by (?<giver_name>.+?) /
 
+/**
+ *
+ * @param text
+ */
 export const isGiftReceiver = (text: string): boolean => {
     return GIFTED_REGEX.exec(text) !== null
 }
 
+/**
+ *
+ * @param messageId
+ * @param time
+ * @param text
+ * @param username
+ */
 export const addGiftReceiver = (messageId: string, time: string, text: string, username: string): void => {
     if (text === undefined || text === "") {
         return
@@ -775,7 +797,6 @@ export const addGiftReceiver = (messageId: string, time: string, text: string, u
         return
     }
     const giftGiverUsername = match.groups.giver_name
-    console.log(`Looking for giver ${giftGiverUsername}`)
 
     const chatDate = new Date(time)
     // const isoDate = chatDate.toISOString()
@@ -805,14 +826,12 @@ export const addGiftReceiver = (messageId: string, time: string, text: string, u
     }
 
     if (matchingGift === undefined) {
-        console.log(`Unable to find matching gift giver ${giftGiverUsername}`, text)
         return
     }
 
     // find list
     const giftMessageId = matchingGift.getAttribute("data-chat-id")
     const giftList = document.querySelector<HTMLUListElement>(`#gift-list-${giftMessageId}`)
-    console.log("giftList", giftList)
     const receiverLI = document.createElement("li")
     receiverLI.setAttribute("data-chat-id", messageId)
     receiverLI.textContent = username

@@ -9,16 +9,21 @@ export const getChatButtons = (): Array<HTMLParagraphElement> => {
 }
 
 /**
- * Set the chat button enable/disable state
- * @param enabled true: enable button
+ * Enable the chat button
  */
-export const setChatButtonEnable = (enabled: boolean): void => {
+export const enableChatButtons = (): void => {
     const chatButtons = getChatButtons()
     chatButtons.forEach((chatButton) => {
-        if (enabled) {
-            chatButton.classList.remove("disabled")
-        } else {
-            chatButton.classList.add("disabled")
-        }
+        chatButton.classList.remove("disabled")
+    })
+}
+
+/**
+ * Disable the chat button
+ */
+export const disableChatButtons = (): void => {
+    const chatButtons = getChatButtons()
+    chatButtons.forEach((chatButton) => {
+        chatButton.classList.add("disabled")
     })
 }

@@ -26,6 +26,9 @@ export type Notification = {
     read?: boolean
 }
 
+/**
+ *
+ */
 export type GiftPurchaseNotification = {
     /**
      * Type of gift
@@ -53,6 +56,9 @@ export type GiftPurchaseNotification = {
     gift_receivers?: string[]
 }
 
+/**
+ *
+ */
 export type RaidNotification = {
     start_ts: number
 }

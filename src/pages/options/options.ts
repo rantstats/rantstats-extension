@@ -157,7 +157,6 @@ const loadOptions = (): void => {
  * Clear all stored data (after confirmation)
  */
 const clearOptions = (): void => {
-    // eslint-disable-next-line no-alert
     const clear = window.confirm(
         "Clear all saved data? Any previously cached Rants will be lost and option will be restored to default",
     )
