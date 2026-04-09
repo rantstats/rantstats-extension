@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) =
             updateThemeStyle(message.data.theme as Theme)
             break
         case Messages.CONTEXT_MENU_OPEN_RANTS:
-            openSidebar()
+            openSidebar().then()
             break
         default:
             break

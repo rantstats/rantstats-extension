@@ -456,6 +456,9 @@ export enum RumbleEventType {
     messages = "messages",
     mute_users = "mute_users",
     pin_message = "pin_message",
+    unpin_message = "unpin_message",
+    host_ad_read = "host_ad_read",
+    delete_messages = "delete_messages",
 }
 
 /**
