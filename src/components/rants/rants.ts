@@ -104,12 +104,8 @@ export const addRantStatsSidebar = async (
             <header>
                 <h1 id="${CONSTS.SIDEBAR_TITLE_ID}">Rant Stats</h1>
             </header>
-            <div class="hidden" id="${CONSTS.ERROR_ID}">
-                <p>Could not load chats, is the livestream over? Any cached Rants shown below.</p>
-            </div>
-            <div class="hidden" id="${CONSTS.CACHE_MESSAGE_ID}">
-                <p>Stream is over, dispalying <span id="${CONSTS.CACHE_MESSAGE_COUNT_ID}">-1</span> cached rants.</p>
-            </div>
+            <p class="hidden" id="${CONSTS.ERROR_ID}">Could not load chats, is the livestream over? Any cached Rants shown below.</p>
+            <p class="hidden" id="${CONSTS.CACHE_MESSAGE_ID}">Stream is over, displaying <span id="${CONSTS.CACHE_MESSAGE_COUNT_ID}">-1</span> cached rants.</p>
             <div id="rant-list" data-sort-order="${sortOrder}"></div>
             <footer>
                 <p id="${CONSTS.TOTAL_ID}" class="link" data-total="0">$0.00</p>

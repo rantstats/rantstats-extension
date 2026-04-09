@@ -31,7 +31,6 @@ export const displayCachedRants = (videoId: string, activeStream: boolean, cache
     getAllCachedMessages(videoId)
         .then((cachedRants: Array<CachedRant>) => {
             cachedRants.forEach((value) => {
-                // console.log("cached rant", value)
                 renderMessage(
                     videoId,
                     value.id,

@@ -15,7 +15,8 @@
         background: #bb0218;
     }
 
-    &.gift-notification {
+    &.gift-notification,
+    &.raid-notification {
         background: #bb0218;
     }
 
@@ -25,7 +26,8 @@
 
     .rant-amount,
     .notification-info,
-    .gift-notification-info {
+    .gift-notification-info,
+    .raid-notification-info {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -43,7 +45,8 @@
     }
 
     .notification-info,
-    .gift-notification-info {
+    .gift-notification-info,
+    .raid-notification-info {
         background: #d0021b;
 
         .timestamp {

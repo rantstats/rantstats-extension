@@ -400,6 +400,7 @@ const renderRant = async (
  * @param messageId
  * @param time
  * @param text
+ * @param raidNotification
  * @param username
  * @param userImage
  * @param badges
@@ -410,12 +411,17 @@ const renderRaidNotification = async (
     messageId: string,
     time: string,
     text: string,
+    raidNotification: RumbleRaidNotification,
     username: string,
     userImage: string,
     badges: Array<string> = undefined,
     read: boolean = false,
     cachePage: boolean = false,
 ): Promise<void> => {
+    if (raidNotification == undefined) {
+        return
+    }
+
     const userImageHTML = getUserImageHtml(userImage, username, messageId)
     const badgesHTML = await getBadgesHtml(badges)
 
@@ -424,16 +430,28 @@ const renderRaidNotification = async (
 
     const chatDiv = document.createElement("div") as HTMLDivElement
     chatDiv.classList.add("external-chat")
+    chatDiv.classList.add("raid-notification")
     if (read) {
         chatDiv.classList.add("read")
     }
-    // chatDiv.setAttribute("data-level", rantLevel)
     chatDiv.setAttribute("data-chat-id", messageId)
     chatDiv.setAttribute("data-date", isoDate)
 
-    let html: string
+    let html = `
+        <div class="raid-notification-info">
+            <time class="timestamp" datatype="${isoDate}">${chatDate.toLocaleDateString()}
+                ${chatDate.toLocaleTimeString()}
+            </time>
+            <label for="${messageId}" class="show-hide-checkbox">
+                Read:
+                <input type="checkbox" id="${messageId}" class="${CONSTS.READ_CHECK}" ${read ? "checked" : ""}/>
+            </label>
+        </div>
+    `
+
     if (cachePage) {
         html = `
+            ${html}
             <div class="rant-data">
                 <div class="user-image">${userImageHTML}</div>
         
@@ -451,6 +469,7 @@ const renderRaidNotification = async (
         `
     } else {
         html = `
+            ${html}
             <div class="user-info">
                 <div class="user-image">${userImageHTML}</div>
                 <p class="username">${username}</p>
@@ -651,6 +670,75 @@ const renderGiftNotification = async (
     if (userImageElement) userImageElement.addEventListener("error", imageErrorHandler)
 }
 
+const GIFTED_REGEX = /Was gifted a membership by (?<giver_name>.+?) /
+
+/**
+ *
+ * @param text
+ */
+export const isGiftReceiver = (text: string): boolean => {
+    return GIFTED_REGEX.exec(text) !== null
+}
+
+/**
+ *
+ * @param messageId
+ * @param time
+ * @param text
+ * @param username
+ */
+export const addGiftReceiver = (messageId: string, time: string, text: string, username: string): void => {
+    if (text === undefined || text === "") {
+        return
+    }
+
+    // extract gift giver username
+    const match = GIFTED_REGEX.exec(text)
+    if (match === null) {
+        return
+    }
+    const giftGiverUsername = match.groups.giver_name
+
+    const chatDate = new Date(time)
+    // const isoDate = chatDate.toISOString()
+
+    // get all gifts from giver
+    const giverGifts = document.querySelectorAll<HTMLDivElement>(
+        `.gift-notification[data-username="${giftGiverUsername}"]`,
+    )
+    // select one with date closest to this one
+    let matchingGift: HTMLDivElement
+    let lastDelta: number = -1
+    for (let i = 0; i < giverGifts.length; ++i) {
+        const giftGift = giverGifts[i]
+        const giftISODate = giftGift.getAttribute("data-date")
+        const giftDate = new Date(Date.parse(giftISODate))
+
+        const delta = Math.abs(chatDate.getTime() - giftDate.getTime())
+
+        if (lastDelta === -1) {
+            matchingGift = giftGift
+        } else {
+            if (delta < lastDelta) {
+                matchingGift = giftGift
+            }
+        }
+        lastDelta = delta
+    }
+
+    if (matchingGift === undefined) {
+        return
+    }
+
+    // find list
+    const giftMessageId = matchingGift.getAttribute("data-chat-id")
+    const giftList = document.querySelector<HTMLUListElement>(`#gift-list-${giftMessageId}`)
+    const receiverLI = document.createElement("li")
+    receiverLI.setAttribute("data-chat-id", messageId)
+    receiverLI.textContent = username
+    giftList.appendChild(receiverLI)
+}
+
 /**
  * Render Rumble Rant
  * @param videoId id of video
@@ -725,34 +813,24 @@ export const renderMessage = async (
 
     const messageIdNotification = `${messageId}-notification`
 
-    // console.log(
-    //     "rendering message",
-    //     messageId,
-    //     "time",
-    //     time,
-    //     "text",
-    //     text,
-    //     "rant",
-    //     rant,
-    //     "notification",
-    //     notification,
-    //     "gift purchase notification",
-    //     giftPurchaseNotification,
-    //     "username",
-    //     realUsername,
-    //     "cache",
-    //     cached,
-    // )
-
     if (isGiftReceiver(text)) {
-        // console.log("gift receiver")
         addGiftReceiver(messageId, time, text, realUsername)
+    } else if (raid_notification) {
+        await renderRaidNotification(
+            messageId,
+            time,
+            text,
+            raid_notification,
+            realUsername,
+            realUserImage,
+            badges,
+            read,
+            cachePage,
+        )
     } else if (rant && text !== "") {
         // subscription may not have a message text so don't render
-        // console.log("rant")
         await renderRant(messageId, time, text, rant, realUsername, realUserImage, badges, read, cachePage)
     } else if (giftPurchaseNotification) {
-        // console.log("gift purchase")
         await renderGiftNotification(
             messageIdNotification,
             time,
@@ -762,80 +840,8 @@ export const renderMessage = async (
             cachePage,
         )
     } else if (notification) {
-        // console.log("notification")
         await renderNotification(messageIdNotification, time, notification, realUsername, realUserImage, cachePage)
-    } else if (raid_notification) {
-        await renderRaidNotification(messageId, time, text, realUsername, realUserImage, badges, read, cachePage)
     }
-}
-
-const GIFTED_REGEX = /Was gifted a membership by (?<giver_name>.+?) /
-
-/**
- *
- * @param text
- */
-export const isGiftReceiver = (text: string): boolean => {
-    return GIFTED_REGEX.exec(text) !== null
-}
-
-/**
- *
- * @param messageId
- * @param time
- * @param text
- * @param username
- */
-export const addGiftReceiver = (messageId: string, time: string, text: string, username: string): void => {
-    if (text === undefined || text === "") {
-        return
-    }
-
-    // extract gift giver username
-    const match = GIFTED_REGEX.exec(text)
-    if (match === null) {
-        return
-    }
-    const giftGiverUsername = match.groups.giver_name
-
-    const chatDate = new Date(time)
-    // const isoDate = chatDate.toISOString()
-
-    // get all gifts from giver
-    const giverGifts = document.querySelectorAll<HTMLDivElement>(
-        `.gift-notification[data-username="${giftGiverUsername}"]`,
-    )
-    // select one with date closest to this one
-    let matchingGift: HTMLDivElement
-    let lastDelta: number = -1
-    for (let i = 0; i < giverGifts.length; ++i) {
-        const giftGift = giverGifts[i]
-        const giftISODate = giftGift.getAttribute("data-date")
-        const giftDate = new Date(Date.parse(giftISODate))
-
-        const delta = Math.abs(chatDate.getTime() - giftDate.getTime())
-
-        if (lastDelta === -1) {
-            matchingGift = giftGift
-        } else {
-            if (delta < lastDelta) {
-                matchingGift = giftGift
-            }
-        }
-        lastDelta = delta
-    }
-
-    if (matchingGift === undefined) {
-        return
-    }
-
-    // find list
-    const giftMessageId = matchingGift.getAttribute("data-chat-id")
-    const giftList = document.querySelector<HTMLUListElement>(`#gift-list-${giftMessageId}`)
-    const receiverLI = document.createElement("li")
-    receiverLI.setAttribute("data-chat-id", messageId)
-    receiverLI.textContent = username
-    giftList.appendChild(receiverLI)
 }
 
 /**

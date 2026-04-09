@@ -63,13 +63,12 @@ export const messageHandler = (event: MessageEvent, videoId: string): void => {
             case RumbleEventType.messages:
                 messagesEventHandler(eventData as RumbleEventMessages, videoId)
                 break
+            case RumbleEventType.delete_messages:
             case RumbleEventType.mute_users:
-                // ignored
-                break
             case RumbleEventType.delete_non_rant_messages:
-                // ignored
-                break
             case RumbleEventType.pin_message:
+            case RumbleEventType.unpin_message:
+            case RumbleEventType.host_ad_read:
                 // ignored
                 break
             default:
