@@ -1,5 +1,13 @@
 # RantStats Extension for Rumble.com
 
+## 1.5.0
+
+- Fix context menu showing up on all pages instead of only Rumble video pages
+- Add about page
+- Add subscription gift tracking
+- Add raid tracking
+- Change default to not alternate colors
+
 ## 1.4.6
 
 - Fix context menu showing up on all pages instead of only Rumble video pages
