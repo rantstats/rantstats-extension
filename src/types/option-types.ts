@@ -78,5 +78,5 @@ export const defaultOptions: Options = {
     historyDays: 30,
     theme: Theme.Rumble.toString(),
     asPopup: false,
-    alternateColors: true,
+    alternateColors: false,
 }
