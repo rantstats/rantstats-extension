@@ -1,4 +1,13 @@
-import { cacheMessage, getAllCachedMessageIds, getBadge, getBadges, getUser, updateCachedMessage } from "../../cache"
+import {
+    cacheMessage,
+    getAllCachedMessageIds,
+    getBadge,
+    getBadges,
+    getOptions,
+    getUser,
+    updateCachedMessage,
+} from "../../cache"
+import { consoleLog } from "../../log"
 import { CacheBadge, GiftPurchaseNotification, Notification } from "../../types/cache"
 import { CONSTS } from "../../types/consts"
 import { SortOrder } from "../../types/option-types"
@@ -813,32 +822,38 @@ export const renderMessage = async (
 
     const messageIdNotification = `${messageId}-notification`
 
+    const options = await getOptions()
+
     if (isGiftReceiver(text)) {
         addGiftReceiver(messageId, time, text, realUsername)
     } else if (raid_notification) {
-        await renderRaidNotification(
-            messageId,
-            time,
-            text,
-            raid_notification,
-            realUsername,
-            realUserImage,
-            badges,
-            read,
-            cachePage,
-        )
+        if (options?.includeRaids)
+            await renderRaidNotification(
+                messageId,
+                time,
+                text,
+                raid_notification,
+                realUsername,
+                realUserImage,
+                badges,
+                read,
+                cachePage,
+            )
+        else consoleLog(`Would have included raid from ${realUsername}`)
     } else if (rant && text !== "") {
         // subscription may not have a message text so don't render
         await renderRant(messageId, time, text, rant, realUsername, realUserImage, badges, read, cachePage)
     } else if (giftPurchaseNotification) {
-        await renderGiftNotification(
-            messageIdNotification,
-            time,
-            giftPurchaseNotification,
-            realUsername,
-            realUserImage,
-            cachePage,
-        )
+        if (options?.includeRaids)
+            await renderGiftNotification(
+                messageIdNotification,
+                time,
+                giftPurchaseNotification,
+                realUsername,
+                realUserImage,
+                cachePage,
+            )
+        else consoleLog(`Would have included gift from ${realUsername}`)
     } else if (notification) {
         await renderNotification(messageIdNotification, time, notification, realUsername, realUserImage, cachePage)
     }

@@ -13,6 +13,8 @@ const themeSelect = document.getElementById("theme") as HTMLSelectElement
 const openLocationCheckbox = document.getElementById("open-location") as HTMLInputElement
 const bytesUseSpan = document.getElementById(CONSTS.BYTES_USE_ID) as HTMLSpanElement
 const alternateColorsCheckbox = document.getElementById("alternate-colors") as HTMLInputElement
+const includeGiftsCheckbox = document.getElementById("include-gifts") as HTMLInputElement
+const includeRaidsCheckbox = document.getElementById("include-raids") as HTMLInputElement
 
 // temporary options before saving
 let tempOptions: Options = null
@@ -60,6 +62,8 @@ const setOptions = (options: Options): void => {
     themeSelect.value = options.theme.toString()
     openLocationCheckbox.checked = options.asPopup
     alternateColorsCheckbox.checked = options.alternateColors
+    includeGiftsCheckbox.checked = options.includeGifts
+    includeRaidsCheckbox.checked = options.includeRaids
 
     tempOptions = options
 
@@ -77,6 +81,8 @@ const getCurrentOptions = (): Options => {
         theme: themeSelect.value,
         asPopup: openLocationCheckbox.checked,
         alternateColors: alternateColorsCheckbox.checked,
+        includeGifts: includeGiftsCheckbox.checked,
+        includeRaids: includeRaidsCheckbox.checked,
     }
 }
 
@@ -200,6 +206,8 @@ themeSelect.addEventListener("change", optionChanged)
 openLocationCheckbox.addEventListener("change", optionChanged)
 bytesUseSpan.addEventListener("change", optionChanged)
 alternateColorsCheckbox.addEventListener("change", optionChanged)
+includeGiftsCheckbox.addEventListener("change", optionChanged)
+includeRaidsCheckbox.addEventListener("change", optionChanged)
 document.getElementById("clear").addEventListener("click", clearOptions)
 document.getElementById("open-rants").addEventListener("click", triggerOpenRantsPage)
 document.getElementById("open-about").addEventListener("click", triggerOpenAboutPage)
