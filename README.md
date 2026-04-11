@@ -5,11 +5,10 @@
 
 **WARNING:** this relies on undocumented features of Rumble. If Rumble changes their site, this may break.
 
-Add support for capturing the paid Rumble Rants for [Rumble.com](https://rumble.com/) livestreams.
+Add support for capturing the paid Rumble Rants for [Rumble.com](https://rumble.com/), gifted subscriptions, and raids for livestreams.
 Rants are shown past their normal expiration date in the chat.
 
-Rants can be shown as a sidebar on the stream page or in a separate window. After a stream ends, cached data can be
-viewed by loading the stream page again.
+Rants can be shown as a sidebar on the stream page or in a separate window. After a stream ends, cached data can be viewed by loading the stream page again.
 
 Additionally, all cached data can be viewed and managed from the Cached Rants page.
 
@@ -123,6 +122,24 @@ Options:
 
 - Unchecked: display as sidebar (Default)
 - Checked: open as popup
+
+**Include Gifts**
+
+Include gifted subscriptions in the sidebar
+
+Options:
+
+- Unchecked: gifted subscriptions are not captured
+- Checked: gifted subscriptions are captured (Default)
+
+**Include Raids**
+
+Include incoming raids in the sidebar
+
+Options:
+
+- Unchecked: incoming raids are not captured
+- Checked: incoming raids are captured (Default)
 
 ### Page Links
 

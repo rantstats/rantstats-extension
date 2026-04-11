@@ -68,6 +68,14 @@ export type Options = {
      * Alternate colors of messages in chat
      */
     alternateColors: boolean
+    /**
+     * Include gifted subscriptions
+     */
+    includeGifts: boolean
+    /**
+     * Include raid notifications
+     */
+    includeRaids: boolean
 }
 
 /**
@@ -79,4 +87,6 @@ export const defaultOptions: Options = {
     theme: Theme.Rumble.toString(),
     asPopup: false,
     alternateColors: false,
+    includeGifts: true,
+    includeRaids: true,
 }
