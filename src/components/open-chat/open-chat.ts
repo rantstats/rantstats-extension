@@ -82,9 +82,10 @@ const addCacheButtonToNode = (parentClassName: string, onclick: () => void): boo
 }
 
 /**
- *
- * @param parentClassName
- * @param onclick
+ * Add button to open cached data below video player
+ * @param parentClassName class name of section to add button to
+ * @param onclick function to handle button click
+ * @returns true if button added
  */
 const addCacheButtonToActions = (parentClassName: string, onclick: () => void): boolean => {
     // get related videos list
