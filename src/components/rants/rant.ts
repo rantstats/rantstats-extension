@@ -7,7 +7,6 @@ import {
     getUser,
     updateCachedMessage,
 } from "../../cache"
-import { consoleLog } from "../../log"
 import { CacheBadge, GiftPurchaseNotification, Notification } from "../../types/cache"
 import { CONSTS } from "../../types/consts"
 import { SortOrder } from "../../types/option-types"
@@ -405,16 +404,17 @@ const renderRant = async (
 }
 
 /**
- *
- * @param messageId
- * @param time
- * @param text
- * @param raidNotification
- * @param username
- * @param userImage
- * @param badges
- * @param read
- * @param cachePage
+ * Render a raid notification
+ * @param messageId id of the message
+ * @param time Time message was posted
+ * @param text text of the notification
+ * @param raidNotification raid notification information
+ * @param username Username for user
+ * @param userImage Optional path to profile image
+ * @param badges badges for user
+ * @param read true: message should be marked read
+ * @param cachePage true: data being displayed on cache page
+ * @returns A void promise
  */
 const renderRaidNotification = async (
     messageId: string,
@@ -682,19 +682,20 @@ const renderGiftNotification = async (
 const GIFTED_REGEX = /Was gifted a membership by (?<giver_name>.+?) /
 
 /**
- *
- * @param text
+ * Checks if the text indicates the user received a gift
+ * @param text the notification text
+ * @returns true if text matches gift receiver text
  */
 export const isGiftReceiver = (text: string): boolean => {
     return GIFTED_REGEX.exec(text) !== null
 }
 
 /**
- *
- * @param messageId
- * @param time
- * @param text
- * @param username
+ * Render a notification
+ * @param messageId id of the message
+ * @param time Time message was posted
+ * @param text text of the notification
+ * @param username Username for user
  */
 export const addGiftReceiver = (messageId: string, time: string, text: string, username: string): void => {
     if (text === undefined || text === "") {
@@ -839,7 +840,6 @@ export const renderMessage = async (
                 read,
                 cachePage,
             )
-        else consoleLog(`Would have included raid from ${realUsername}`)
     } else if (rant && text !== "") {
         // subscription may not have a message text so don't render
         await renderRant(messageId, time, text, rant, realUsername, realUserImage, badges, read, cachePage)
@@ -853,7 +853,6 @@ export const renderMessage = async (
                 realUserImage,
                 cachePage,
             )
-        else consoleLog(`Would have included gift from ${realUsername}`)
     } else if (notification) {
         await renderNotification(messageIdNotification, time, notification, realUsername, realUserImage, cachePage)
     }

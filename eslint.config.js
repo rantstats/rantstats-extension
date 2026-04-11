@@ -64,6 +64,7 @@ module.exports = [
             ...jsdoc.configs.recommended.rules,
             "prettier/prettier": "error",
             "sonarjs/todo-tag": "warn",
+            "sonarjs/cognitive-complexity": "off",
             "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
             "no-underscore-dangle": "off",
             "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
