@@ -20,8 +20,10 @@
         background: #bb0218;
     }
 
-    &.notification * {
-        color: white;
+    &.notification *,
+    &.gift-notification *,
+    &.raid-notification * {
+        color: white !important;
     }
 
     .rant-amount,

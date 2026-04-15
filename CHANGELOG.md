@@ -1,5 +1,13 @@
 # RantStats Extension for Rumble.com
 
+## 1.5.2
+
+- Fix dark text on red for subscriptions, gifts and raids
+
+## 1.5.1
+
+- Add options to disable gifts and raid capture
+
 ## 1.5.0
 
 - Fix context menu showing up on all pages instead of only Rumble video pages
