@@ -1,5 +1,9 @@
 # RantStats Extension for Rumble.com
 
+## 1.5.3
+
+- Fix new options not being applied
+
 ## 1.5.2
 
 - Fix dark text on red for subscriptions, gifts and raids

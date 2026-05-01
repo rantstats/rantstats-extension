@@ -1,15 +1,15 @@
 import { getLastWidth, getSortOrder, setLastWidth } from "../../cache"
 import { consoleLog } from "../../log"
-import { triggerOpenOptionsPage } from "../events/events"
 import { updateTheme } from "../../theme"
 import { CONSTS } from "../../types/consts"
 import { getVideoIdFromDiv } from "../../utils"
+import { triggerOpenOptionsPage } from "../events/events"
 import { disableChatButtons, enableChatButtons } from "../open-chat/chat-buttons"
 import { startStream, stopStream } from "../rumble/stream"
 
+import { setupForDisplayingCached } from "./cached-rants"
 import { downloadCSV } from "./download"
 import { clearDisplayedMessages } from "./rant"
-import { setupForDisplayingCached } from "./cached-rants"
 
 /**
  * Helper for getting resizer HTML element

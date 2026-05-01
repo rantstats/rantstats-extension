@@ -66,7 +66,12 @@ export const getOptions = async (defaultValues: Options = undefined): Promise<Op
     const returnData = await chrome.storage.local.get({
         options,
     })
-    return returnData.options as Options
+
+    return {
+        ...defaultOptions,
+        ...options,
+        ...returnData.options,
+    }
 }
 
 /**
